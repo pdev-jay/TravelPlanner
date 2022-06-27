@@ -10,8 +10,12 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityMainCyunBinding
+import com.jccgs.travelplanner_v2.jkim.AuthController
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.jkim.Plan
 
 class MainActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityMainCyunBinding
@@ -33,7 +37,7 @@ class MainActivity_CYun : AppCompatActivity() {
         //툴바에 메뉴추가
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //메뉴 아이콘 지정
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.menu)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.icon_menu)
 
 //        makeItemViewDataList()
         getPlans()
@@ -50,8 +54,8 @@ class MainActivity_CYun : AppCompatActivity() {
         }
 
         binding.includeNavi.ivPhoto.setOnClickListener {
-            val intent = Intent(this,PrevTripActivity_CKim::class.java)
-            startActivity(intent)
+//            val intent = Intent(this,PrevTripActivity_CKim::class.java)
+//            startActivity(intent)
         }
 
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
@@ -80,8 +84,8 @@ class MainActivity_CYun : AppCompatActivity() {
         when(view.id){
 
             R.id.btnAdd1 ->{
-                val intent = Intent(this, MainPlaceActivity_SJeong::class.java)
-                startActivity(intent)
+//                val intent = Intent(this, MainPlaceActivity_SJeong::class.java)
+//                startActivity(intent)
             }
             R.id.btnAdd2 ->{
             }

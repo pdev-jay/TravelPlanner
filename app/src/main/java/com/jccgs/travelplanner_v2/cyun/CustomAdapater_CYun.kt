@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ItemviewCyunBinding
+import com.jccgs.travelplanner_v2.jkim.Plan
 
 class CustomAdapter_CYun(val plans: MutableList<Plan>) : RecyclerView.Adapter<CustomAdapter_CYun.CustomViewHolder>() {
 

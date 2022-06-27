@@ -4,11 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/airplane_ticket_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/icon_close.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable-v24/icon_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/menu.xml" value="0.187" />
         <entry key="app/src/main/res/drawable-v24/shape_itemview_cyun.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/airplane_ticket_24.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/icon_close.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/icon_menu.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/menu.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/shape_itemview_cyun.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/shape_reminder_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_intro_cyun.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_log_in_cyun.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_log_in_cyun.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up_cyun.xml" value="0.1" />

@@ -12,9 +12,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.auth.User
+import com.google.firebase.firestore.ktx.toObjects
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityLogInCyunBinding
+import com.jccgs.travelplanner_v2.jkim.AuthController
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.jkim.User
 
 class LogInActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityLogInCyunBinding

@@ -6,10 +6,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivitySignUpCyunBinding
+import com.jccgs.travelplanner_v2.jkim.AuthController
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.jkim.User
 
 class SignUpActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivitySignUpCyunBinding
@@ -49,11 +51,7 @@ class SignUpActivity_CYun : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
 
-                    AuthController.currentUser = User(
-                        AuthController.auth.currentUser?.uid,
-                        AuthController.auth.currentUser?.email,
-                        displayName
-                    )
+                    AuthController.currentUser = User(AuthController.auth.currentUser?.uid, AuthController.auth.currentUser?.email, displayName)
                     FirebaseController.addUser()
 
                     AuthController.auth.currentUser?.sendEmailVerification()
