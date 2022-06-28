@@ -7,9 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.accountbook.gmin.CustomAdapter
-import com.example.accountbook.gmin.CustomDialog
-import com.example.accountbook.gmin.ItemViewData
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
 
 class ExpensesActivity : AppCompatActivity() {

@@ -1,11 +1,11 @@
-package com.example.accountbook.gmin
+package com.jccgs.travelplanner_v2.gmin
 
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import com.jccgs.travelplanner_v2.databinding.UpdateDialogGminBinding
-import com.example.accountbook.gmin.ItemViewData
-import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
+import com.jccgs.travelplanner_v2.sjeong.DateDialog
 
 class UpdateDialog(val context: Context){
 
@@ -25,6 +25,16 @@ class UpdateDialog(val context: Context){
         binding.edtUdDateMin.setText(data.tvDate)
         binding.edtUdContentMin.setText(data.tvContent)
         binding.edtUdPayMin.setText(data.tvPay.toString())
+
+        binding.edtUdDateMin.setOnClickListener {
+            val expensesDialog = DateDialog(context)
+            expensesDialog.showExpensesDialog(DailyPlanActivity_SJeong.startDate, DailyPlanActivity_SJeong.endDate)
+            expensesDialog.setonDialogClickListener(object: DateDialog.OnDialogClickListener{
+                override fun onDialogClicked(date: String) {
+                    binding.edtUdDateMin.setText(date)
+                }
+            })
+        }
 
         //수정 이벤트 처리
         binding.btnUdEnterMin.setOnClickListener{

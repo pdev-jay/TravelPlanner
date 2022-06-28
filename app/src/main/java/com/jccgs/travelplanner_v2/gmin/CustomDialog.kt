@@ -1,11 +1,10 @@
-package com.example.accountbook.gmin
+package com.jccgs.travelplanner_v2.gmin
 
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import com.jccgs.travelplanner_v2.databinding.CustomDialogGminBinding
-import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
-import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DateDialog
 
 
@@ -26,7 +25,7 @@ class CustomDialog(val context: Context){
 
         binding.edtDateMin.setOnClickListener {
             val expensesDialog = DateDialog(context)
-            expensesDialog.showExpensesDialog(DailyPlanActivity.startDate, DailyPlanActivity.endDate)
+            expensesDialog.showExpensesDialog(DailyPlanActivity_SJeong.startDate, DailyPlanActivity_SJeong.endDate)
             expensesDialog.setonDialogClickListener(object: DateDialog.OnDialogClickListener{
                 override fun onDialogClicked(date: String) {
                     binding.edtDateMin.setText(date)
