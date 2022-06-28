@@ -39,7 +39,6 @@ import kotlinx.coroutines.launch
 
 class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     val binding by lazy { ActivitySearchPlaceJkimBinding.inflate(layoutInflater) }
-//    private val AUTOCOMPLETE_REQUEST_CODE = 1
 
     lateinit var mapController: MapController
     lateinit var googleMap: GoogleMap
@@ -47,6 +46,9 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val permissionId = 2
 
+    private var currentLocation: Location? = null
+
+    private var searchFlaag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +75,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
                     mapController.addMark(listOf(place.latLng))
                 }
-
+                searchFlaag = true
                 MapController.selectedPlaceLatLng = place.latLng
                 MapController.selectedPlaceName = place.name
                 MapController.selectedPlaceCountryName = countryName
@@ -96,14 +98,26 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.tvNextSearch.setOnClickListener {
+            if (!searchFlaag && currentLocation != null){
+                val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
+                val specificPlace = geocoder.getFromLocation(currentLocation!!.latitude, currentLocation!!.longitude, 1)
+                MapController.selectedPlaceLatLng = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+
+                MapController.selectedPlaceName = null
+                MapController.selectedPlaceCountryName = "여행 지역"
+                MapController.selectedPlaceCity = ""
+                MapController.selectedPlaceAddress = null
+            }
+
+            Log.d("Log_debug", "${MapController.selectedPlaceAddress}")
             val intent = Intent(this, CalendarActivity_SJeong::class.java)
             startActivity(intent)
         }
+    }
 
-//        binding.ivPrevMain.setOnClickListener {
-//            onBackPressed()
-//        }
-
+    override fun onStop() {
+        searchFlaag = false
+        super.onStop()
     }
 
     //****************************이 밑으로 현재 위치 구하기 및 구글 맵 카메라 이동, 현재위치 권한 요청***********************//
@@ -118,9 +132,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
             true
         }
 
-
         mapController = MapController(this, googleMap)
-
 
         googleMap.setOnCameraIdleListener(mapController.clusterManager)
         googleMap.setOnMarkerClickListener(mapController.clusterManager)
@@ -140,6 +152,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                     if (location != null) {
                         CoroutineScope(Dispatchers.Main).launch {
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+                            currentLocation = location
                             Log.d("Log_debug", "$location")
                         }
                     } else {
@@ -202,4 +215,28 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
+//    fun getPlaceInfo(latLng: LatLng){
+//        val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
+//
+//        val specificPlace = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+//        val countryName = specificPlace[0].countryName
+//        val cityName = specificPlace[0].adminArea
+//        val placeName = specificPlace[0].featureName
+//
+////        Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
+//        CoroutineScope(Dispatchers.Main).launch {
+////                    mapController.moveCamera(place.latLng)
+//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+//            mapController.addMark(listOf(latLng))
+//        }
+//        googleMap.cameraPosition.target
+//
+//        MapController.selectedPlaceLatLng = latLng
+//        MapController.selectedPlaceName = place.name
+//        MapController.selectedPlaceCountryName = countryName
+//        MapController.selectedPlaceCity = cityName
+//        MapController.selectedPlaceAddress = specificPlace[0].toString()
+//
+//    }
 }

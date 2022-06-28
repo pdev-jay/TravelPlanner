@@ -9,6 +9,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
@@ -22,6 +25,8 @@ class MainActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityMainCyunBinding
 
     lateinit var customAdapter: CustomAdapter_CYun
+
+    var googleSignInClient: GoogleSignInClient? = null
 
     val plans: MutableList<Plan> = mutableListOf()
 
@@ -111,17 +116,23 @@ class MainActivity_CYun : AppCompatActivity() {
 
     //signOut
     fun signOut() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
         AuthController.auth.signOut()
-        AuthController.currentUser = null
 
-        if (AuthController.googleSignInClient != null){
-            AuthController.googleSignInClient?.signOut()?.addOnCompleteListener {
-                AuthController.googleSignInClient = null
-            }
+        googleSignInClient?.signOut()?.addOnSuccessListener {
+
+            googleSignInClient = null
+            AuthController.currentUser = null
+
+            val intent = Intent(this, LogInActivity_CYun::class.java)
+            startActivity(intent)
+            finish()
+            Log.d("Log_debug", "google logout succeed")
         }
-
-        val intent = Intent(this, LogInActivity_CYun::class.java)
-        startActivity(intent)
-        finish()
     }
 }

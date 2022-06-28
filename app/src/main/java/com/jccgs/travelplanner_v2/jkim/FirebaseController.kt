@@ -14,14 +14,6 @@ object FirebaseController {
     val CHECKLIST = "CheckList"
     val EXPENSES = "Expenses"
 
-    fun addUser(){
-        USER_REF.whereEqualTo("id", AuthController.currentUser?.id).get().addOnSuccessListener { result ->
-            if (result.isEmpty){
-                val newUser = User(AuthController.currentUser?.id, AuthController.currentUser?.userEmail, AuthController.currentUser?.displayName)
-                USER_REF.add(newUser)
-            }
-        }
-    }
 
 
      fun getUserPlans(): MutableList<Plan>{
