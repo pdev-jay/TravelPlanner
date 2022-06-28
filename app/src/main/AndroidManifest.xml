@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner_v2">
         <activity
+            android:name=".ckim.ChecklistActivity_CKim"
+            android:exported="false" />
+        <activity
             android:name=".jkim.SearchPlaceActivity_JKim"
             android:exported="false" />
         <activity
