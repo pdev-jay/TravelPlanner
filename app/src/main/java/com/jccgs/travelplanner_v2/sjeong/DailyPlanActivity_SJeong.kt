@@ -50,7 +50,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
     var dayList: ArrayList<Parcelable>? = null
     var stringDayList: MutableList<String> = mutableListOf()
     // 계획
-    var dailyPlan: MutableList<DailyPlan> = mutableListOf<DailyPlan>() // 전체; 데이터 클래스 이름을 DailyPlan으로 바꿔야 할지도
+    var dailyPlan: MutableList<DailyPlan> = mutableListOf<DailyPlan>() // 전체 일정
     var selectDayPlan = mutableListOf<DailyPlan>() // 선택된 날짜 일정
     var selectDay = ""
 
@@ -82,7 +82,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
         if(MapController.selectedPlaceCountryName.isNullOrEmpty()) {
             binding.tvMainPlace.text = "여행 지역"
         }else {
-            binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName}, ${MapController.selectedPlaceCity}"
+            binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName} ${MapController.selectedPlaceCity}"
         }
         binding.tvDate.text = stringDayList.first()
 
