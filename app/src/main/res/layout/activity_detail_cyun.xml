@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/detail_background"
     tools:context=".cyun.DetailActivity_CYun">
 
     <TextView
@@ -15,8 +17,8 @@
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.379"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvLocationTitle"
         app:layout_constraintTop_toTopOf="@+id/edtLocation" />
 
     <TextView
@@ -39,13 +41,13 @@
         android:layout_marginTop="20dp"
         android:background="@null"
         android:ems="10"
+        android:inputType="textNoSuggestions|textVisiblePassword"
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        android:inputType="textNoSuggestions|textVisiblePassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.379"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvLocationTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvLocationTitle" />
 
     <EditText
@@ -114,28 +116,18 @@
         app:layout_constraintTop_toTopOf="@+id/tvCost"
         app:srcCompat="@drawable/check" />
 
-    <ImageView
-        android:id="@+id/ivTitle"
-        android:layout_width="0dp"
-        android:layout_height="197dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background" />
 
     <TextView
         android:id="@+id/tvLocationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="여행지"
+        android:layout_marginTop="20dp"
+        android:text="To."
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDurationTitle"
@@ -163,6 +155,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_detail"
+        android:background="@drawable/shape_detail_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

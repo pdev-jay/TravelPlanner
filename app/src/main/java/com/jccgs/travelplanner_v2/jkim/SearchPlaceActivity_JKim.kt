@@ -215,28 +215,4 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
-//    fun getPlaceInfo(latLng: LatLng){
-//        val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
-//
-//        val specificPlace = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-//        val countryName = specificPlace[0].countryName
-//        val cityName = specificPlace[0].adminArea
-//        val placeName = specificPlace[0].featureName
-//
-////        Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-//        CoroutineScope(Dispatchers.Main).launch {
-////                    mapController.moveCamera(place.latLng)
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-//            mapController.addMark(listOf(latLng))
-//        }
-//        googleMap.cameraPosition.target
-//
-//        MapController.selectedPlaceLatLng = latLng
-//        MapController.selectedPlaceName = place.name
-//        MapController.selectedPlaceCountryName = countryName
-//        MapController.selectedPlaceCity = cityName
-//        MapController.selectedPlaceAddress = specificPlace[0].toString()
-//
-//    }
 }

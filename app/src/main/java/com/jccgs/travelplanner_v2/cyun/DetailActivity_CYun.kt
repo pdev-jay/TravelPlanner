@@ -1,19 +1,26 @@
 package com.jccgs.travelplanner_v2.cyun
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityDetailCyunBinding
+import com.jccgs.travelplanner_v2.jkim.DailyPlan
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.jkim.Plan
 
 class DetailActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityDetailCyunBinding
-    lateinit var customAdapter: CustomAdapter_CYun
+    lateinit var customAdapter: DetailAdapter_CYun
 //    val itemViewData: MutableList<ItemViewData> = mutableListOf<ItemViewData>()
 
     lateinit var selectedPlan: Plan
+    var dailyPlans: MutableList<DailyPlan> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +31,19 @@ class DetailActivity_CYun : AppCompatActivity() {
             selectedPlan = intent.getSerializableExtra("selectedPlan") as Plan
         }
 
+        getDailyPlan(selectedPlan.id.toString())
+
+        binding.tvLocation.text = selectedPlan.mainPlace
+        binding.tvDurationTitle.text = "${selectedPlan.period.first()} ~ ${selectedPlan.period.last()}"
         binding.edtLocation.setText(binding.tvLocation.text)
         binding.edtCost.setText(binding.tvCost.text)
 
 
-        binding.recyclerViewDetail.layoutManager = LinearLayoutManager(this)
 
-//        customAdapter = CustomAdapter_CYun(plans)
-//        binding.recyclerViewDetail.adapter = customAdapter
+        binding.recyclerViewDetail.layoutManager = LinearLayoutManager(this)
+        customAdapter = DetailAdapter_CYun(this, dailyPlans)
+        binding.recyclerViewDetail.adapter = customAdapter
+
 //
 //        val callback = ItemTouchHelperCallback(customAdapter)
 //        val touchHelper = ItemTouchHelper(callback)
@@ -81,4 +93,27 @@ class DetailActivity_CYun : AppCompatActivity() {
         }
     }
 
+    fun getDailyPlan(selectedPlanId: String){
+        FirebaseController.PLAN_REF
+            .document(selectedPlanId)
+            .collection("DailyPlan")
+            .orderBy("date", Query.Direction.ASCENDING)
+            .orderBy("order", Query.Direction.ASCENDING)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty){
+                    for(i in snapshot){
+                        val dailyPlan = i.toObject<DailyPlan>()
+                        dailyPlans.add(dailyPlan)
+                        Log.d("Log_debug", "dailyPlan = ${dailyPlan}")
+                    }
+                }
+                customAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+                Log.d("Log_debug", "dailyPlan = failed : $it")
+
+            }
     }
+
+}
