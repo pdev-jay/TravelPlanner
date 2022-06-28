@@ -5,6 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".cyun.MainActivity_CYun">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#03A9F4"
+            android:background="@android:color/transparent"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +41,7 @@
             android:id="@+id/tvMainTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:text="메인 타이틀"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -47,39 +49,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/btnAdd1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="@color/teal_700"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:adjustViewBounds="false"
+            android:backgroundTint="#34039BE5"
             android:onClick="onClick"
-            android:text="일정 추가"
-            app:layout_constraintBottom_toBottomOf="@+id/btnAdd2"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btnAdd2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/teal_700"
-            android:onClick="onClick"
-            android:text="일정 추가"
-            app:layout_constraintEnd_toStartOf="@+id/btnAdd3"
-            app:layout_constraintStart_toEndOf="@+id/btnAdd1"
+            android:padding="10dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvMainTitle" />
-
-        <Button
-            android:id="@+id/btnAdd3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/teal_700"
-            android:onClick="onClick"
-            android:text="일정 추가"
-            app:layout_constraintBottom_toBottomOf="@+id/btnAdd2"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvAdvertise"
@@ -160,12 +146,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivbackground"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdd2" />
+            app:layout_constraintTop_toBottomOf="@+id/btnAdd1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

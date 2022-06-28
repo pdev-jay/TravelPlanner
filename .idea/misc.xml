@@ -15,10 +15,11 @@
         <entry key="app/src/main/res/drawable/menu.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/shape_itemview_cyun.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/shape_reminder_cyun.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_detail_cyun.xml" value="0.28072916666666664" />
         <entry key="app/src/main/res/layout/activity_intro_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_log_in_cyun.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main_cyun.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main_cyun.xml" value="0.28532608695652173" />
         <entry key="app/src/main/res/layout/activity_sign_up_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/icon_close.xml" value="0.1" />
         <entry key="app/src/main/res/layout/itemview_cyun.xml" value="0.1" />

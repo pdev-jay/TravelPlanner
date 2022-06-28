@@ -87,13 +87,8 @@ class MainActivity_CYun : AppCompatActivity() {
 //                val intent = Intent(this, MainPlaceActivity_SJeong::class.java)
 //                startActivity(intent)
             }
-            R.id.btnAdd2 ->{
-            }
-            R.id.btnAdd3 ->{
-            }
         }
     }
-
 
     fun getPlans(){
         FirebaseController.PLAN_REF.
@@ -112,9 +107,6 @@ class MainActivity_CYun : AppCompatActivity() {
                 Log.d("Log_debug", "error in getPlans : $e")
             }
     }
-
-
-
 
     //signOut
     fun signOut() {
