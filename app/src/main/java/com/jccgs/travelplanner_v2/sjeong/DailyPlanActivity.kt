@@ -1,5 +1,6 @@
 package com.jccgs.travelplanner_v2.sjeong
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
@@ -19,6 +20,7 @@ import java.text.SimpleDateFormat
 import androidx.lifecycle.coroutineScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
+import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -103,6 +105,11 @@ class DailyPlanActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         })
+
+        binding.btnExpenses.setOnClickListener {
+            val intent = Intent(this, ExpensesActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }
