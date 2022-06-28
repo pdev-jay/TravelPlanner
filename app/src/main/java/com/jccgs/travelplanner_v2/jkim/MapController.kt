@@ -1,6 +1,7 @@
 package com.jccgs.travelplanner_v2.jkim
 
 import android.content.Context
+import android.location.Geocoder
 import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,6 +17,7 @@ import com.jccgs.travelplanner_v2.BuildConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.OnMapClickListener,
     GoogleMap.OnPoiClickListener {
@@ -58,6 +60,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
     override fun onMapClick(latLng: LatLng) {
         val newPosition = LatLng(latLng.latitude, latLng.longitude)
         Log.d("Log_debug", "$newPosition")
+
         googleMap.clear()
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(newPosition))
     }
@@ -138,6 +141,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         override fun onCameraIdle() {
             //맵뷰 중앙을 현재 위도 경도로 지정
             selectedPlaceLatLng = googleMap.cameraPosition.target
+
             super.onCameraIdle()
         }
     }
