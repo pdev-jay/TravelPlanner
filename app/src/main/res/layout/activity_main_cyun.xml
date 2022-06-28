@@ -102,8 +102,8 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"
-                    app:srcCompat="@drawable/pill" />
+                    android:elevation="10dp"/>
+<!--                    app:srcCompat="@drawable/pill" />-->
 
                 <ImageView
                     android:id="@+id/ivSamgakdae"
@@ -113,9 +113,8 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"
-
-                    app:srcCompat="@drawable/samgakdae" />
+                    android:elevation="10dp"/>
+<!--                    app:srcCompat="@drawable/samgakdae" />-->
 
                 <ImageView
                     android:id="@+id/ivGodaegi"
@@ -125,9 +124,9 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"
+                    android:elevation="10dp"/>
 
-                    app:srcCompat="@drawable/godaegi" />
+<!--                    app:srcCompat="@drawable/godaegi" />-->
 
                 <ImageView
                     android:id="@+id/ivMask"
@@ -137,9 +136,10 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"
+                    android:elevation="10dp"/>
 
-                    app:srcCompat="@drawable/mask" />
+<!--                    app:srcCompat="@drawable/mask" -->
+                    />
             </LinearLayout>
         </HorizontalScrollView>
 
