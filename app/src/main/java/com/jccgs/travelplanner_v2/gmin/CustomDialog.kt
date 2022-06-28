@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import com.jccgs.travelplanner_v2.databinding.CustomDialogGminBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity
-import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity.Companion.endDate
-import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity.Companion.startDate
 import com.jccgs.travelplanner_v2.sjeong.DateDialog
 
 
