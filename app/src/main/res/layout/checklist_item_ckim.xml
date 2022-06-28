@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=""
+        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintTop_toTopOf="@+id/checkBox"
+        android:inputType="text">
+
+        <requestFocus/>
+
+
+    </EditText>
+
+
+
+    <ImageView
+        android:id="@+id/ivModify"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/edtInput"
+        app:layout_constraintStart_toEndOf="@+id/edtInput"
+        app:layout_constraintTop_toTopOf="@+id/edtInput"
+        app:layout_constraintVertical_bias="0.476"
+        app:srcCompat="@drawable/edit_gmin" />
+
+    <ImageView
+        android:id="@+id/ivDelete"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivModify"
+        app:layout_constraintStart_toEndOf="@+id/ivModify"
+        app:layout_constraintTop_toTopOf="@+id/ivModify"
+        app:srcCompat="@drawable/delete_gmin" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
