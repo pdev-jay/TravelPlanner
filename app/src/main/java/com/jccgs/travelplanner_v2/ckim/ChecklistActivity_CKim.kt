@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityChecklistCkimBinding
+import com.jccgs.travelplanner_v2.sjeong.RecyclerItemDeco
 
 class ChecklistActivity_CKim : AppCompatActivity() {
 
@@ -33,6 +33,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         adapter = ChecklistAdapter_CKim(checklistDataList)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.addItemDecoration(RecyclerItemDeco(this))
 
         //플로팅 액션 버튼 누를 때 이벤트
         binding.btnFAB.setOnClickListener {
@@ -43,10 +44,6 @@ class ChecklistActivity_CKim : AppCompatActivity() {
             //키보드 올리기
             showKeyboard()
         }
-
-        //구분선
-        val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager(this).orientation)
-        binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
     }
 
