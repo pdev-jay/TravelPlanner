@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jccgs.travelplanner_v2.databinding.ItemviewGminBinding
 
 
-class CustomAdapter(val ABitemViewData : MutableList<ItemViewData>): RecyclerView.Adapter<CustomAdapter.CustomViewHolder>(){
+class CustomAdapter(val itemViewData : MutableList<ItemViewData>): RecyclerView.Adapter<CustomAdapter.CustomViewHolder>(){
     lateinit var parentContext: ExpensesActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -20,14 +20,14 @@ class CustomAdapter(val ABitemViewData : MutableList<ItemViewData>): RecyclerVie
         binding.ivEditMin.setOnClickListener{
             val abUpdateDialog = UpdateDialog(parent?.context)
             val position = customViewHolder.adapterPosition
-            val tempItemViewData = ABitemViewData.get(position)
+            val tempItemViewData = itemViewData.get(position)
             abUpdateDialog.ShowUdDialog(tempItemViewData, position)
         }
 
         //아이템뷰 삭제기능
         binding.ivDeleteMin.setOnClickListener {
             val position = customViewHolder.adapterPosition
-            val tempItemViewData = ABitemViewData.get(position)
+            val tempItemViewData = itemViewData.get(position)
             (parent.context as ExpensesActivity)
                 .removeItemViewDataList(tempItemViewData)
         }
@@ -39,14 +39,15 @@ class CustomAdapter(val ABitemViewData : MutableList<ItemViewData>): RecyclerVie
     //CustomViewHolder를 객체변수로 준다
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val binding = (holder as CustomViewHolder).binding
-        binding.tvDateMin.text = ABitemViewData.get(position).tvDate
-        binding.tvContentMin.text = ABitemViewData.get(position).tvContent
-        binding.tvPayMin.text = ABitemViewData.get(position).tvPay.toString()
+
+        binding.tvDateMin.text = itemViewData.get(position).tvDate
+        binding.tvContentMin.text = itemViewData.get(position).tvContent
+        binding.tvPayMin.text = itemViewData.get(position).tvPay.toString()
     }
 
     override fun getItemCount(): Int {
 
-        return ABitemViewData.size
+        return itemViewData.size
     }
 
     class CustomViewHolder(val binding :ItemviewGminBinding) : RecyclerView.ViewHolder(binding.root)

@@ -41,6 +41,7 @@ class CustomDialog(val context: Context){
             val ABitemViewData = ItemViewData(edtDate, edtContent, edtPay)
             (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
             (context as ExpensesActivity).getSum()
+
             dialog.dismiss()
         }
 

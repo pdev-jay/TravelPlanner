@@ -72,7 +72,6 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
-
     fun googleSignIn(){
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

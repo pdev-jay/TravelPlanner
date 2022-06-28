@@ -103,6 +103,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="사용한 날짜"
+        android:focusable="false"
         android:inputType="datetime"
         app:layout_constraintBottom_toBottomOf="@+id/tvDialDate_Min"
         app:layout_constraintEnd_toEndOf="@+id/edtContent_Min"
