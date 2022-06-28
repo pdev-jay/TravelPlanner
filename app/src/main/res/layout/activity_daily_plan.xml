@@ -59,9 +59,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/dayTab"
-        app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="34dp">
 
         <TextView
@@ -105,28 +104,21 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btnExpenses"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="일정" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="체크리스트" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:backgroundTint="#9EC6D8"
             android:text="가계부" />
-    </com.google.android.material.tabs.TabLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
