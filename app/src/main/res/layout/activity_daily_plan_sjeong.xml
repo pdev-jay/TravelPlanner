@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sjeong.DailyPlanActivity">
-
+    tools:context=".sjeong.DailyPlanActivity_SJeong">
     <TextView
         android:id="@+id/tvMainPlace"
         android:layout_width="wrap_content"
@@ -27,6 +26,22 @@
         app:layout_constraintTop_toBottomOf="@+id/tvMainPlace"
         tools:layout_editor_absoluteX="10dp" />
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dayTab"
+        app:layout_constraintTop_toBottomOf="@+id/map">
+
+        <fragment
+            android:id="@+id/search_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/dayTab"
         android:layout_width="match_parent"
@@ -36,25 +51,6 @@
         app:layout_constraintTop_toBottomOf="@+id/map"
         app:tabGravity="center"
         app:tabMode="scrollable" />
-
-    <!--    <HorizontalScrollView-->
-    <!--        android:id="@+id/scrollView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="50dp"-->
-    <!--        android:scrollbars="none"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/map">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:id="@+id/container"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:nestedScrollingEnabled="true"-->
-    <!--            android:orientation="horizontal"-->
-    <!--            android:scrollbars="horizontal" />-->
-    <!--    </HorizontalScrollView>-->
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -108,17 +104,34 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
+            android:id="@+id/btnPlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#9EC6D8"
+            android:text="여행 일정" />
+
+        <Button
             android:id="@+id/btnExpenses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:backgroundTint="#9EC6D8"
             android:text="가계부" />
+
+        <Button
+            android:id="@+id/btnCheckList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#9EC6D8"
+            android:text="체크리스트" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

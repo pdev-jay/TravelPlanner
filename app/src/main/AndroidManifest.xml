@@ -21,7 +21,7 @@
             android:name=".sjeong.CalendarActivity_SJeong"
             android:exported="false" />
         <activity
-            android:name=".sjeong.DailyPlanActivity"
+            android:name=".sjeong.DailyPlanActivity_SJeong"
             android:exported="false" />
         <activity
             android:name=".cyun.DetailActivity_CYun"
