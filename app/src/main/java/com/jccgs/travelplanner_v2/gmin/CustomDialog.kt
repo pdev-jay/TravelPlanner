@@ -37,11 +37,11 @@ class CustomDialog(val context: Context){
         //저장하기 이벤트 처리
         binding.btnDialEnter.setOnClickListener{
             val edtContent = binding.edtContentMin.text.toString()
-            val edtPay = binding.edtPayMin.text.toString()
+            val edtPay = binding.edtPayMin.text.toString().toInt()
             val edtDate = binding.edtDateMin.text.toString()
             val ABitemViewData = ItemViewData(edtDate, edtContent, edtPay)
             (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
-
+            (context as ExpensesActivity).getSum()
             dialog.dismiss()
         }
 

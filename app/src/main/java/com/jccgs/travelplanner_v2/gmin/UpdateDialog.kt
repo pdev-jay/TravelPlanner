@@ -41,7 +41,7 @@ class UpdateDialog(val context: Context){
         //수정 이벤트 처리
         binding.btnUdEnterMin.setOnClickListener{
             val edtUdContent = binding.edtUdContentMin.text.toString()
-            val edtUdPay = binding.edtUdPayMin.text.toString()
+            val edtUdPay = binding.edtUdPayMin.text.toString().toInt()
             val edtUdDate = binding.edtUdDateMin.text.toString()
             val ABitemViewData = ItemViewData(edtUdDate, edtUdContent, edtUdPay)
             (context as ExpensesActivity).updateItemViewDataList(position, ABitemViewData)
