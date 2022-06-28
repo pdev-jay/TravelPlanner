@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner_v2">
         <activity
+            android:name=".cyun.DetailActivity_CYun"
+            android:exported="false" />
+        <activity
             android:name=".cyun.MainActivity_CYun"
             android:exported="false" />
         <activity
@@ -31,13 +34,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
-
     </application>
 
 </manifest>

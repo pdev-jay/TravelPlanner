@@ -1,5 +1,7 @@
 package com.jccgs.travelplanner_v2.jkim
 
+import java.io.Serializable
+
 data class User(var id: String? = "",
                 val userEmail: String? = "",
                 val displayName: String? = "")
@@ -8,7 +10,7 @@ data class User(var id: String? = "",
 data class Plan(val id: String? = "",
                 val mainPlace: String = "",
                 val period: MutableList<String> = mutableListOf(),
-                val users: MutableList<String> = mutableListOf())
+                val users: MutableList<String> = mutableListOf()): Serializable
 
 
 data class DailyPlan(
