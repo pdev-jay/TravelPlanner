@@ -16,6 +16,7 @@ import com.jccgs.travelplanner_v2.databinding.ActivityMainCyunBinding
 import com.jccgs.travelplanner_v2.jkim.AuthController
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.jkim.Plan
+import com.jccgs.travelplanner_v2.jkim.SearchPlaceActivity_JKim
 
 class MainActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityMainCyunBinding
@@ -84,8 +85,8 @@ class MainActivity_CYun : AppCompatActivity() {
         when(view.id){
 
             R.id.btnAdd1 ->{
-//                val intent = Intent(this, MainPlaceActivity_SJeong::class.java)
-//                startActivity(intent)
+                val intent = Intent(this, SearchPlaceActivity_JKim::class.java)
+                startActivity(intent)
             }
         }
     }
