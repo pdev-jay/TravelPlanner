@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/drawable/icon_place_sjeong.xml" value="0.225" />
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/drawable/today_selector.xml" value="0.215" />
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/layout/activity_calendar.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/layout/activity_daily_plan.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/layout/date_dialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/layout/place_dialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/airsu/AndroidStudioProjects/TravelPlanner/app/src/main/res/layout/place_item_sjeong.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/drawable-v24/airplane_ticket_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/icon_close.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable-v24/icon_menu.xml" value="0.1" />
