@@ -1,16 +1,11 @@
 package com.jccgs.travelplanner_v2.cyun
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.plan.ItemTouchHelperCallback
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityDetailCyunBinding
-import com.jccgs.travelplanner_v2.jkim.DailyPlan
-import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.jkim.Plan
 
 class DetailActivity_CYun : AppCompatActivity() {

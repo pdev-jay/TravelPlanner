@@ -1,4 +1,4 @@
-package com.example.plan
+package com.jccgs.travelplanner_v2.cyun
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

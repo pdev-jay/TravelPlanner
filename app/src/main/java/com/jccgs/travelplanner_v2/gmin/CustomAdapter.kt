@@ -1,10 +1,9 @@
-package com.example.accountbook.gmin
+package com.jccgs.travelplanner_v2.gmin
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jccgs.travelplanner_v2.databinding.ItemviewGminBinding
-import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 
 
 class CustomAdapter(val ABitemViewData : MutableList<ItemViewData>): RecyclerView.Adapter<CustomAdapter.CustomViewHolder>(){

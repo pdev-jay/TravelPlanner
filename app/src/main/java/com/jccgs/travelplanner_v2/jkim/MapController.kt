@@ -98,8 +98,11 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         for (i in locations) {
             val latLng = LatLng(i.latitude, i.longitude)
 
-            val clusterItem = Cluster(latLng.latitude, latLng.longitude, "Title $i", "Snippet $i")
+            val geocoder = Geocoder(context)
+            val place = geocoder.getFromLocation(i.latitude, i.longitude, 1)
 
+
+            val clusterItem = Cluster(latLng.latitude, latLng.longitude, "$selectedPlaceName", "$selectedPlaceAddress")
             clusterManager.addItem(clusterItem)
             bound.include(latLng)
         }
