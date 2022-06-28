@@ -21,7 +21,7 @@ class CalendarActivity_SJeong : AppCompatActivity() {
 
         val calendarView = binding.calendarView
 
-        lateinit var dayList: ArrayList<CalendarDay>
+        var dayList: ArrayList<CalendarDay> = arrayListOf()
         var term = 0
         // 여행 시작/끝 날짜
         var startDate: Calendar? = null
@@ -61,10 +61,15 @@ class CalendarActivity_SJeong : AppCompatActivity() {
 
         // 날짜 선택
         calendarView.setOnDateChangedListener { widget, date, selected ->
-            startDate = date.calendar
-            endDate = date.calendar
-            dayList = arrayListOf()
-            dayList.add(date)
+            if(!selected) {
+                dayList.clear()
+                startDate = null
+                endDate = null
+            }else {
+                startDate = date.calendar
+                endDate = date.calendar
+                dayList.add(date)
+            }
             term = dayList.size
         }
 
@@ -80,6 +85,13 @@ class CalendarActivity_SJeong : AppCompatActivity() {
         // 확인 버튼
         binding.btnOk.setOnClickListener {
             val intent = Intent(this, DailyPlanActivity::class.java)
+            // 날짜를 선택하지 않았을 경우
+            if(dayList.isNullOrEmpty()) {
+                dayList.add(CalendarDay.today())
+                startDate = CalendarDay.today().calendar
+                endDate = CalendarDay.today().calendar
+                term = dayList.size
+            }
             intent.putExtra("dayList", dayList)
             intent.putExtra("startDate", startDate)
             intent.putExtra("endDate", endDate)
