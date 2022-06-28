@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
@@ -22,19 +23,30 @@ import com.jccgs.travelplanner_v2.jkim.User
 class LogInActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityLogInCyunBinding
     lateinit var requestLaucher: ActivityResultLauncher<Intent>
+    var googleSignInClient: GoogleSignInClient? = null
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         binding = ActivityLogInCyunBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loggedIn()
         //콜백함수(구글로그인을 할때 ->인증-> 진짜,가짜)
         requestLaucher= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
             if (result.resultCode == RESULT_OK){
                 googleSignInSuccess(result.data)
             }
         }
+    }
+
+    override fun onStart() {
+
+//        if (GoogleSignIn.getLastSignedInAccount(this) != null){
+//            fetchUser()
+//        }
+        if (AuthController.auth.currentUser != null){
+            fetchUser()
+        }
+        super.onStart()
     }
 
 
@@ -68,9 +80,9 @@ class LogInActivity_CYun : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        AuthController.googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        val signInIntent = AuthController.googleSignInClient?.signInIntent
+        val signInIntent = googleSignInClient?.signInIntent
 
         requestLaucher.launch(signInIntent)
     }
@@ -91,16 +103,20 @@ class LogInActivity_CYun : AppCompatActivity() {
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         AuthController.auth?.signInWithCredential(credential)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    AuthController.currentUser = User(AuthController.auth.currentUser?.uid, AuthController.auth.currentUser?.email, AuthController.auth.currentUser?.displayName)
-                    FirebaseController.addUser()
-                    fetchUser()
-                } else {
-                    // If sign in fails, display a message to the user.
-                }
+            .addOnSuccessListener { result ->
+                AuthController.currentUser = User(result.user?.uid, result.user?.email, result.user?.displayName)
+                addUser()
             }
+//            ?.addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    // Sign in success, update UI with the signed-in user's information
+//                    AuthController.currentUser = User(AuthController.auth.currentUser?.uid, AuthController.auth.currentUser?.email, AuthController.auth.currentUser?.displayName)
+//                    FirebaseController.addUser()
+//                    fetchUser()
+//                } else {
+//                    // If sign in fails, display a message to the user.
+//                }
+//            }
     }
 
     fun signInWithEmail(userEmail: String, userPassword: String) {
@@ -124,7 +140,6 @@ class LogInActivity_CYun : AppCompatActivity() {
                 AuthController.currentUser = task.result.toObjects<User>().first()
                 Log.d("Log_debug", "${AuthController.currentUser?.displayName}")
                 val intent = Intent(this@LogInActivity_CYun, MainActivity_CYun::class.java)
-
                 startActivity(intent)
                 finish()
             }
@@ -132,9 +147,22 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
+    fun addUser(){
+        FirebaseController.USER_REF.whereEqualTo("id", AuthController.currentUser?.id).get().addOnSuccessListener { result ->
+            if (result.isEmpty){
+                val newUser = User(AuthController.currentUser?.id, AuthController.currentUser?.userEmail, AuthController.currentUser?.displayName)
+                FirebaseController.USER_REF.add(newUser).addOnSuccessListener {
+                    fetchUser()
+                }
+            } else if (!result.isEmpty){
+                    fetchUser()
+            }
+        }
+    }
+
     fun loggedIn(){
         val user = AuthController.auth.currentUser
-        if( user!= null){
+        if(user != null){
             fetchUser()
         }
     }

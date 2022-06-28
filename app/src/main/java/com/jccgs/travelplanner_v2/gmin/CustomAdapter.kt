@@ -42,7 +42,7 @@ class CustomAdapter(val ABitemViewData : MutableList<ItemViewData>): RecyclerVie
         val binding = (holder as CustomViewHolder).binding
         binding.tvDateMin.text = ABitemViewData.get(position).tvDate
         binding.tvContentMin.text = ABitemViewData.get(position).tvContent
-        binding.tvPayMin.text = ABitemViewData.get(position).tvPay
+        binding.tvPayMin.text = ABitemViewData.get(position).tvPay.toString()
     }
 
     override fun getItemCount(): Int {

@@ -52,7 +52,7 @@ class SignUpActivity_CYun : AppCompatActivity() {
                 if (task.isSuccessful) {
 
                     AuthController.currentUser = User(AuthController.auth.currentUser?.uid, AuthController.auth.currentUser?.email, displayName)
-                    FirebaseController.addUser()
+                    FirebaseController.USER_REF.add(AuthController.currentUser!!)
 
                     AuthController.auth.currentUser?.sendEmailVerification()
                         ?.addOnCompleteListener {

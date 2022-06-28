@@ -38,6 +38,16 @@ class ExpensesActivity : AppCompatActivity() {
             ABCustomDialog.ShowDialog()
         }
 
+
+    }
+
+    fun getSum(){
+        var sum = 0
+
+        for (i in ABitemViewDataList){
+            sum += i.tvPay
+        }
+        binding.tvTotalPayMin.text = sum.toString()
     }
 
     fun addItemViewDataList(ABitemViewData: ItemViewData) {
