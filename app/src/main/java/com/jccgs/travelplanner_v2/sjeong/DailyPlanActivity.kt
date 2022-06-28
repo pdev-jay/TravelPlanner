@@ -17,6 +17,11 @@ import com.jccgs.travelplanner_v2.jkim.MapController
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import androidx.lifecycle.coroutineScope
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class DailyPlanActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -111,6 +116,20 @@ class DailyPlanActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(p0: GoogleMap) {
-        TODO("Not yet implemented")
+        mapController = MapController(this, googleMap)
+
+        googleMap.setOnCameraIdleListener(mapController.clusterManager)
+        googleMap.setOnPoiClickListener(mapController)
+        googleMap.setOnMarkerClickListener(mapController.clusterManager)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            MapController.selectedPlaceLatLng?.let { moveCamera(it) }
+        }
     }
+
+    fun moveCamera(latLng: LatLng){
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        mapController.addMark(listOf(latLng))
+    }
+
 }
