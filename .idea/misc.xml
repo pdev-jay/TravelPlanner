@@ -3,6 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/drawable/item_view_shape_gmin.xml" value="0.1195" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/drawable/shape_itemview_cyun.xml" value="0.161" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/drawable/shape_itemview_gmin.xml" value="0.161" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/drawable/shape_reminder_cyun.xml" value="0.1195" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/ab_item_view.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_calendar.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_daily_plan.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_detail_cyun.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_expenses.xml" value="0.1640625" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_intro_cyun.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_main_cyun.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/custom_dialog_gmin.xml" value="0.2" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/date_dialog.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/itemview_gmin.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/update_dialog_gmin.xml" value="0.22395833333333334" />
         <entry key="app/src/main/res/drawable-v24/airplane_ticket_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/icon_close.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable-v24/icon_menu.xml" value="0.1" />
@@ -15,17 +30,11 @@
         <entry key="app/src/main/res/drawable/menu.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/shape_itemview_cyun.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/shape_reminder_cyun.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_calendar.xml" value="0.28532608695652173" />
-        <entry key="app/src/main/res/layout/activity_daily_plan.xml" value="0.28532608695652173" />
-        <entry key="app/src/main/res/layout/activity_detail_cyun.xml" value="0.28072916666666664" />
-        <entry key="app/src/main/res/layout/activity_expenses.xml" value="0.5483522542317708" />
         <entry key="app/src/main/res/layout/activity_intro_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_log_in_cyun.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main_cyun.xml" value="0.28532608695652173" />
-        <entry key="app/src/main/res/layout/activity_search_place_jkim.xml" value="0.28532608695652173" />
+        <entry key="app/src/main/res/layout/activity_main_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up_cyun.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/custom_dialog_gmin.xml" value="0.28532608695652173" />
         <entry key="app/src/main/res/layout/icon_close.xml" value="0.1" />
         <entry key="app/src/main/res/layout/itemview_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/nav_view_cyun.xml" value="0.1" />
