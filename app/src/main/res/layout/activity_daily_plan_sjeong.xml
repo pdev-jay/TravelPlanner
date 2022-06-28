@@ -95,6 +95,14 @@
             android:text="여행 일정" />
 
         <Button
+            android:id="@+id/btnCheckList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#9EC6D8"
+            android:text="체크리스트" />
+
+        <Button
             android:id="@+id/btnExpenses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,13 +110,6 @@
             android:backgroundTint="#9EC6D8"
             android:text="가계부" />
 
-        <Button
-            android:id="@+id/btnCheckList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#9EC6D8"
-            android:text="체크리스트" />
     </LinearLayout>
 
     <Button

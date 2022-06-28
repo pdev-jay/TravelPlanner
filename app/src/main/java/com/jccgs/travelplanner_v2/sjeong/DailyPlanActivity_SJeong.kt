@@ -26,6 +26,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import kotlinx.coroutines.CoroutineScope
@@ -127,14 +128,18 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
             placeAdapter.notifyDataSetChanged()
         }
 
+        binding.btnCheckList.setOnClickListener {
+            startActivity(Intent(this, ChecklistActivity_CKim::class.java))
+        }
+
+        binding.btnExpenses.setOnClickListener {
+            startActivity(Intent(this, ExpensesActivity::class.java))
+        }
+
 //        binding.btnPlaceDel.setOnClickListener {
 //
 //        }
 
-        binding.btnExpenses.setOnClickListener {
-            val intent = Intent(this, ExpensesActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     // 탭 생성
