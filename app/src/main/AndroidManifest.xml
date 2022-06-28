@@ -18,6 +18,9 @@
             android:name=".cyun.DetailActivity_CYun"
             android:exported="false" />
         <activity
+            android:name=".gmin.ExpensesActivity"
+            android:exported="false" />
+        <activity
             android:name=".cyun.MainActivity_CYun"
             android:exported="false" />
         <activity
