@@ -40,6 +40,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         var selectedPlaceLatLng: LatLng? = null
         var selectedPlaceCity: String? = ""
         var selectedPlacePhotos: List<PhotoMetadata>? = listOf<PhotoMetadata>()
+        var selectedPlaceShortName: String? = ""
     }
 
     var clusterManager: ClusterManager<Cluster>

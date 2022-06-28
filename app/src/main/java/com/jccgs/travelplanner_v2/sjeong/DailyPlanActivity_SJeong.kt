@@ -26,6 +26,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import kotlinx.coroutines.CoroutineScope
@@ -98,6 +99,9 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
         placeAdapter = DailyPlanAdapter_SJeong(selectDayPlan)
         binding.recyclerView.adapter = placeAdapter
 
+        // 검색
+        search()
+
         // 날짜 탭으로 화면 전환
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             // 선택될 때
@@ -121,20 +125,21 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
         })
 
         binding.btnPlaceAdd.setOnClickListener {
-            tabLayout.visibility = View.INVISIBLE
-            // 검색 동작
-            search()
             placeAdapter.notifyDataSetChanged()
         }
 
-        binding.btnPlaceDel.setOnClickListener {
-
+        binding.btnCheckList.setOnClickListener {
+            startActivity(Intent(this, ChecklistActivity_CKim::class.java))
         }
 
         binding.btnExpenses.setOnClickListener {
-            val intent = Intent(this, ExpensesActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ExpensesActivity::class.java))
         }
+
+//        binding.btnPlaceDel.setOnClickListener {
+//
+//        }
+
     }
 
     // 탭 생성
@@ -151,11 +156,10 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
         selectDayPlan.addAll(dailyPlan.filter { it.date.equals(selectDay) })
     }
 
-    // 장소 추가 버튼 이벤트
+    // 검색
     fun search() {
-        binding.frameLayout.visibility = View.VISIBLE
-        // 검색
         val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
+        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
         autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
@@ -174,19 +178,18 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
                 MapController.selectedPlaceLatLng = place.latLng
                 MapController.selectedPlaceName = place.name
                 MapController.selectedPlaceAddress = place.address
-
-                val newDailyPlan = DailyPlan(null, selectDay, MapController.selectedPlaceName!!, MapController.selectedPlaceAddress!!, MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
-                dailyPlan.add(newDailyPlan)
-                selectDayPlan.add(newDailyPlan)
-
-                binding.frameLayout.visibility = View.GONE
-                tabLayout.visibility = View.VISIBLE
             }
 
             override fun onError(status: Status) {
                 Log.i("log", "An error occurred: $status")
             }
         })
+    }
+
+    fun addPlace() {
+        val newDailyPlan = DailyPlan(null, selectDay, MapController.selectedPlaceName!!, MapController.selectedPlaceAddress!!, MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+        dailyPlan.add(newDailyPlan)
+        selectDayPlan.add(newDailyPlan)
     }
 
     // 구글 맵
