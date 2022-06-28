@@ -109,11 +109,10 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
                 val specificPlace = geocoder.getFromLocation(currentLocation!!.latitude, currentLocation!!.longitude, 1)
                 MapController.selectedPlaceLatLng = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
-
-                MapController.selectedPlaceName = null
-                MapController.selectedPlaceCountryName = "여행 지역"
-                MapController.selectedPlaceCity = ""
-                MapController.selectedPlaceAddress = null
+                MapController.selectedPlaceName = specificPlace.first().featureName
+                MapController.selectedPlaceCountryName = specificPlace.first().countryName
+                MapController.selectedPlaceCity = specificPlace.first().adminArea
+                MapController.selectedPlaceAddress = specificPlace.first().getAddressLine(0)
             }
 
             Log.d("Log_debug", "${MapController.selectedPlaceAddress}")
@@ -158,7 +157,8 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                     Log.d("Log_debug", "$location")
                     if (location != null) {
                         CoroutineScope(Dispatchers.Main).launch {
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+//                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
                             currentLocation = location
                             Log.d("Log_debug", "$location")
                         }
@@ -222,28 +222,4 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-
-//    fun getPlaceInfo(latLng: LatLng){
-//        val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
-//
-//        val specificPlace = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-//        val countryName = specificPlace[0].countryName
-//        val cityName = specificPlace[0].adminArea
-//        val placeName = specificPlace[0].featureName
-//
-////        Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-//        CoroutineScope(Dispatchers.Main).launch {
-////                    mapController.moveCamera(place.latLng)
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-//            mapController.addMark(listOf(latLng))
-//        }
-//        googleMap.cameraPosition.target
-//
-//        MapController.selectedPlaceLatLng = latLng
-//        MapController.selectedPlaceName = place.name
-//        MapController.selectedPlaceCountryName = countryName
-//        MapController.selectedPlaceCity = cityName
-//        MapController.selectedPlaceAddress = specificPlace[0].toString()
-//
-//    }
 }

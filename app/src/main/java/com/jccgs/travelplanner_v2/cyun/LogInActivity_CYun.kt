@@ -39,10 +39,6 @@ class LogInActivity_CYun : AppCompatActivity() {
     }
 
     override fun onStart() {
-
-//        if (GoogleSignIn.getLastSignedInAccount(this) != null){
-//            fetchUser()
-//        }
         if (AuthController.auth.currentUser != null){
             fetchUser()
         }
@@ -150,19 +146,13 @@ class LogInActivity_CYun : AppCompatActivity() {
         FirebaseController.USER_REF.whereEqualTo("id", AuthController.currentUser?.id).get().addOnSuccessListener { result ->
             if (result.isEmpty){
                 val newUser = User(AuthController.currentUser?.id, AuthController.currentUser?.userEmail, AuthController.currentUser?.displayName)
-                FirebaseController.USER_REF.add(newUser).addOnSuccessListener {
+                FirebaseController.USER_REF.document(newUser.id.toString()).set(newUser).addOnSuccessListener {
                     fetchUser()
                 }
             } else if (!result.isEmpty){
-                    fetchUser()
-            }
-        }
-    }
 
-    fun loggedIn(){
-        val user = AuthController.auth.currentUser
-        if(user != null){
-            fetchUser()
+                fetchUser()
+            }
         }
     }
 }

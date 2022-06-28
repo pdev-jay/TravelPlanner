@@ -1,6 +1,5 @@
 package com.jccgs.travelplanner_v2.gmin
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

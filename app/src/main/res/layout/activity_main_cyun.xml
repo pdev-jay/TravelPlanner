@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/main_background"
     tools:context=".cyun.MainActivity_CYun">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,7 +35,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:srcCompat="@drawable/background" />
+            app:srcCompat="@drawable/main_background" />
 
         <TextView
             android:id="@+id/tvMainTitle"
@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="메인 타이틀"
+            android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -102,8 +103,8 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"/>
-<!--                    app:srcCompat="@drawable/pill" />-->
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/pill" />
 
                 <ImageView
                     android:id="@+id/ivSamgakdae"
@@ -113,8 +114,9 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"/>
-<!--                    app:srcCompat="@drawable/samgakdae" />-->
+                    android:elevation="10dp"
+
+                    app:srcCompat="@drawable/samgakdae" />
 
                 <ImageView
                     android:id="@+id/ivGodaegi"
@@ -124,9 +126,9 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"/>
+                    android:elevation="10dp"
 
-<!--                    app:srcCompat="@drawable/godaegi" />-->
+                    app:srcCompat="@drawable/godaegi" />
 
                 <ImageView
                     android:id="@+id/ivMask"
@@ -136,10 +138,9 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
-                    android:elevation="10dp"/>
+                    android:elevation="10dp"
 
-<!--                    app:srcCompat="@drawable/mask" -->
-                    />
+                    app:srcCompat="@drawable/mask" />
             </LinearLayout>
         </HorizontalScrollView>
 
