@@ -66,7 +66,7 @@ class MainActivity_CYun : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.nav_menu,menu)
+        inflater.inflate(R.menu.nav_menu_ckim,menu)
 
         return super.onCreateOptionsMenu(menu)
 
