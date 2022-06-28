@@ -8,8 +8,12 @@
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/drawable/shape_itemview_gmin.xml" value="0.161" />
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/drawable/shape_reminder_cyun.xml" value="0.1195" />
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/ab_item_view.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_calendar.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_daily_plan.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_detail_cyun.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_expenses.xml" value="0.1640625" />
-        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/custom_dialog_gmin.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/activity_main_cyun.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/custom_dialog_gmin.xml" value="0.536" />
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/date_dialog.xml" value="0.22395833333333334" />
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/itemview_gmin.xml" value="0.22395833333333334" />
         <entry key="..\:/Users/alsrl/AndroidStudioProjects/MyApplication/TravelPlanner/app/src/main/res/layout/update_dialog_gmin.xml" value="0.22395833333333334" />
