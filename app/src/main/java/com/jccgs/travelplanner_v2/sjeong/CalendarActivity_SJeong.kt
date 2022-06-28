@@ -84,7 +84,7 @@ class CalendarActivity_SJeong : AppCompatActivity() {
 
         // 확인 버튼
         binding.btnOk.setOnClickListener {
-            val intent = Intent(this, DailyPlanActivity::class.java)
+            val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
             // 날짜를 선택하지 않았을 경우
             if(dayList.isNullOrEmpty()) {
                 dayList.add(CalendarDay.today())
