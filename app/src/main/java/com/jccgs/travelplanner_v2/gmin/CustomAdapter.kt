@@ -40,6 +40,7 @@ class CustomAdapter(val itemViewData : MutableList<ItemViewData>): RecyclerView.
     //CustomViewHolder를 객체변수로 준다
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val binding = (holder as CustomViewHolder).binding
+
         binding.tvDateMin.text = itemViewData.get(position).tvDate
         binding.tvContentMin.text = itemViewData.get(position).tvContent
         binding.tvPayMin.text = itemViewData.get(position).tvPay.toString()

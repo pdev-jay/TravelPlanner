@@ -42,7 +42,7 @@ class ExpensesActivity : AppCompatActivity() {
     fun getSum(){
         var sum = 0
 
-        for ( i in itemViewDataList){
+        for (i in itemViewDataList){
             sum += i.tvPay
         }
 
