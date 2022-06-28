@@ -26,22 +26,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvMainPlace"
         tools:layout_editor_absoluteX="10dp" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/dayTab"
-        app:layout_constraintTop_toBottomOf="@+id/map">
-
-        <fragment
-            android:id="@+id/search_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </FrameLayout>
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/dayTab"
         android:layout_width="match_parent"
@@ -64,31 +48,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="날짜"
             android:textColor="#000000"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/btnPlaceAdd"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnPlaceAdd" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnPlaceAdd"
-            android:layout_width="wrap_content"
+        <fragment
+            android:id="@+id/search_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:backgroundTint="#9EC6D8"
-            android:text="장소 추가"
-            app:layout_constraintEnd_toStartOf="@+id/btnPlaceDel"
-            app:layout_constraintTop_toTopOf="@+id/btnPlaceDel" />
-
-        <Button
-            android:id="@+id/btnPlaceDel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#9EC6D8"
-            android:text="장소 삭제"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvDate"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -96,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnPlaceDel" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -133,5 +110,19 @@
             android:backgroundTint="#9EC6D8"
             android:text="체크리스트" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnPlaceAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#9EC6D8"
+        android:text="장소 추가"
+        app:layout_constraintBottom_toTopOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toEndOf="@+id/tvMainPlace"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
