@@ -15,10 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner_v2">
         <activity
-            android:name=".sjeong.DailyPlanActivity"
+            android:name=".jkim.SearchPlaceActivity_JKim"
             android:exported="false" />
         <activity
             android:name=".sjeong.CalendarActivity_SJeong"
+            android:exported="false" />
+        <activity
+            android:name=".sjeong.DailyPlanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cyun.DetailActivity_CYun"
             android:exported="false" />
         <activity
             android:name=".cyun.MainActivity_CYun"
