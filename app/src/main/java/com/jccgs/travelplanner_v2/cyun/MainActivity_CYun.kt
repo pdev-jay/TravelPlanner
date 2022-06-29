@@ -46,7 +46,6 @@ class MainActivity_CYun : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.icon_menu)
 
 //        makeItemViewDataList()
-        getPlans()
 
         val layoutManager = GridLayoutManager(this,1, GridLayoutManager.HORIZONTAL, false)
         binding.recyclerView.layoutManager = layoutManager
@@ -67,6 +66,12 @@ class MainActivity_CYun : AppCompatActivity() {
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
         Log.d("Log_debug", "${AuthController.currentUser?.displayName}")
 
+    }
+
+    override fun onStart() {
+        getPlans()
+        customAdapter.notifyDataSetChanged()
+        super.onStart()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

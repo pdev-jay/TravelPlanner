@@ -1,5 +1,6 @@
 package com.jccgs.travelplanner_v2.sjeong
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,15 +29,18 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.maps.android.clustering.ClusterManager
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
+import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
+class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     companion object {
         lateinit var startDate: Calendar
         lateinit var endDate: Calendar
@@ -55,6 +61,9 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
     var selectDayPlan = mutableListOf<DailyPlan>() // 선택된 날짜 일정
     var selectDay = ""
 
+    var documentId: String? = null
+    var order = 0
+
     // 리사이클러뷰 어댑터
     lateinit var placeAdapter: DailyPlanAdapter_SJeong
 
@@ -70,14 +79,19 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
                 stringDayList.add(date)
             }
         }
+
         // 시작&끝 날짜
         startDate = intent.getSerializableExtra("startDate") as Calendar
         endDate = intent.getSerializableExtra("endDate") as Calendar
 
+        if (intent.hasExtra("documentId")){
+            documentId = intent.getStringExtra("documentId")
+        }
         // 날짜 탭 생성
         for(num in 1..stringDayList.size) {
             createTab(num)
         }
+
 
         // 여행 지역을 선택하지 않았을 경우
         if(MapController.selectedPlaceCountryName.isNullOrEmpty()) {
@@ -86,10 +100,11 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
             binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName} ${MapController.selectedPlaceCity}"
         }
         binding.tvDate.text = stringDayList.first()
+        selectDay = stringDayList.first()
 
         // 지도
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         lifecycle.coroutineScope.launchWhenCreated {
+            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
             googleMap = mapFragment.awaitMap()
             mapFragment.getMapAsync(this@DailyPlanActivity_SJeong)
         }
@@ -190,6 +205,30 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
         val newDailyPlan = DailyPlan(null, selectDay, MapController.selectedPlaceName!!, MapController.selectedPlaceAddress!!, MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
         dailyPlan.add(newDailyPlan)
         selectDayPlan.add(newDailyPlan)
+        placeAdapter.notifyDataSetChanged()
+    }
+
+    override fun onBackPressed() {
+         AlertDialog.Builder(this).apply {
+             setTitle("알림")
+             setIcon(R.drawable.ic_baseline_info_24)
+             setMessage("""메인 화면으로 돌아가시겠습니까?
+                 |*현재 저장된 정보가 삭제됩니다.""".trimMargin())
+             setPositiveButton("확인", { _, _ ->
+                 deleteCurrentPlan()
+             })
+             setNegativeButton("취소", null)
+             show()
+         }
+//        super.onBackPressed()
+    }
+
+    fun deleteCurrentPlan(){
+        documentId?.let { FirebaseController.PLAN_REF.document(it).delete().addOnSuccessListener {
+            val intent = Intent(this@DailyPlanActivity_SJeong, MainActivity_CYun::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        } }
     }
 
     // 구글 맵
@@ -203,6 +242,25 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback {
         CoroutineScope(Dispatchers.Main).launch {
             MapController.selectedPlaceLatLng?.let { moveCamera(it) }
         }
+
+        mapController.clusterManager.setOnClusterItemInfoWindowLongClickListener {
+            //long click시 이벤트 발생
+            Toast.makeText(this, "cluste info window long click", Toast.LENGTH_SHORT).show()
+            Log.d("Log_debug", "cluste info window long click")
+            val newDailyPlan = DailyPlan(order++, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+            documentId?.let { documentId ->
+                FirebaseController
+                .PLAN_REF
+                .document(documentId)
+                .collection("DailyPlan")
+                .add(newDailyPlan)
+                    .addOnSuccessListener {
+                        addPlace()
+                    }
+            }
+            true
+        }
+
     }
 
     fun moveCamera(latLng: LatLng){
