@@ -19,7 +19,7 @@ class CustomAdapter(val itemViewData : MutableList<Expenses>): RecyclerView.Adap
 
         //아이템뷰 수정기능
         binding.ivEditMin.setOnClickListener{
-            val abUpdateDialog = UpdateDialog(parent?.context)
+            val abUpdateDialog = UpdateDialog(parentContext)
             val position = customViewHolder.adapterPosition
             val tempItemViewData = itemViewData.get(position)
             abUpdateDialog.ShowUdDialog(tempItemViewData, position)
