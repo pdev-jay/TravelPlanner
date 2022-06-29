@@ -8,24 +8,33 @@ import android.text.style.StyleSpan
 import android.util.Log
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityCalendarBinding
+import com.jccgs.travelplanner_v2.jkim.AuthController
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.jkim.MapController
+import com.jccgs.travelplanner_v2.jkim.Plan
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
+import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarActivity_SJeong : AppCompatActivity() {
     val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
+
+    var dayList: ArrayList<CalendarDay> = arrayListOf()
+    var term = 0
+    // 여행 시작/끝 날짜
+    var startDate: Calendar? = null
+    var endDate: Calendar? = null
+
+    var documentId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         val calendarView = binding.calendarView
 
-        var dayList: ArrayList<CalendarDay> = arrayListOf()
-        var term = 0
-        // 여행 시작/끝 날짜
-        var startDate: Calendar? = null
-        var endDate: Calendar? = null
 
         // 달력을 현재 날짜로 설정
         var calendar = Calendar.getInstance()
@@ -84,23 +93,43 @@ class CalendarActivity_SJeong : AppCompatActivity() {
 
         // 확인 버튼
         binding.btnOk.setOnClickListener {
-            val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
-            // 날짜를 선택하지 않았을 경우
-            if(dayList.isNullOrEmpty()) {
-                dayList.add(CalendarDay.today())
-                startDate = CalendarDay.today().calendar
-                endDate = CalendarDay.today().calendar
-                term = dayList.size
-            }
-            intent.putExtra("dayList", dayList)
-            intent.putExtra("startDate", startDate)
-            intent.putExtra("endDate", endDate)
-            intent.putExtra("term", term)
-            startActivity(intent)
+           savePlan()
         }
         // 돌아가기 버튼
         binding.btnBack.setOnClickListener {
             finish()
+        }
+    }
+
+    fun savePlan(){
+        val stringDayList = mutableListOf<String>()
+        if(!dayList.isNullOrEmpty()) {
+            for (i in dayList!!) {
+                val date = SimpleDateFormat("yyyy-MM-dd").format((i as CalendarDay).date)
+                stringDayList.add(date)
+            }
+        }
+
+        val newPlan = Plan(null, "${MapController.selectedPlaceCountryName}, ${MapController.selectedPlaceCity}", stringDayList, mutableListOf(AuthController.currentUser?.id.toString()))
+        FirebaseController.PLAN_REF.add(newPlan).addOnSuccessListener { docRef ->
+            documentId = docRef.id
+            FirebaseController.PLAN_REF.document(docRef.id).update("id", docRef.id)
+                .addOnSuccessListener {
+                    val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
+                    // 날짜를 선택하지 않았을 경우
+                    if(dayList.isNullOrEmpty()) {
+                        dayList.add(CalendarDay.today())
+                        startDate = CalendarDay.today().calendar
+                        endDate = CalendarDay.today().calendar
+                        term = dayList.size
+                    }
+                    intent.putExtra("documentId", documentId)
+                    intent.putExtra("dayList", dayList)
+                    intent.putExtra("startDate", startDate)
+                    intent.putExtra("endDate", endDate)
+                    intent.putExtra("term", term)
+                    startActivity(intent)
+                }
         }
     }
 }

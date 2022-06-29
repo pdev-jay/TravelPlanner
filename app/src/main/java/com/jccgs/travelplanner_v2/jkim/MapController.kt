@@ -148,5 +148,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
 
             super.onCameraIdle()
         }
+
+
     }
 }
