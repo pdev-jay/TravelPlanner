@@ -96,10 +96,10 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         })
 
         // 지도
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
 
         lifecycle.coroutineScope.launchWhenCreated {
+            val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
             googleMap = mapFragment.awaitMap()
             mapFragment.getMapAsync(this@SearchPlaceActivity_JKim)
         }
