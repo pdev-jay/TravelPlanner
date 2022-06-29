@@ -9,6 +9,7 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:checked="false"
@@ -18,30 +19,32 @@
 
     <EditText
         android:id="@+id/edtInput"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint=""
         android:imeOptions="actionDone"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="@+id/checkBox"
+        app:layout_constraintEnd_toStartOf="@+id/ivModify"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toTopOf="@+id/checkBox"
-        android:inputType="text">
+        app:layout_constraintTop_toTopOf="@+id/checkBox">
 
-        <requestFocus/>
+        <requestFocus />
 
 
     </EditText>
-
 
 
     <ImageView
         android:id="@+id/ivModify"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/edtInput"
-        app:layout_constraintStart_toEndOf="@+id/edtInput"
+        app:layout_constraintEnd_toStartOf="@+id/ivDelete"
         app:layout_constraintTop_toTopOf="@+id/edtInput"
         app:layout_constraintVertical_bias="0.476"
         app:srcCompat="@drawable/edit_gmin" />
@@ -50,9 +53,9 @@
         android:id="@+id/ivDelete"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/ivModify"
-        app:layout_constraintStart_toEndOf="@+id/ivModify"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ivModify"
         app:srcCompat="@drawable/delete_gmin" />
 
