@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/buttomBtnLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPlanAc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:height="58dip"
+        android:background="@drawable/buttom_btn_shape_sjeong"
+        android:drawableTop="@drawable/btn_icon_plan_sjeong"
+        android:outlineProvider="none"
+        android:text="여행 일정" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/buttom_btn_shape_sjeong"
+        android:drawableTop="@drawable/btn_icon_checklist_sjeong"
+        android:outlineProvider="none"
+        android:text="체크리스트" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/buttom_btn_shape_sjeong"
+        android:drawableTop="@drawable/btn_icon_expenses_sjeong"
+        android:outlineProvider="none"
+        android:text="여행 경비" />
+
+</LinearLayout>
