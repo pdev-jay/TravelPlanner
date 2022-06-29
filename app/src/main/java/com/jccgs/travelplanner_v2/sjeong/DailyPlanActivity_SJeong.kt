@@ -1,14 +1,15 @@
 package com.jccgs.travelplanner_v2.sjeong
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.View
+import android.view.Gravity
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -76,7 +77,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         dayList = intent.getParcelableArrayListExtra("dayList")
         if(!dayList.isNullOrEmpty()) {
             for (i in dayList!!) {
-                val date = SimpleDateFormat("yyyy-MM-dd").format((i as CalendarDay).date)
+                val date = SimpleDateFormat("MM/dd").format((i as CalendarDay).date)
                 stringDayList.add(date)
             }
         }
@@ -90,7 +91,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         }
         // 날짜 탭 생성
         for(num in 1..stringDayList.size) {
-            createTab(num)
+            createTab(num, stringDayList[num-1])
         }
 
         // 여행 지역을 선택하지 않았을 경우
@@ -99,7 +100,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         }else {
             binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName} ${MapController.selectedPlaceCity}"
         }
-        binding.tvDate.text = stringDayList.first()
         selectDay = stringDayList.first()
 
         // 지도
@@ -121,8 +121,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             // 선택될 때
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                binding.tvDate.text = stringDayList[tab!!.id - 1]
-                selectDay = binding.tvDate.text.toString()
+                selectDay = stringDayList[tab!!.id - 1]
                 filterDay(selectDay)
                 placeAdapter.notifyDataSetChanged()
             }
@@ -139,9 +138,11 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 
         })
 
-        // 장소 추가
-        binding.btnPlaceAdd.setOnClickListener {
-            placeAdapter.notifyDataSetChanged()
+        // 완료
+        binding.btnDone.setOnClickListener {
+            val intent = Intent(this, MainActivity_CYun::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         // 하단 버튼을 통해 다른 액티비티로 이동
@@ -167,10 +168,18 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     // 탭 생성
-    fun createTab(num: Int) {
+    fun createTab(num: Int, date: String) {
         val tab: TabLayout.Tab = tabLayout.newTab()
-        tab.text = "day${num}"
-        tabLayout.addTab(tab)
+        val dayNView = TextView(this)
+        val dateView = TextView(this)
+        dayNView.textSize = 18f
+        dayNView.typeface = Typeface.DEFAULT_BOLD
+        dateView.textSize = 13f
+        dayNView.gravity = Gravity.CENTER
+        dateView.gravity = Gravity.CENTER
+        dayNView.text = "DAY${num}"
+        dateView.text = "${date}"
+        tabLayout.addTab(tab.setCustomView(dayNView).setCustomView(dateView))
         tab.id = num
     }
 
