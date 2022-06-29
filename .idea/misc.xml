@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/androidproject/TravelPlanner/app/src/main/res/layout/activity_expenses.xml" value="0.36614583333333334" />
+        <entry key="..\:/androidproject/TravelPlanner/app/src/main/res/layout/custom_dialog_gmin.xml" value="0.36614583333333334" />
+        <entry key="..\:/androidproject/TravelPlanner/app/src/main/res/layout/date_dialog.xml" value="0.36614583333333334" />
+        <entry key="..\:/androidproject/TravelPlanner/app/src/main/res/layout/update_dialog_gmin.xml" value="0.36614583333333334" />
         <entry key="app/src/main/res/drawable-v24/airplane_ticket_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/icon_close.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable-v24/icon_menu.xml" value="0.1" />
