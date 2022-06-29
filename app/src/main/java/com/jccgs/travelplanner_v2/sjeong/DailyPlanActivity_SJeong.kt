@@ -2,6 +2,7 @@ package com.jccgs.travelplanner_v2.sjeong
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -92,7 +93,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
             createTab(num)
         }
 
-
         // 여행 지역을 선택하지 않았을 경우
         if(MapController.selectedPlaceCountryName.isNullOrEmpty()) {
             binding.tvMainPlace.text = "여행 지역"
@@ -139,21 +139,22 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 
         })
 
+        // 장소 추가
         binding.btnPlaceAdd.setOnClickListener {
             placeAdapter.notifyDataSetChanged()
         }
 
-        binding.btnCheckList.setOnClickListener {
+        // 하단 버튼을 통해 다른 액티비티로 이동
+        binding.buttomBtnLayout.btnPlan.setBackgroundColor(Color.parseColor("#C3B8D9"))
+        binding.buttomBtnLayout.btnCheckList.setBackgroundColor(Color.WHITE)
+        binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.WHITE)
+        binding.buttomBtnLayout.btnCheckList.setOnClickListener {
             startActivity(Intent(this, ChecklistActivity_CKim::class.java))
         }
 
-        binding.btnExpenses.setOnClickListener {
+        binding.buttomBtnLayout.btnExpenses.setOnClickListener {
             startActivity(Intent(this, ExpensesActivity::class.java))
         }
-
-//        binding.btnPlaceDel.setOnClickListener {
-//
-//        }
 
     }
 
