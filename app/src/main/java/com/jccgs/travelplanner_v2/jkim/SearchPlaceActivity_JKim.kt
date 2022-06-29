@@ -83,10 +83,12 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 MapController.selectedPlaceAddress = place.address
 
                 val addressComponents = place.addressComponents.asList()
-                if(addressComponents.size == 1) {
-                    MapController.selectedPlaceShortName = addressComponents[0].shortName
-                }else {
-                    MapController.selectedPlaceShortName = addressComponents[addressComponents.size - 2].shortName
+                MapController.selectedPlaceShortName = addressComponents.run {
+                    this.filter {
+                        it.types[0].equals("country")
+                    }
+                }.run {
+                    this[0].shortName
                 }
             }
 
