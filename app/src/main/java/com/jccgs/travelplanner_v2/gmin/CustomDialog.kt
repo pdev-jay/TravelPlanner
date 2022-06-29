@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import com.jccgs.travelplanner_v2.databinding.CustomDialogGminBinding
+import com.jccgs.travelplanner_v2.jkim.Expenses
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DateDialog
 
@@ -38,9 +39,8 @@ class CustomDialog(val context: Context){
             val edtContent = binding.edtContentMin.text.toString()
             val edtPay = binding.edtPayMin.text.toString().toInt()
             val edtDate = binding.edtDateMin.text.toString()
-            val ABitemViewData = ItemViewData(edtDate, edtContent, edtPay)
+            val ABitemViewData = Expenses(date = edtDate, content = edtContent, cost = edtPay)
             (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
-            (context as ExpensesActivity).getSum()
 
             dialog.dismiss()
         }

@@ -28,6 +28,7 @@ class DateDialog(val context: Context): OnDateSelectedListener {
         val widget = dialogView.dialogCal
         // 오늘 날짜를 달력에 선택
         widget.selectedDate = CalendarDay.today()
+        selectDate = CalendarDay.today().date
         widget.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
         // 달력의 최대&최소 날짜 지정
         widget.state().edit()

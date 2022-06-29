@@ -158,6 +158,14 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 
     }
 
+    override fun onStart() {
+        Log.d("Log_debug", "$startDate")
+        Log.d("Log_debug", "$endDate")
+        Log.d("Log_debug", "$dayList")
+        Log.d("Log_debug", "$documentId")
+        super.onStart()
+    }
+
     // 탭 생성
     fun createTab(num: Int) {
         val tab: TabLayout.Tab = tabLayout.newTab()

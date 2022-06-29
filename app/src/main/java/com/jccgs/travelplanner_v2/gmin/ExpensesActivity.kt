@@ -11,18 +11,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
+import com.jccgs.travelplanner_v2.jkim.Expenses
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ExpensesActivity : AppCompatActivity() {
     lateinit var binding : ActivityExpensesBinding
     lateinit var customAdapter : CustomAdapter
-    val itemViewDataList : MutableList<ItemViewData> = mutableListOf<ItemViewData>()
+    val itemViewDataList : MutableList<Expenses> = mutableListOf<Expenses>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExpensesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         //레이아웃매니저 결정할것
         val layoutManager = LinearLayoutManager(this)
@@ -57,7 +58,7 @@ class ExpensesActivity : AppCompatActivity() {
         var sum = 0
 
         for (i in itemViewDataList){
-            sum += i.tvPay
+            sum += i.cost
         }
 
         binding.tvTotalPayMin.text = sum.toString()
@@ -65,19 +66,40 @@ class ExpensesActivity : AppCompatActivity() {
 
 
 
-    fun addItemViewDataList(itemViewData: ItemViewData) {
-        this.itemViewDataList.add(itemViewData)
-        customAdapter.notifyDataSetChanged()
+    fun addItemViewDataList(itemViewData: Expenses) {
+        if (itemViewDataList.isNotEmpty()){
+            itemViewData.order = itemViewDataList.last().order + 1
+        }
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("Expenses")
+            .add(itemViewData)
+            .addOnSuccessListener { docRef ->
+                docRef.update("id", docRef.id)
+                this.itemViewDataList.add(itemViewData)
+                itemViewData.id = docRef.id
+                customAdapter.notifyDataSetChanged()
+                getSum()
+            }
         Toast.makeText(this, "금액 사용 기록이 추가 되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    fun updateItemViewDataList(position: Int, itemViewData: ItemViewData){
-        this.itemViewDataList.set(position, itemViewData)
-        customAdapter.notifyDataSetChanged()
-
+    fun updateItemViewDataList(position: Int, itemViewData: Expenses){
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("Expenses")
+            .document(itemViewData.id.toString())
+            .set(itemViewData)
+            .addOnSuccessListener {
+                this.itemViewDataList.set(position, itemViewData)
+                customAdapter.notifyDataSetChanged()
+                getSum()
+            }
     }
 
-    fun removeItemViewDataList(itemViewData: ItemViewData) {
+    fun removeItemViewDataList(itemViewData: Expenses) {
         var dialog = Dialog(applicationContext)
 
         // 다이얼로그 이벤트 핸들러 등록
@@ -85,12 +107,21 @@ class ExpensesActivity : AppCompatActivity() {
             override fun onClick(p0: DialogInterface?, p1: Int) {
                 when(p1){
                     DialogInterface.BUTTON_POSITIVE -> {
-                        itemViewDataList.remove(itemViewData)
-                        customAdapter.notifyDataSetChanged()
-                        Toast.makeText(applicationContext,
-                            "${itemViewData.tvDate}에 ${itemViewData.tvContent} 기록이 삭제 되었습니다",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        FirebaseController
+                            .PLAN_REF
+                            .document(DailyPlanActivity_SJeong.documentId.toString())
+                            .collection("Expenses")
+                            .document(itemViewData.id.toString())
+                            .delete()
+                            .addOnSuccessListener {
+                                itemViewDataList.remove(itemViewData)
+                                customAdapter.notifyDataSetChanged()
+                                Toast.makeText(applicationContext,
+                                    "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                getSum()
+                            }
                     }
                     DialogInterface.BUTTON_NEGATIVE -> dialog.dismiss()
                 }
