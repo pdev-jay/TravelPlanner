@@ -30,7 +30,7 @@ data class CheckList(
 
 
 data class Expenses(val id: String? = null,
-                    val order: Int = 0,
-                    val price: Int = 0,
-                    val content: String = "",
-                    val data: String = "")
+                    var order: Int = 0,
+                    var cost: Int = 0,
+                    var content: String = "",
+                    var date: String = "")

@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jccgs.travelplanner_v2.databinding.ItemviewGminBinding
+import com.jccgs.travelplanner_v2.jkim.Expenses
 
 
-class CustomAdapter(val itemViewData : MutableList<ItemViewData>): RecyclerView.Adapter<CustomAdapter.CustomViewHolder>(){
+class CustomAdapter(val itemViewData : MutableList<Expenses>): RecyclerView.Adapter<CustomAdapter.CustomViewHolder>(){
     lateinit var parentContext: ExpensesActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -40,9 +41,9 @@ class CustomAdapter(val itemViewData : MutableList<ItemViewData>): RecyclerView.
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val binding = (holder as CustomViewHolder).binding
 
-        binding.tvDateMin.text = itemViewData.get(position).tvDate
-        binding.tvContentMin.text = itemViewData.get(position).tvContent
-        binding.tvPayMin.text = itemViewData.get(position).tvPay.toString()
+        binding.tvDateMin.text = itemViewData.get(position).date
+        binding.tvContentMin.text = itemViewData.get(position).content
+        binding.tvPayMin.text = itemViewData.get(position).cost.toString()
     }
 
     override fun getItemCount(): Int {

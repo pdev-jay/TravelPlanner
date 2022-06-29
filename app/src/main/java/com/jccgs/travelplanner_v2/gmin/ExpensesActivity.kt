@@ -8,11 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
+import com.jccgs.travelplanner_v2.jkim.Expenses
 
 class ExpensesActivity : AppCompatActivity() {
     lateinit var binding : ActivityExpensesBinding
     lateinit var customAdapter : CustomAdapter
-    val itemViewDataList : MutableList<ItemViewData> = mutableListOf<ItemViewData>()
+    val itemViewDataList : MutableList<Expenses> = mutableListOf<Expenses>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,7 @@ class ExpensesActivity : AppCompatActivity() {
         var sum = 0
 
         for (i in itemViewDataList){
-            sum += i.tvPay
+            sum += i.cost
         }
 
         binding.tvTotalPayMin.text = sum.toString()
@@ -48,19 +49,19 @@ class ExpensesActivity : AppCompatActivity() {
 
 
 
-    fun addItemViewDataList(itemViewData: ItemViewData) {
+    fun addItemViewDataList(itemViewData: Expenses) {
         this.itemViewDataList.add(itemViewData)
         customAdapter.notifyDataSetChanged()
         Toast.makeText(this, "금액 사용 기록이 추가 되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
-    fun updateItemViewDataList(position: Int, itemViewData: ItemViewData){
+    fun updateItemViewDataList(position: Int, itemViewData: Expenses){
         this.itemViewDataList.set(position, itemViewData)
         customAdapter.notifyDataSetChanged()
 
     }
 
-    fun removeItemViewDataList(itemViewData: ItemViewData) {
+    fun removeItemViewDataList(itemViewData: Expenses) {
         var dialog = Dialog(applicationContext)
 
         // 다이얼로그 이벤트 핸들러 등록
@@ -71,7 +72,7 @@ class ExpensesActivity : AppCompatActivity() {
                         itemViewDataList.remove(itemViewData)
                         customAdapter.notifyDataSetChanged()
                         Toast.makeText(applicationContext,
-                            "${itemViewData.tvDate}에 ${itemViewData.tvContent} 기록이 삭제 되었습니다",
+                            "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
