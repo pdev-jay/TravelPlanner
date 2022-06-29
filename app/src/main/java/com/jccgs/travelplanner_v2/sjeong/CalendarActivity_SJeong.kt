@@ -108,6 +108,13 @@ class CalendarActivity_SJeong : AppCompatActivity() {
                 val date = SimpleDateFormat("yyyy-MM-dd").format((i as CalendarDay).date)
                 stringDayList.add(date)
             }
+        } else {
+            dayList.add(CalendarDay.today())
+            val date = SimpleDateFormat("yyyy-MM-dd").format(CalendarDay.today().date)
+            stringDayList.add(date)
+            startDate = CalendarDay.today().calendar
+            endDate = CalendarDay.today().calendar
+            term = dayList.size
         }
 
         val newPlan = Plan(null, "${MapController.selectedPlaceCountryName}, ${MapController.selectedPlaceCity}", stringDayList, mutableListOf(AuthController.currentUser?.id.toString()))
@@ -117,12 +124,6 @@ class CalendarActivity_SJeong : AppCompatActivity() {
                 .addOnSuccessListener {
                     val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
                     // 날짜를 선택하지 않았을 경우
-                    if(dayList.isNullOrEmpty()) {
-                        dayList.add(CalendarDay.today())
-                        startDate = CalendarDay.today().calendar
-                        endDate = CalendarDay.today().calendar
-                        term = dayList.size
-                    }
                     intent.putExtra("documentId", documentId)
                     intent.putExtra("dayList", dayList)
                     intent.putExtra("startDate", startDate)
