@@ -143,14 +143,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
             placeAdapter.notifyDataSetChanged()
         }
 
-        binding.btnCheckList.setOnClickListener {
-            startActivity(Intent(this, ChecklistActivity_CKim::class.java))
-        }
-
-        binding.btnExpenses.setOnClickListener {
-            startActivity(Intent(this, ExpensesActivity::class.java))
-        }
-
 //        binding.btnPlaceDel.setOnClickListener {
 //
 //        }
