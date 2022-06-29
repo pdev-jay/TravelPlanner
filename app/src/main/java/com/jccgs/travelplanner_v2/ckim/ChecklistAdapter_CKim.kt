@@ -13,12 +13,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ChecklistItemCkimBinding
+import com.jccgs.travelplanner_v2.jkim.CheckList
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ViewHolder(val binding: ChecklistItemCkimBinding): RecyclerView.ViewHolder(binding.root)
 
-class ChecklistAdapter_CKim(val checklistDatalist: MutableList<ChecklistData_CKim>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var mainActivity: ChecklistActivity_CKim
+    var isEditing = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -39,15 +43,15 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<ChecklistData_CKi
                     when(p1){
                         DialogInterface.BUTTON_POSITIVE -> {
                             val position = viewHolder.adapterPosition
-                            mainActivity.removeChecklistDataList(position)
+                            mainActivity.removeCheckList(position)
 
                             //삭제대상항목에 체크박스가 체크되있거나 취소선이 그어져 있으면 모두 해제함
-                            if (binding.checkBox.isChecked) {
-                                //취소선 제거
-                                binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                                //체크 해제
-                                binding.checkBox.isChecked = false
-                            }
+//                            if (binding.checkBox.isChecked) {
+//                                //취소선 제거
+//                                binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+//                                //체크 해제
+//                                binding.checkBox.isChecked = false
+//                            }
                             dialog.dismiss()
                         }
 
@@ -100,14 +104,17 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<ChecklistData_CKi
         binding.edtInput.requestFocus()
 
         //체크박스 클릭 이벤트
-        binding.checkBox.setOnClickListener {
-            if (binding.checkBox.isChecked) {
-                //취소선 생성
-                binding.edtInput.paintFlags = binding.edtInput.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            } else {
-                //취소선 제거
-                binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-            }
+
+        binding.checkBox.setOnCheckedChangeListener { button, isChecked ->
+            updateIsChecked(position, isChecked)
+        }
+
+        if (checklistDatalist[position].isChecked){
+            binding.checkBox.isChecked = true
+            binding.edtInput.paintFlags = binding.edtInput.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            binding.checkBox.isChecked = false
+            binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
 
         //edittext 입력 후 키보드의 완료버튼을 눌렀을 때 발생하는 이벤트
@@ -125,9 +132,15 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<ChecklistData_CKi
                         //플로팅버튼 활성화
                         mainActivity.binding.btnFAB.isEnabled = true
 
-                        val data = ChecklistData_CKim(binding.edtInput.text.toString())
-                        mainActivity.addChecklistData(position,data)
-
+                        if (isEditing){
+                            checklistDatalist[position].content = binding.edtInput.text.toString()
+                            updateContent(position)
+                        } else {
+                            val order = checklistDatalist.last().order
+                            val data =
+                                CheckList(order = order, content = binding.edtInput.text.toString())
+                            mainActivity.addCheckListToDB(data, position)
+                        }
                         binding.edtInput.setText(binding.edtInput.text.toString())
 
                         //edittext 속성 비활성화
@@ -152,17 +165,13 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<ChecklistData_CKi
 
         //수정
         binding.ivModify.setOnClickListener {
-
+            isEditing = true
             //키보드 올리기
             mainActivity.showKeyboard()
             binding.edtInput.requestFocus()
 
             //edittext에 밑줄 생성
             binding.edtInput.setBackgroundResource(R.drawable.underline_ckim)
-
-            //수정한 데이터값으로 바꿔줌
-            val changedData = ChecklistData_CKim(binding.edtInput.text.toString())
-            mainActivity.addChecklistData(position,changedData)
 
             //edittext 활성화
             binding.edtInput.isFocusableInTouchMode = true
@@ -183,7 +192,31 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<ChecklistData_CKi
         return checklistDatalist.size
     }
 
+    fun updateIsChecked(position: Int, isChecked: Boolean){
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("CheckList")
+            .document(checklistDatalist[position].id.toString())
+            .update("isChecked", isChecked)
+            .addOnSuccessListener {
+                checklistDatalist[position].isChecked = isChecked
+                notifyDataSetChanged()
+            }
+    }
 
+    fun updateContent(position: Int){
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("CheckList")
+            .document(checklistDatalist[position].id.toString())
+            .update("content", checklistDatalist[position].content)
+            .addOnSuccessListener {
+                notifyDataSetChanged()
+                isEditing = false
+            }
+    }
 
 
 }

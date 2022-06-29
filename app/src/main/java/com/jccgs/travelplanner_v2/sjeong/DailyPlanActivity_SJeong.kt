@@ -44,6 +44,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     companion object {
         lateinit var startDate: Calendar
         lateinit var endDate: Calendar
+        var documentId: String? = null
     }
 
     val binding by lazy { ActivityDailyPlanSjeongBinding.inflate(layoutInflater) }
@@ -61,7 +62,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     var selectDayPlan = mutableListOf<DailyPlan>() // 선택된 날짜 일정
     var selectDay = ""
 
-    var documentId: String? = null
     var order = 0
 
     // 리사이클러뷰 어댑터

@@ -2,12 +2,12 @@ package com.jccgs.travelplanner_v2.jkim
 
 import java.io.Serializable
 
-data class User(var id: String? = "",
+data class User(var id: String? = null,
                 val userEmail: String? = "",
                 val displayName: String? = "")
 
 
-data class Plan(val id: String? = "",
+data class Plan(val id: String? = null,
                 val mainPlace: String = "",
                 val period: MutableList<String> = mutableListOf(),
                 val users: MutableList<String> = mutableListOf()): Serializable
@@ -21,11 +21,16 @@ data class DailyPlan(
     val placeLat: Double = 0.0,
     val placeLng: Double = 0.0)
 
+data class CheckList(
+    var id: String? = null,
+    val order: Int = 0,
+    var content: String = "",
+    @JvmField
+    var isChecked: Boolean = false)
 
-data class CheckList(val content: String,
-                     val isChecked: Boolean)
 
-
-data class Expenses(val price: Int,
-                    val content: String,
-                    val data: String)
+data class Expenses(val id: String? = null,
+                    val order: Int = 0,
+                    val price: Int = 0,
+                    val content: String = "",
+                    val data: String = "")

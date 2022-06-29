@@ -11,6 +11,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityChecklistCkimBinding
+import com.jccgs.travelplanner_v2.jkim.CheckList
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.RecyclerItemDeco
 
 class ChecklistActivity_CKim : AppCompatActivity() {
@@ -18,7 +21,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
     lateinit var binding: ActivityChecklistCkimBinding
 
     //ChecklistData를 저장하는 MutableList
-    lateinit var checklistDataList : MutableList<ChecklistData_CKim>
+    lateinit var checklistDataList : MutableList<CheckList>
     //리사이클러뷰 어댑터
     lateinit var adapter: ChecklistAdapter_CKim
 
@@ -28,7 +31,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         binding = ActivityChecklistCkimBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        checklistDataList = mutableListOf<ChecklistData_CKim>()
+        checklistDataList = mutableListOf<CheckList>()
 
         adapter = ChecklistAdapter_CKim(checklistDataList)
         binding.recyclerView.adapter = adapter
@@ -73,18 +76,21 @@ class ChecklistActivity_CKim : AppCompatActivity() {
 
     //입력창 생성 (리사이클러뷰에 checklistitem을 출력하는 용도)
     fun addItem(){
-        checklistDataList.add(ChecklistData_CKim(""))
+        if (checklistDataList.isEmpty()){
+            checklistDataList.add(CheckList())
+        } else {
+            checklistDataList.add(CheckList(order = checklistDataList.last().order + 1))
+        }
     }
 
     //사용자가 입력한 값 넣기
     @SuppressLint("NotifyDataSetChanged")
-    fun addChecklistData(position: Int, data: ChecklistData_CKim){
-        checklistDataList.set(position,data)
-        adapter.notifyDataSetChanged()
-    }
+//    fun addChecklistData(position: Int, data: ChecklistData_CKim){
+//        checklistDataList.set(position,data)
+//        adapter.notifyDataSetChanged()
+//    }
 
     //선택한 항목 삭제
-    @SuppressLint("NotifyDataSetChanged")
     fun removeChecklistDataList(position: Int){
         checklistDataList.removeAt(position)
         adapter.notifyDataSetChanged()
@@ -105,4 +111,30 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         binding.btnFAB.isEnabled = true
     }
 
+    fun addCheckListToDB(checkList: CheckList, position: Int){
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("CheckList")
+            .add(checkList)
+            .addOnSuccessListener { docRef ->
+                docRef.update("id", docRef.id)
+                checkList.id = docRef.id
+                checklistDataList.set(position, checkList)
+                adapter.notifyDataSetChanged()
+            }
+    }
+
+    fun removeCheckList(position: Int){
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("CheckList")
+            .document(checklistDataList[position].id.toString())
+            .delete()
+            .addOnSuccessListener {
+                checklistDataList.removeAt(position)
+                adapter.notifyDataSetChanged()
+            }
+    }
 }
