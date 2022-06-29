@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnPlanAc"
+        android:id="@+id/btnPlan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -18,20 +18,22 @@
         android:text="여행 일정" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnCh"
+        android:id="@+id/btnCheckList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:height="58dip"
         android:background="@drawable/buttom_btn_shape_sjeong"
         android:drawableTop="@drawable/btn_icon_checklist_sjeong"
         android:outlineProvider="none"
         android:text="체크리스트" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEx"
+        android:id="@+id/btnExpenses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:height="58dip"
         android:background="@drawable/buttom_btn_shape_sjeong"
         android:drawableTop="@drawable/btn_icon_expenses_sjeong"
         android:outlineProvider="none"

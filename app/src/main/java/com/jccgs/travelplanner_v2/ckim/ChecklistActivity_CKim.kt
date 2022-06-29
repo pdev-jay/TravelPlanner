@@ -2,6 +2,8 @@ package com.jccgs.travelplanner_v2.ckim
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityChecklistCkimBinding
+import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import com.jccgs.travelplanner_v2.jkim.CheckList
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
@@ -46,6 +49,19 @@ class ChecklistActivity_CKim : AppCompatActivity() {
             binding.recyclerView.scrollToPosition(checklistDataList.size-1)
             //키보드 올리기
             showKeyboard()
+        }
+
+        // 하단 버튼을 통해 다른 액티비티로 이동
+        binding.buttomBtnLayout.btnCheckList.setBackgroundColor(Color.parseColor("#C3B8D9"))
+        binding.buttomBtnLayout.btnPlan.setBackgroundColor(Color.WHITE)
+        binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.WHITE)
+        binding.buttomBtnLayout.btnPlan.setOnClickListener {
+            finish()
+            // startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
+        }
+
+        binding.buttomBtnLayout.btnExpenses.setOnClickListener {
+            startActivity(Intent(this, ExpensesActivity::class.java))
         }
 
     }
