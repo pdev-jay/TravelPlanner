@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
 import com.jccgs.travelplanner_v2.jkim.Expenses
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ExpensesActivity : AppCompatActivity() {
     lateinit var binding : ActivityExpensesBinding
@@ -50,15 +52,32 @@ class ExpensesActivity : AppCompatActivity() {
 
 
     fun addItemViewDataList(itemViewData: Expenses) {
-        this.itemViewDataList.add(itemViewData)
-        customAdapter.notifyDataSetChanged()
+        itemViewData.order = itemViewDataList.last().order + 1
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("Expenses")
+            .add(itemViewData)
+            .addOnSuccessListener { docRef ->
+                docRef.update("id", docRef.id)
+                itemViewData.id = docRef.id
+                this.itemViewDataList.add(itemViewData)
+                customAdapter.notifyDataSetChanged()
+            }
         Toast.makeText(this, "금액 사용 기록이 추가 되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     fun updateItemViewDataList(position: Int, itemViewData: Expenses){
-        this.itemViewDataList.set(position, itemViewData)
-        customAdapter.notifyDataSetChanged()
-
+        FirebaseController
+            .PLAN_REF
+            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .collection("Expenses")
+            .document(itemViewData.id.toString())
+            .set(itemViewData)
+            .addOnSuccessListener {
+                this.itemViewDataList.set(position, itemViewData)
+                customAdapter.notifyDataSetChanged()
+            }
     }
 
     fun removeItemViewDataList(itemViewData: Expenses) {
@@ -69,12 +88,20 @@ class ExpensesActivity : AppCompatActivity() {
             override fun onClick(p0: DialogInterface?, p1: Int) {
                 when(p1){
                     DialogInterface.BUTTON_POSITIVE -> {
-                        itemViewDataList.remove(itemViewData)
-                        customAdapter.notifyDataSetChanged()
-                        Toast.makeText(applicationContext,
-                            "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        FirebaseController
+                            .PLAN_REF
+                            .document(DailyPlanActivity_SJeong.documentId.toString())
+                            .collection("Expenses")
+                            .document(itemViewData.id.toString())
+                            .delete()
+                            .addOnSuccessListener {
+                                itemViewDataList.remove(itemViewData)
+                                customAdapter.notifyDataSetChanged()
+                                Toast.makeText(applicationContext,
+                                    "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                     }
                     DialogInterface.BUTTON_NEGATIVE -> dialog.dismiss()
                 }
