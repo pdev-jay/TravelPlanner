@@ -41,7 +41,6 @@ class CustomDialog(val context: Context){
             val edtDate = binding.edtDateMin.text.toString()
             val ABitemViewData = Expenses(date = edtDate, content = edtContent, cost = edtPay)
             (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
-            (context as ExpensesActivity).getSum()
 
             dialog.dismiss()
         }

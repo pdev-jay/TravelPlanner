@@ -14,7 +14,7 @@ class UpdateDialog(val context: Context){
     private val dialog = Dialog(context)
     //현재 다이얼로그 창을 객체화함
     private val binding = UpdateDialogGminBinding.inflate(LayoutInflater.from(context))
-
+    private lateinit var data: Expenses
     //멤버함수
     fun ShowUdDialog(data: Expenses, position: Int){
 
@@ -22,7 +22,7 @@ class UpdateDialog(val context: Context){
         dialog.show()
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
-
+        this.data = data
         binding.edtUdDateMin.setText(data.date)
         binding.edtUdContentMin.setText(data.content)
         binding.edtUdPayMin.setText(data.cost.toString())
@@ -39,11 +39,11 @@ class UpdateDialog(val context: Context){
 
         //수정 이벤트 처리
         binding.btnUdEnterMin.setOnClickListener{
-            val edtUdContent = binding.edtUdContentMin.text.toString()
-            val edtUdPay = binding.edtUdPayMin.text.toString().toInt()
-            val edtUdDate = binding.edtUdDateMin.text.toString()
-            val itemViewData = Expenses(date = edtUdDate, cost = edtUdPay, content = edtUdContent)
-            (context as ExpensesActivity).updateItemViewDataList(position, itemViewData)
+            data.content = binding.edtUdContentMin.text.toString()
+            data.cost = binding.edtUdPayMin.text.toString().toInt()
+            data.date = binding.edtUdDateMin.text.toString()
+//            val itemViewData = Expenses(date = edtUdDate, cost = edtUdPay, content = edtUdContent)
+            (context as ExpensesActivity).updateItemViewDataList(position, data)
             (context as ExpensesActivity).getSum()
 
             dialog.dismiss()

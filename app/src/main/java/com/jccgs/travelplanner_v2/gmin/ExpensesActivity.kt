@@ -25,7 +25,6 @@ class ExpensesActivity : AppCompatActivity() {
         binding = ActivityExpensesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         //레이아웃매니저 결정할것
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
@@ -68,7 +67,9 @@ class ExpensesActivity : AppCompatActivity() {
 
 
     fun addItemViewDataList(itemViewData: Expenses) {
-        itemViewData.order = itemViewDataList.last().order + 1
+        if (itemViewDataList.isNotEmpty()){
+            itemViewData.order = itemViewDataList.last().order + 1
+        }
         FirebaseController
             .PLAN_REF
             .document(DailyPlanActivity_SJeong.documentId.toString())
@@ -76,9 +77,10 @@ class ExpensesActivity : AppCompatActivity() {
             .add(itemViewData)
             .addOnSuccessListener { docRef ->
                 docRef.update("id", docRef.id)
-                itemViewData.id = docRef.id
                 this.itemViewDataList.add(itemViewData)
+                itemViewData.id = docRef.id
                 customAdapter.notifyDataSetChanged()
+                getSum()
             }
         Toast.makeText(this, "금액 사용 기록이 추가 되었습니다.", Toast.LENGTH_SHORT).show()
     }
@@ -93,6 +95,7 @@ class ExpensesActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 this.itemViewDataList.set(position, itemViewData)
                 customAdapter.notifyDataSetChanged()
+                getSum()
             }
     }
 
@@ -117,6 +120,7 @@ class ExpensesActivity : AppCompatActivity() {
                                     "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                getSum()
                             }
                     }
                     DialogInterface.BUTTON_NEGATIVE -> dialog.dismiss()
