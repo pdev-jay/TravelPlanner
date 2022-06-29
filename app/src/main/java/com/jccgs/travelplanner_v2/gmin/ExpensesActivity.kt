@@ -2,12 +2,16 @@ package com.jccgs.travelplanner_v2.gmin
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ExpensesActivity : AppCompatActivity() {
     lateinit var binding : ActivityExpensesBinding
@@ -33,6 +37,19 @@ class ExpensesActivity : AppCompatActivity() {
             val CustomDialog = CustomDialog(this)
 
             CustomDialog.ShowDialog()
+        }
+
+        // 하단 버튼을 통해 다른 액티비티로 이동
+        binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.parseColor("#C3B8D9"))
+        binding.buttomBtnLayout.btnPlan.setBackgroundColor(Color.WHITE)
+        binding.buttomBtnLayout.btnCheckList.setBackgroundColor(Color.WHITE)
+        binding.buttomBtnLayout.btnPlan.setOnClickListener {
+            finish()
+            // startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
+        }
+
+        binding.buttomBtnLayout.btnCheckList.setOnClickListener {
+            startActivity(Intent(this, ChecklistActivity_CKim::class.java))
         }
     }
 
