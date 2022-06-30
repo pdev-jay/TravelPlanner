@@ -1,5 +1,6 @@
 package com.jccgs.travelplanner_v2.sjeong
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
@@ -77,7 +78,9 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         if(MapController.selectedPlaceCountryName.isNullOrEmpty()) {
             binding.tvMainPlace.text = "여행 지역"
         }else {
-            binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName} ${MapController.selectedPlaceCity}"
+            binding.tvMainPlace.text = """${MapController.selectedPlaceCountryName}
+                |${MapController.selectedPlaceCity}
+            """.trimMargin()
         }
         selectDay = stringDayList.first()
 

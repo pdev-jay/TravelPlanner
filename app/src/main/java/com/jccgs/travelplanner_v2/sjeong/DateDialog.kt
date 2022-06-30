@@ -2,11 +2,12 @@ package com.jccgs.travelplanner_v2.sjeong
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Typeface
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
+import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.DateDialogBinding
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
+import com.prolificinteractive.materialcalendarview.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +40,20 @@ class DateDialog(val context: Context): OnDateSelectedListener {
         widget.setOnDateChangedListener(this)
         exDialog.setContentView(dialogView.root)
         exDialog.show()
+
+        // 데코레이션
+        widget.addDecorator(object: DayViewDecorator {
+            override fun shouldDecorate(day: CalendarDay?): Boolean {
+                return day?.equals(CalendarDay.today()) == true
+            }
+            override fun decorate(view: DayViewFacade?) {
+                val drawable = context.getDrawable(R.drawable.today_selector)
+                view?.setBackgroundDrawable(drawable!!)
+                view?.addSpan(StyleSpan(Typeface.BOLD))
+            }
+        })
+        // 주말
+        widget.addDecorators(SaturdayDeco(), SundayDeco())
 
         // 확인 버튼
         dialogView.btnOk.setOnClickListener {
