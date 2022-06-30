@@ -2,7 +2,9 @@ package com.jccgs.travelplanner_v2.gmin
 
 import android.app.Dialog
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import com.jccgs.travelplanner_v2.databinding.CustomDialogGminBinding
 import com.jccgs.travelplanner_v2.jkim.Expenses
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
@@ -36,14 +38,19 @@ class CustomDialog(val context: Context){
         }
 
         //저장하기 이벤트 처리
-        binding.btnDialEnter.setOnClickListener{
+        binding.btnDialEnter.setOnClickListener {
             val edtContent = binding.edtContentMin.text.toString()
-            val edtPay = binding.edtPayMin.text.toString().toInt()
             val edtDate = binding.edtDateMin.text.toString()
-            val ABitemViewData = Expenses(date = edtDate, content = edtContent, cost = edtPay)
-            (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
+            var pay = binding.edtPayMin.text.toString()
 
-            dialog.dismiss()
+            if(edtContent.isNullOrEmpty() || pay.isNullOrEmpty()) {
+                Toast.makeText(context, "입력하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
+            }else {
+                val edtPay = pay.toInt()
+                val ABitemViewData = Expenses(date = edtDate, content = edtContent, cost = edtPay)
+                (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
+                dialog.dismiss()
+            }
         }
 
         //취소하기 이벤트 처리
