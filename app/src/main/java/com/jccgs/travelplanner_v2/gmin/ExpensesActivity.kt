@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
@@ -60,7 +61,12 @@ class ExpensesActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        FirebaseController.PLAN_REF.document(CalendarActivity_SJeong.documentId.toString()).collection("Expenses").get()
+        FirebaseController.PLAN_REF
+            .document(CalendarActivity_SJeong.documentId.toString())
+            .collection("Expenses")
+            .orderBy("date", Query.Direction.ASCENDING)
+            .orderBy("order", Query.Direction.ASCENDING)
+            .get()
             .addOnSuccessListener { snapshot ->
                 itemViewDataList.clear()
                 for (i in snapshot){

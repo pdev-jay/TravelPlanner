@@ -36,11 +36,18 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         var selectedPlaceCountryName: String? = ""
         var selectedPlaceName: String? = ""
         var selectedPlaceAddress: String? = ""
-        var selectedPlaceRating: Double? = 0.0
         var selectedPlaceLatLng: LatLng? = null
         var selectedPlaceCity: String? = ""
-        var selectedPlacePhotos: List<PhotoMetadata>? = listOf<PhotoMetadata>()
         var selectedPlaceShortName: String? = ""
+
+        fun clearMapInfo(){
+            selectedPlaceCountryName = null
+            selectedPlaceName = null
+            selectedPlaceAddress = null
+            selectedPlaceLatLng = null
+            selectedPlaceCity = null
+            selectedPlaceShortName = null
+        }
     }
 
     var clusterManager: ClusterManager<Cluster>
@@ -57,6 +64,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
 
     }
 
+
     //맵 클릭시 이벤트. 현재 프로젝트에서 안쓰이는듯...
     override fun onMapClick(latLng: LatLng) {
         val newPosition = LatLng(latLng.latitude, latLng.longitude)
@@ -68,7 +76,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
 
     //장소 마커 클릭 시 이벤트
     override fun onPoiClick(poi: PointOfInterest) {
-        val placeFields = listOf<Place.Field>(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.PHOTO_METADATAS, Place.Field.RATING)
+        val placeFields = listOf<Place.Field>(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.newInstance(poi.placeId, placeFields)
             placesClient.fetchPlace(request).addOnSuccessListener {
                 Log.d(TAG, "${it}")
@@ -76,8 +84,6 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
 
                 selectedPlaceName = it.place.name
                 selectedPlaceAddress = it.place.address
-                selectedPlaceRating = it.place.rating
-                selectedPlacePhotos = it.place.photoMetadatas
                 selectedPlaceLatLng = it.place.latLng
                 CoroutineScope(Dispatchers.Main).launch{
                     addMark(listOf(it.place.latLng))
@@ -155,14 +161,5 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         }
     }
 
-    inner class CustomClusterManager(val context: Context, val googleMap: GoogleMap): ClusterManager<Cluster>(context, googleMap){
-//        override fun onCameraIdle() {
-//            //맵뷰 중앙을 현재 위도 경도로 지정
-//            selectedPlaceLatLng = googleMap.cameraPosition.target
-//
-//            super.onCameraIdle()
-//        }
-
-
-    }
+    inner class CustomClusterManager(val context: Context, val googleMap: GoogleMap): ClusterManager<Cluster>(context, googleMap)
 }

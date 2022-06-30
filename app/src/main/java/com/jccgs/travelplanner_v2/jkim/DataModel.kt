@@ -15,7 +15,7 @@ data class Plan(val id: String? = null,
 
 data class DailyPlan(
     var id: String? = null,
-    var order: Int? = 0,
+    var order: Int = 0,
     val date: String = "",
     val placeName: String = "",
     val placeAddress: String = "",
