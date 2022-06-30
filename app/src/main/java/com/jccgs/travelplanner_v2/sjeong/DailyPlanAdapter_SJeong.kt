@@ -1,8 +1,10 @@
 package com.jccgs.travelplanner_v2.sjeong
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.PlaceItemSjeongBinding
 import com.jccgs.travelplanner_v2.jkim.DailyPlan
@@ -15,6 +17,16 @@ class DailyPlanAdapter_SJeong(val dailyPlan: MutableList<DailyPlan>): RecyclerVi
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
         val placeBinding = PlaceItemSjeongBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = PlaceViewHolder(placeBinding)
+
+        // 아이템 클릭 시 지도 카메라 이동
+        viewHolder.itemView.setOnClickListener {
+            val placeItem = dailyPlan[viewHolder.adapterPosition]
+            val lat = placeItem.placeLat
+            val lng = placeItem.placeLng
+            val latLng = LatLng(lat, lng)
+            (parent.context as DailyPlanActivity_SJeong).moveCamera(latLng)
+            Log.d("log", "클릭: ${placeItem.placeName}")
+        }
 
         return viewHolder
     }
