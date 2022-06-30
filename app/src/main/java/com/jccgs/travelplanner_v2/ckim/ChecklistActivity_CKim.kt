@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityChecklistCkimBinding
@@ -70,7 +71,11 @@ class ChecklistActivity_CKim : AppCompatActivity() {
     }
 
     override fun onStart() {
-        FirebaseController.PLAN_REF.document(CalendarActivity_SJeong.documentId.toString()).collection("CheckList").get()
+        FirebaseController.PLAN_REF
+            .document(CalendarActivity_SJeong.documentId.toString())
+            .collection("CheckList")
+            .orderBy("order", Query.Direction.ASCENDING)
+            .get()
             .addOnSuccessListener { snapshot ->
                 checklistDataList.clear()
                 for (i in snapshot){
@@ -114,13 +119,6 @@ class ChecklistActivity_CKim : AppCompatActivity() {
             checklistDataList.add(CheckList(order = checklistDataList.last().order + 1))
         }
     }
-
-    //선택한 항목 삭제
-    fun removeChecklistDataList(position: Int){
-        checklistDataList.removeAt(position)
-        adapter.notifyDataSetChanged()
-    }
-
 
     //키보드 올리기
     fun showKeyboard(){

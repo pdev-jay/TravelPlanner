@@ -16,10 +16,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityMainCyunBinding
-import com.jccgs.travelplanner_v2.jkim.AuthController
-import com.jccgs.travelplanner_v2.jkim.FirebaseController
-import com.jccgs.travelplanner_v2.jkim.Plan
-import com.jccgs.travelplanner_v2.jkim.SearchPlaceActivity_JKim
+import com.jccgs.travelplanner_v2.jkim.*
 
 class MainActivity_CYun : AppCompatActivity() {
     lateinit var binding: ActivityMainCyunBinding
@@ -69,6 +66,7 @@ class MainActivity_CYun : AppCompatActivity() {
     }
 
     override fun onStart() {
+        MapController.clearMapInfo()
         getPlans()
         customAdapter.notifyDataSetChanged()
         super.onStart()

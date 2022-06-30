@@ -2,6 +2,7 @@ package com.jccgs.travelplanner_v2.cyun
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcel
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -24,6 +25,9 @@ import com.jccgs.travelplanner_v2.databinding.ActivityDetailCyunBinding
 import com.jccgs.travelplanner_v2.databinding.BottomSheetMapBinding
 import com.jccgs.travelplanner_v2.jkim.*
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
+import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.util.*
 
 class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     lateinit var binding: ActivityDetailCyunBinding
@@ -49,6 +53,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         sheetBehavior = BottomSheetBehavior.from<ConstraintLayout>(binding.bottomSheetDetail.root)
+//        CalendarActivity_SJeong.startDate = Calendar.getInstance().set(year, month, date)
 
         sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -95,7 +100,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
             mapFragment.getMapAsync(this@DetailActivity_CYun)
         }
 
-        binding.ivDeleteDetail.setOnClickListener{
+        binding.btnDeleteDetail.setOnClickListener{
             AlertDialog.Builder(this).apply {
                 setTitle("알림")
                 setIcon(R.drawable.ic_baseline_info_24)
@@ -106,6 +111,13 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
                 setNegativeButton("취소", null)
                 show()
             }
+        }
+
+        binding.tvEditDetail.setOnClickListener {
+//            val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
+//
+//            startActivity(intent)
+            prepareToEdit()
         }
 
     }
@@ -195,6 +207,39 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, MainActivity_CYun::class.java)
             finish()
         }}
+    }
+
+    fun calDate(index: Int): Calendar{
+//        val year = selectedPlan.period[index].substring(0 until 4).toInt()
+//        val month = selectedPlan.period[index].substring(5 until 7).toInt()
+//        val date = selectedPlan.period[index].substring(8 until 10).toInt()
+        val date = selectedPlan.period[index].split("-")
+        val planStartDate = Calendar.getInstance()
+        planStartDate.set(date[0].toInt(), date[1].toInt(), date[2].toInt())
+        return planStartDate
+    }
+
+    fun setPlaceInfo(){
+        val countryAndCity = selectedPlan.mainPlace.split(",")
+
+        MapController.selectedPlaceCountryName = countryAndCity[0]
+        MapController.selectedPlaceCity = countryAndCity[1].trim()
+        MapController.selectedPlaceLatLng = LatLng(dailyPlans.first().placeLat, dailyPlans.first().placeLng)
+        MapController.selectedPlaceName = dailyPlans.first().placeName
+        MapController.selectedPlaceAddress = dailyPlans.first().placeAddress
+    }
+
+    fun prepareToEdit(){
+        val startDate = calDate(0)
+        val endDate = calDate(selectedPlan.period.size - 1)
+        CalendarActivity_SJeong.startDate = startDate
+        CalendarActivity_SJeong.endDate = endDate
+        CalendarActivity_SJeong.documentId = selectedPlan.id
+        CalendarActivity_SJeong.stringDayList = selectedPlan.period
+        setPlaceInfo()
+
+        val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
+        startActivity(intent)
     }
 
     override fun onBackPressed() {

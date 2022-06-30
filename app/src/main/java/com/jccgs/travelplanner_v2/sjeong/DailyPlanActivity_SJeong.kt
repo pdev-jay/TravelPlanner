@@ -32,6 +32,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.maps.android.clustering.ClusterManager
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
@@ -60,7 +61,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     var selectDayPlan = mutableListOf<DailyPlan>() // 선택된 날짜 일정
     var selectDay = ""
 
-    var order = 0
+//    var order = 0
 
     // 리사이클러뷰 어댑터
     lateinit var placeAdapter: DailyPlanAdapter_SJeong
@@ -142,7 +143,12 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     override fun onStart() {
-        FirebaseController.PLAN_REF.document(documentId.toString()).collection("DailyPlan").get()
+        FirebaseController.PLAN_REF
+            .document(documentId.toString())
+            .collection("DailyPlan")
+            .orderBy("date", Query.Direction.ASCENDING)
+            .orderBy("order", Query.Direction.ASCENDING)
+            .get()
             .addOnSuccessListener { snapshot ->
                 dailyPlan.clear()
                 for (i in snapshot){
@@ -179,7 +185,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     // 검색
     fun search() {
         val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
-        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
+//        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
         autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
         autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
@@ -214,17 +220,17 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     override fun onBackPressed() {
-         AlertDialog.Builder(this).apply {
-             setTitle("알림")
-             setIcon(R.drawable.ic_baseline_info_24)
-             setMessage("""메인 화면으로 돌아가시겠습니까?
+        AlertDialog.Builder(this).apply {
+            setTitle("알림")
+            setIcon(R.drawable.ic_baseline_info_24)
+            setMessage("""메인 화면으로 돌아가시겠습니까?
                  |*현재 저장된 정보가 삭제됩니다.""".trimMargin())
-             setPositiveButton("확인") { _, _ ->
-                 deleteCurrentPlan()
-             }
-             setNegativeButton("취소", null)
-             show()
-         }
+            setPositiveButton("확인") { _, _ ->
+                deleteCurrentPlan()
+            }
+            setNegativeButton("취소", null)
+            show()
+        }
     }
 
     fun deleteCurrentPlan(){
@@ -250,13 +256,16 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         mapController.clusterManager.setOnClusterItemInfoWindowLongClickListener {
             //long click시 이벤트 발생
             Log.d("Log_debug", "cluste info window long click")
-            val newDailyPlan = DailyPlan(null, order++, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+            var newDailyPlan = DailyPlan(null, 0, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+            if (!dailyPlan.isNullOrEmpty()){
+                newDailyPlan.order = dailyPlan.last().order + 1
+            }
             documentId?.let { documentId ->
                 FirebaseController
-                .PLAN_REF
-                .document(documentId)
-                .collection("DailyPlan")
-                .add(newDailyPlan)
+                    .PLAN_REF
+                    .document(documentId)
+                    .collection("DailyPlan")
+                    .add(newDailyPlan)
                     .addOnSuccessListener { docRef ->
                         docRef.update("id", docRef.id)
                             .addOnSuccessListener {
