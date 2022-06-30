@@ -18,6 +18,7 @@ import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import com.jccgs.travelplanner_v2.jkim.CheckList
 import com.jccgs.travelplanner_v2.jkim.DailyPlan
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.RecyclerItemDeco
 
@@ -58,8 +59,8 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         binding.buttomBtnLayout.btnPlan.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnPlan.setOnClickListener {
+            startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
             finish()
-            // startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
         }
 
         binding.buttomBtnLayout.btnExpenses.setOnClickListener {
@@ -69,7 +70,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
     }
 
     override fun onStart() {
-        FirebaseController.PLAN_REF.document(DailyPlanActivity_SJeong.documentId.toString()).collection("CheckList").get()
+        FirebaseController.PLAN_REF.document(CalendarActivity_SJeong.documentId.toString()).collection("CheckList").get()
             .addOnSuccessListener { snapshot ->
                 checklistDataList.clear()
                 for (i in snapshot){
@@ -114,13 +115,6 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         }
     }
 
-    //사용자가 입력한 값 넣기
-    @SuppressLint("NotifyDataSetChanged")
-//    fun addChecklistData(position: Int, data: ChecklistData_CKim){
-//        checklistDataList.set(position,data)
-//        adapter.notifyDataSetChanged()
-//    }
-
     //선택한 항목 삭제
     fun removeChecklistDataList(position: Int){
         checklistDataList.removeAt(position)
@@ -145,7 +139,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
     fun addCheckListToDB(checkList: CheckList, position: Int){
         FirebaseController
             .PLAN_REF
-            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .document(CalendarActivity_SJeong.documentId.toString())
             .collection("CheckList")
             .add(checkList)
             .addOnSuccessListener { docRef ->
@@ -159,7 +153,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
     fun removeCheckList(position: Int){
         FirebaseController
             .PLAN_REF
-            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .document(CalendarActivity_SJeong.documentId.toString())
             .collection("CheckList")
             .document(checklistDataList[position].id.toString())
             .delete()

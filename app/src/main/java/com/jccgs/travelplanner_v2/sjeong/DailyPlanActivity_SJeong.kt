@@ -38,17 +38,14 @@ import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong.Companion.documentId
+import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong.Companion.stringDayList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
 class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
-    companion object {
-        lateinit var startDate: Calendar
-        lateinit var endDate: Calendar
-        var documentId: String? = null
-    }
 
     val binding by lazy { ActivityDailyPlanSjeongBinding.inflate(layoutInflater) }
     val tabLayout by lazy { binding.dayTab }
@@ -57,9 +54,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     lateinit var mapController: MapController
     lateinit var googleMap: GoogleMap
 
-    // 여행 기간
-    var dayList: ArrayList<Parcelable>? = null
-    var stringDayList: MutableList<String> = mutableListOf()
     // 계획
     var dailyPlan: MutableList<DailyPlan> = mutableListOf<DailyPlan>() // 전체 일정
     var selectDayPlan = mutableListOf<DailyPlan>() // 선택된 날짜 일정
@@ -74,22 +68,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // 여행일자 리스트
-        dayList = intent.getParcelableArrayListExtra("dayList")
-        if(!dayList.isNullOrEmpty()) {
-            for (i in dayList!!) {
-                val date = SimpleDateFormat("MM/dd").format((i as CalendarDay).date)
-                stringDayList.add(date)
-            }
-        }
-
-        // 시작&끝 날짜
-        startDate = intent.getSerializableExtra("startDate") as Calendar
-        endDate = intent.getSerializableExtra("endDate") as Calendar
-
-        if (intent.hasExtra("documentId")){
-            documentId = intent.getStringExtra("documentId")
-        }
         // 날짜 탭 생성
         for(num in 1..stringDayList.size) {
             createTab(num, stringDayList[num-1])
@@ -167,12 +145,9 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
                 for (i in snapshot){
                     dailyPlan.add(i.toObject<DailyPlan>())
                 }
+                filterDay(selectDay)
                 placeAdapter.notifyDataSetChanged()
             }
-        Log.d("Log_debug", "$startDate")
-        Log.d("Log_debug", "$endDate")
-        Log.d("Log_debug", "$dayList")
-        Log.d("Log_debug", "$documentId")
         super.onStart()
     }
 
@@ -241,13 +216,12 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
              setIcon(R.drawable.ic_baseline_info_24)
              setMessage("""메인 화면으로 돌아가시겠습니까?
                  |*현재 저장된 정보가 삭제됩니다.""".trimMargin())
-             setPositiveButton("확인", { _, _ ->
+             setPositiveButton("확인") { _, _ ->
                  deleteCurrentPlan()
-             })
+             }
              setNegativeButton("취소", null)
              show()
          }
-//        super.onBackPressed()
     }
 
     fun deleteCurrentPlan(){
