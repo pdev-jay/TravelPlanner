@@ -16,7 +16,6 @@ import com.jccgs.travelplanner_v2.databinding.ChecklistItemCkimBinding
 import com.jccgs.travelplanner_v2.jkim.CheckList
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
-import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ViewHolder(val binding: ChecklistItemCkimBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -46,13 +45,6 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
                             val position = viewHolder.adapterPosition
                             mainActivity.removeCheckList(position)
 
-                            //삭제대상항목에 체크박스가 체크되있거나 취소선이 그어져 있으면 모두 해제함
-//                            if (binding.checkBox.isChecked) {
-//                                //취소선 제거
-//                                binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-//                                //체크 해제
-//                                binding.checkBox.isChecked = false
-//                            }
                             dialog.dismiss()
                         }
 
@@ -73,7 +65,6 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             return@setOnClickListener
         }
 
-
         return viewHolder
 
     }//end of onCreateViewHolder
@@ -92,7 +83,6 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             binding.edtInput.isFocusableInTouchMode = true
             binding.edtInput.isFocusable = true
             binding.edtInput.isClickable = true
-
             //edittext 입력시 밑줄 생성
             binding.edtInput.setBackgroundResource(R.drawable.underline_ckim)
 
@@ -105,11 +95,11 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
         binding.edtInput.requestFocus()
 
         //체크박스 클릭 이벤트
-
-        binding.checkBox.setOnCheckedChangeListener { button, isChecked ->
+        binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             updateIsChecked(position, isChecked)
         }
 
+        //삭제대상항목에 체크박스가 체크되있거나 취소선이 그어져 있으면 모두 해제함
         if (checklistDatalist[position].isChecked){
             binding.checkBox.isChecked = true
             binding.edtInput.paintFlags = binding.edtInput.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -159,10 +149,8 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
                 }else{
                     return true
                 }
-
             }
         })
-
 
         //수정
         binding.ivModify.setOnClickListener {
@@ -179,10 +167,11 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             binding.edtInput.isFocusable = true
             binding.edtInput.isClickable = true
 
-            //커서를 글자의 맨 끝으로
-            binding.edtInput.post(Runnable {binding.edtInput.setSelection(binding.edtInput.length())})
-        }
+            binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 
+            //커서를 글자의 맨 끝으로
+            binding.edtInput.post({binding.edtInput.setSelection(binding.edtInput.length())})
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -218,6 +207,4 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
                 isEditing = false
             }
     }
-
-
 }

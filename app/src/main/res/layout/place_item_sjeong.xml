@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="@+id/tvPlace" />
 
     <ImageView
-        android:id="@+id/btnPlaceDel"
+        android:id="@+id/ivPlaceDel"
         android:layout_width="25dp"
         android:layout_height="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/ivIcon"

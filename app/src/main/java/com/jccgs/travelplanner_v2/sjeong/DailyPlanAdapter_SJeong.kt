@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.PlaceItemSjeongBinding
 import com.jccgs.travelplanner_v2.jkim.DailyPlan
+import com.jccgs.travelplanner_v2.jkim.FirebaseController
 
 // 뷰홀더 클래스
 class PlaceViewHolder(val bindnig: PlaceItemSjeongBinding): RecyclerView.ViewHolder(bindnig.root)
@@ -24,6 +25,17 @@ class DailyPlanAdapter_SJeong(val dailyPlan: MutableList<DailyPlan>): RecyclerVi
         binding.ivIcon.setImageResource(R.drawable.icon_place_sjeong)
         binding.tvPlace.text = placeItem.placeName
         binding.tvAdr.text = placeItem.placeAddress
+
+        binding.ivPlaceDel.setOnClickListener {
+            FirebaseController.PLAN_REF
+                .document(CalendarActivity_SJeong.documentId.toString())
+                .collection("DailyPlan")
+                .document(dailyPlan[position].id.toString())
+                .delete()
+                .addOnSuccessListener {
+
+                }
+        }
     }
 
     override fun getItemCount(): Int = dailyPlan.size

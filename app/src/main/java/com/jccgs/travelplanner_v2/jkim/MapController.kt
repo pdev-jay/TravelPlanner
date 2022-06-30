@@ -111,6 +111,20 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         clusterManager.cluster()
     }
 
+    fun addDailyPlanMarkers(dailyPlans: MutableList<DailyPlan>){
+        clusterManager.clearItems()
+
+        for (i in dailyPlans){
+            val latLng = LatLng(i.placeLat, i.placeLng)
+
+            val clusterItem = Cluster(latLng.latitude, latLng.longitude, "${i.placeName}", "${i.placeAddress}")
+            clusterManager.addItem(clusterItem)
+            bound.include(latLng)
+            Log.d("Log_debug", "dailyplans location : ${i}")
+        }
+        clusterManager.cluster()
+    }
+
     //주변 검색시 인접한 마커 병합 및 개수 표시를 위한 Cluster
 
     inner class Cluster (lat: Double,

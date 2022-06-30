@@ -98,7 +98,7 @@ class LogInActivity_CYun : AppCompatActivity() {
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         AuthController.auth?.signInWithCredential(credential)
-            .addOnSuccessListener { result ->
+            ?.addOnSuccessListener { result ->
                 AuthController.currentUser = User(result.user?.uid, result.user?.email, result.user?.displayName)
                 addUser()
             }
