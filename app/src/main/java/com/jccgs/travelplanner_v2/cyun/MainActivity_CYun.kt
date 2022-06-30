@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
+import com.jccgs.travelplanner_v2.ckim.InfoActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityMainCyunBinding
 import com.jccgs.travelplanner_v2.jkim.*
 
@@ -56,12 +58,17 @@ class MainActivity_CYun : AppCompatActivity() {
         }
 
         binding.includeNavi.ivPhoto.setOnClickListener {
-//            val intent = Intent(this,PrevTripActivity_CKim::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, InfoActivity_CKim::class.java)
+            startActivity(intent)
         }
 
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
         Log.d("Log_debug", "${AuthController.currentUser?.displayName}")
+
+
+        binding.includeNavi.ivClose.setOnClickListener {
+            binding.drawerLayout.closeDrawers()
+        }
 
     }
 
