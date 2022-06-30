@@ -74,7 +74,7 @@ class CalendarActivity_SJeong : AppCompatActivity() {
             }
         })
         // 주말
-        calendarView.addDecorator(HolidayDeco())
+        calendarView.addDecorators(SaturdayDeco(), SundayDeco())
 
         // 날짜 선택
         calendarView.setOnDateChangedListener { widget, date, selected ->
@@ -102,10 +102,6 @@ class CalendarActivity_SJeong : AppCompatActivity() {
         // 확인 버튼
         binding.btnOk.setOnClickListener {
            savePlan()
-        }
-        // 돌아가기 버튼
-        binding.btnBack.setOnClickListener {
-            finish()
         }
     }
 
