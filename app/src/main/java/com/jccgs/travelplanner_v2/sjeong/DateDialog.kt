@@ -14,7 +14,7 @@ import java.util.*
 class DateDialog(val context: Context): OnDateSelectedListener {
     val exDialog = Dialog(context)
     val dialogView = DateDialogBinding.inflate(LayoutInflater.from(context))
-    lateinit var selectDate: Date
+    private var selectDate: Date? = null
 
     // 인터페이스 타입의 객체를 멤버 변수로 선언
     lateinit var onDialogClickListener: OnDialogClickListener
@@ -28,8 +28,7 @@ class DateDialog(val context: Context): OnDateSelectedListener {
 
         val widget = dialogView.dialogCal
         // 오늘 날짜를 달력에 선택
-        widget.selectedDate = CalendarDay.today()
-        selectDate = CalendarDay.today().date
+        widget.currentDate = CalendarDay.today()
         widget.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
         // 달력의 최대&최소 날짜 지정
         widget.state().edit()
@@ -56,6 +55,7 @@ class DateDialog(val context: Context): OnDateSelectedListener {
         widget.addDecorators(SaturdayDeco(), SundayDeco())
 
         // 확인 버튼
+        dialogView.btnOk.isEnabled = false
         dialogView.btnOk.setOnClickListener {
             val stringDate = SimpleDateFormat("yyyy-MM-dd").format(selectDate)
             onDialogClickListener.onDialogClicked(stringDate)
@@ -74,6 +74,7 @@ class DateDialog(val context: Context): OnDateSelectedListener {
         selected: Boolean
     ) {
         selectDate = date.date
+        dialogView.btnOk.isEnabled = true
     }
 
     // 내부 인터페이스
