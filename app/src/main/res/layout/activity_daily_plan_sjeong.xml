@@ -98,7 +98,7 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toEndOf="@+id/tvMainPlace"
         app:layout_constraintTop_toTopOf="parent" />
 
