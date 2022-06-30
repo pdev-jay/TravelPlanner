@@ -3,6 +3,7 @@ package com.jccgs.travelplanner_v2.gmin
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.Toast
 import com.jccgs.travelplanner_v2.databinding.UpdateDialogGminBinding
 import com.jccgs.travelplanner_v2.jkim.Expenses
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
@@ -41,12 +42,17 @@ class UpdateDialog(val context: Context){
         //수정 이벤트 처리
         binding.btnUdEnterMin.setOnClickListener{
             data.content = binding.edtUdContentMin.text.toString()
-            data.cost = binding.edtUdPayMin.text.toString().toInt()
+            var pay = binding.edtUdPayMin.text.toString()
             data.date = binding.edtUdDateMin.text.toString()
-            (context as ExpensesActivity).updateItemViewDataList(position, data)
-            (context as ExpensesActivity).getSum()
 
-            dialog.dismiss()
+            if(data.content.isNullOrEmpty() || pay.isNullOrEmpty()){
+                Toast.makeText(context,"입력하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                data.cost = pay.toInt()
+                (context as ExpensesActivity).updateItemViewDataList(position, data)
+                (context as ExpensesActivity).getSum()
+                dialog.dismiss()
+            }
         }
 
         //취소하기 이벤트 처리
