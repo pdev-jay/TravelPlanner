@@ -13,7 +13,7 @@ import com.jccgs.travelplanner_v2.jkim.FirebaseController
 // 뷰홀더 클래스
 class PlaceViewHolder(val bindnig: PlaceItemSjeongBinding): RecyclerView.ViewHolder(bindnig.root)
 
-class DailyPlanAdapter_SJeong(val dailyPlan: MutableList<DailyPlan>): RecyclerView.Adapter<PlaceViewHolder>() {
+class DailyPlanAdapter_SJeong(val dailyPlan: MutableList<DailyPlan>, val totalPlans: MutableList<DailyPlan>): RecyclerView.Adapter<PlaceViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
         val placeBinding = PlaceItemSjeongBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = PlaceViewHolder(placeBinding)
@@ -45,7 +45,9 @@ class DailyPlanAdapter_SJeong(val dailyPlan: MutableList<DailyPlan>): RecyclerVi
                 .document(dailyPlan[position].id.toString())
                 .delete()
                 .addOnSuccessListener {
-
+                    totalPlans.remove(dailyPlan[position])
+                    dailyPlan.removeAt(position)
+                    notifyDataSetChanged()
                 }
         }
     }
