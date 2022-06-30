@@ -23,12 +23,12 @@
         android:layout_height="27dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:text="장소"
+        android:ellipsize="end"
         android:ems="10"
         android:singleLine="true"
-        android:ellipsize="end"
-        android:textColor="#000000"
+        android:text="장소"
         android:textSize="20sp"
+        android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintStart_toEndOf="@+id/ivIcon"
         app:layout_constraintTop_toTopOf="parent" />
 

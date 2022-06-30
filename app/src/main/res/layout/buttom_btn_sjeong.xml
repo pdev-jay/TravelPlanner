@@ -15,7 +15,8 @@
         android:background="@drawable/buttom_btn_shape_sjeong"
         android:drawableTop="@drawable/btn_icon_plan_sjeong"
         android:outlineProvider="none"
-        android:text="여행 일정" />
+        android:text="여행 일정"
+        android:textColor="#B3000000" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCheckList"
@@ -26,7 +27,8 @@
         android:background="@drawable/buttom_btn_shape_sjeong"
         android:drawableTop="@drawable/btn_icon_checklist_sjeong"
         android:outlineProvider="none"
-        android:text="체크리스트" />
+        android:text="체크리스트"
+        android:textColor="#B3000000" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnExpenses"
@@ -37,6 +39,7 @@
         android:background="@drawable/buttom_btn_shape_sjeong"
         android:drawableTop="@drawable/btn_icon_expenses_sjeong"
         android:outlineProvider="none"
-        android:text="여행 경비" />
+        android:text="여행 경비"
+        android:textColor="#B3000000" />
 
 </LinearLayout>
