@@ -13,19 +13,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mcv_selectionColor="#9EC6D8"
+        app:mcv_selectionColor="#C3B8D9"
         app:mcv_selectionMode="range"
         app:mcv_showOtherDates="all" />
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="돌아가기"
-        app:layout_constraintBottom_toBottomOf="@+id/btnOk"
-        app:layout_constraintEnd_toStartOf="@+id/btnOk"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnOk"
@@ -33,17 +23,19 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:text="다음으로"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:outlineProvider="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnBack" />
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="여행 기간"
+        android:text="얼마나 머물고 싶으세요 ?"
         android:textColor="#000000"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/calendarView"
