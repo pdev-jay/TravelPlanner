@@ -93,7 +93,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 
         // 처음 화면 - day1
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        placeAdapter = DailyPlanAdapter_SJeong(selectDayPlan)
+        placeAdapter = DailyPlanAdapter_SJeong(selectDayPlan, dailyPlan)
         binding.recyclerView.adapter = placeAdapter
 
         // 검색
@@ -206,8 +206,8 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         })
     }
 
-    fun addPlace() {
-        val newDailyPlan = DailyPlan(null, selectDay, MapController.selectedPlaceName!!, MapController.selectedPlaceAddress!!, MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+    fun addPlace(newDailyPlan: DailyPlan) {
+//        val newDailyPlan = DailyPlan(null, selectDay, MapController.selectedPlaceName!!, MapController.selectedPlaceAddress!!, MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
         dailyPlan.add(newDailyPlan)
         selectDayPlan.add(newDailyPlan)
         placeAdapter.notifyDataSetChanged()
@@ -249,17 +249,20 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 
         mapController.clusterManager.setOnClusterItemInfoWindowLongClickListener {
             //long click시 이벤트 발생
-            Toast.makeText(this, "cluste info window long click", Toast.LENGTH_SHORT).show()
             Log.d("Log_debug", "cluste info window long click")
-            val newDailyPlan = DailyPlan(order++, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+            val newDailyPlan = DailyPlan(null, order++, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
             documentId?.let { documentId ->
                 FirebaseController
                 .PLAN_REF
                 .document(documentId)
                 .collection("DailyPlan")
                 .add(newDailyPlan)
-                    .addOnSuccessListener {
-                        addPlace()
+                    .addOnSuccessListener { docRef ->
+                        docRef.update("id", docRef.id)
+                            .addOnSuccessListener {
+                                newDailyPlan.id = docRef.id
+                                addPlace(newDailyPlan)
+                            }
                     }
             }
             true
