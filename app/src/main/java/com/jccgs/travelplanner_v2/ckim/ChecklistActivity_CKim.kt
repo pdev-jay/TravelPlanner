@@ -11,10 +11,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityChecklistCkimBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
 import com.jccgs.travelplanner_v2.jkim.CheckList
+import com.jccgs.travelplanner_v2.jkim.DailyPlan
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.RecyclerItemDeco
@@ -64,6 +66,19 @@ class ChecklistActivity_CKim : AppCompatActivity() {
             startActivity(Intent(this, ExpensesActivity::class.java))
         }
 
+    }
+
+    override fun onStart() {
+        FirebaseController.PLAN_REF.document(DailyPlanActivity_SJeong.documentId.toString()).collection("CheckList").get()
+            .addOnSuccessListener { snapshot ->
+                checklistDataList.clear()
+                for (i in snapshot){
+                    checklistDataList.add(i.toObject<CheckList>())
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+        super.onStart()
     }
 
     //edittext외 다른 화면을 터치했을 때 키보드 내리기

@@ -18,10 +18,11 @@
         <entry key="app/src/main/res/drawable/shape_itemview_cyun.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/shape_reminder_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_calendar.xml" value="0.28532608695652173" />
+        <entry key="app/src/main/res/layout/activity_checklist_ckim.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/activity_daily_plan.xml" value="0.28532608695652173" />
         <entry key="app/src/main/res/layout/activity_daily_plan_sjeong.xml" value="0.20208333333333334" />
         <entry key="app/src/main/res/layout/activity_detail_cyun.xml" value="0.28072916666666664" />
-        <entry key="app/src/main/res/layout/activity_expenses.xml" value="0.31392232259114583" />
+        <entry key="app/src/main/res/layout/activity_expenses.xml" value="0.29271199544270826" />
         <entry key="app/src/main/res/layout/activity_intro_cyun.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_log_in_cyun.xml" value="0.28125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />

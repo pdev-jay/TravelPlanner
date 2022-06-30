@@ -31,6 +31,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.firebase.firestore.ktx.toObject
 import com.google.maps.android.clustering.ClusterManager
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
@@ -160,6 +161,14 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     override fun onStart() {
+        FirebaseController.PLAN_REF.document(documentId.toString()).collection("DailyPlan").get()
+            .addOnSuccessListener { snapshot ->
+                dailyPlan.clear()
+                for (i in snapshot){
+                    dailyPlan.add(i.toObject<DailyPlan>())
+                }
+                placeAdapter.notifyDataSetChanged()
+            }
         Log.d("Log_debug", "$startDate")
         Log.d("Log_debug", "$endDate")
         Log.d("Log_debug", "$dayList")

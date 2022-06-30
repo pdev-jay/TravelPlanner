@@ -35,8 +35,6 @@ class DetailActivity_CYun : AppCompatActivity() {
 
         binding.tvLocation.text = selectedPlan.mainPlace
         binding.tvDurationTitle.text = "${selectedPlan.period.first()} ~ ${selectedPlan.period.last()}"
-        binding.edtLocation.setText(binding.tvLocation.text)
-        binding.edtCost.setText(binding.tvCost.text)
 
 
 
@@ -58,40 +56,40 @@ class DetailActivity_CYun : AppCompatActivity() {
 //        })
     }
 
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.ivCorrect -> {
-                binding.ivCorrect.visibility = View.INVISIBLE
-                binding.ivCheck.visibility = View.VISIBLE
-                binding.tvLocation.visibility = View.INVISIBLE
-                binding.edtLocation.visibility = View.VISIBLE
-
-            }
-            R.id.ivCheck -> {
-                binding.ivCheck.visibility = View.INVISIBLE
-                binding.ivCorrect.visibility = View.VISIBLE
-                binding.tvLocation.text = binding.edtLocation.text
-                binding.edtLocation.visibility = View.INVISIBLE
-                binding.tvLocation.visibility = View.VISIBLE
-
-            }
-            R.id.ivCorrect2 -> {
-                binding.ivCorrect2.visibility = View.INVISIBLE
-                binding.ivCheck2.visibility = View.VISIBLE
-                binding.tvCost.visibility = View.INVISIBLE
-                binding.edtCost.visibility = View.VISIBLE
-
-            }
-            R.id.ivCheck2 -> {
-                binding.ivCheck2.visibility = View.INVISIBLE
-                binding.ivCorrect2.visibility = View.VISIBLE
-                binding.tvCost.text = binding.edtCost.text
-                binding.edtCost.visibility = View.INVISIBLE
-                binding.tvCost.visibility = View.VISIBLE
-
-            }
-        }
-    }
+//    fun onClick(view: View) {
+//        when (view.id) {
+//            R.id.ivCorrect -> {
+//                binding.ivCorrect.visibility = View.INVISIBLE
+//                binding.ivCheck.visibility = View.VISIBLE
+//                binding.tvLocation.visibility = View.INVISIBLE
+//                binding.edtLocation.visibility = View.VISIBLE
+//
+//            }
+//            R.id.ivCheck -> {
+//                binding.ivCheck.visibility = View.INVISIBLE
+//                binding.ivCorrect.visibility = View.VISIBLE
+//                binding.tvLocation.text = binding.edtLocation.text
+//                binding.edtLocation.visibility = View.INVISIBLE
+//                binding.tvLocation.visibility = View.VISIBLE
+//
+//            }
+//            R.id.ivCorrect2 -> {
+//                binding.ivCorrect2.visibility = View.INVISIBLE
+//                binding.ivCheck2.visibility = View.VISIBLE
+//                binding.tvCost.visibility = View.INVISIBLE
+//                binding.edtCost.visibility = View.VISIBLE
+//
+//            }
+//            R.id.ivCheck2 -> {
+//                binding.ivCheck2.visibility = View.INVISIBLE
+//                binding.ivCorrect2.visibility = View.VISIBLE
+//                binding.tvCost.text = binding.edtCost.text
+//                binding.edtCost.visibility = View.INVISIBLE
+//                binding.tvCost.visibility = View.VISIBLE
+//
+//            }
+//        }
+//    }
 
     fun getDailyPlan(selectedPlanId: String){
         FirebaseController.PLAN_REF
