@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:lines="2"
         android:text="여행 지역"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:textColor="#000000"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
