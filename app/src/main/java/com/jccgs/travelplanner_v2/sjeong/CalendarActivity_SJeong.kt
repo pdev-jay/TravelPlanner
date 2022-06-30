@@ -19,19 +19,27 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarActivity_SJeong : AppCompatActivity() {
+
+    companion object{
+        var startDate: Calendar? = null
+        var endDate: Calendar? = null
+        var stringDayList: MutableList<String> = mutableListOf()
+        var documentId: String? = null
+    }
+
     val binding by lazy { ActivityCalendarBinding.inflate(layoutInflater) }
 
     var dayList: ArrayList<CalendarDay> = arrayListOf()
     var term = 0
-    // 여행 시작/끝 날짜
-    var startDate: Calendar? = null
-    var endDate: Calendar? = null
-
-    var documentId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+         startDate = null
+         endDate = null
+         stringDayList = mutableListOf()
+         documentId = null
 
         val calendarView = binding.calendarView
 
@@ -102,7 +110,6 @@ class CalendarActivity_SJeong : AppCompatActivity() {
     }
 
     fun savePlan(){
-        val stringDayList = mutableListOf<String>()
         if(!dayList.isNullOrEmpty()) {
             for (i in dayList!!) {
                 val date = SimpleDateFormat("yyyy-MM-dd").format((i as CalendarDay).date)

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -48,7 +47,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
     private var currentLocation: Location? = null
 
-    private var searchFlaag = false
+    private var searchFlag = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +74,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
                     mapController.addMark(listOf(place.latLng))
                 }
-                searchFlaag = true
+                searchFlag = true
                 MapController.selectedPlaceLatLng = place.latLng
                 MapController.selectedPlaceName = place.name
                 MapController.selectedPlaceCountryName = countryName
@@ -107,7 +106,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.tvNextSearch.setOnClickListener {
-            if (!searchFlaag && currentLocation != null){
+            if (!searchFlag && currentLocation != null){
                 val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
                 val specificPlace = geocoder.getFromLocation(currentLocation!!.latitude, currentLocation!!.longitude, 1)
                 MapController.selectedPlaceLatLng = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
@@ -124,7 +123,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onStop() {
-        searchFlaag = false
+        searchFlag = false
         super.onStop()
     }
 
@@ -134,16 +133,16 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         Log.d("Log_debug", "onMapReady")
 
 //        googleMap.isMyLocationEnabled = true
-        googleMap.uiSettings.isMyLocationButtonEnabled = true
-        googleMap.setOnMyLocationButtonClickListener {
-            getLocation()
-            true
-        }
+//        googleMap.uiSettings.isMyLocationButtonEnabled = true
+//        googleMap.setOnMyLocationButtonClickListener {
+//            getLocation()
+//            true
+//        }
 
         mapController = MapController(this, googleMap)
 
         googleMap.setOnCameraIdleListener(mapController.clusterManager)
-        googleMap.setOnMarkerClickListener(mapController.clusterManager)
+//        googleMap.setOnMarkerClickListener(mapController.clusterManager)
 
         getLocation()
     }

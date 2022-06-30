@@ -15,6 +15,7 @@ import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ChecklistItemCkimBinding
 import com.jccgs.travelplanner_v2.jkim.CheckList
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ViewHolder(val binding: ChecklistItemCkimBinding): RecyclerView.ViewHolder(binding.root)
@@ -195,7 +196,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
     fun updateIsChecked(position: Int, isChecked: Boolean){
         FirebaseController
             .PLAN_REF
-            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .document(CalendarActivity_SJeong.documentId.toString())
             .collection("CheckList")
             .document(checklistDatalist[position].id.toString())
             .update("isChecked", isChecked)
@@ -208,7 +209,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
     fun updateContent(position: Int){
         FirebaseController
             .PLAN_REF
-            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .document(CalendarActivity_SJeong.documentId.toString())
             .collection("CheckList")
             .document(checklistDatalist[position].id.toString())
             .update("content", checklistDatalist[position].content)
