@@ -142,12 +142,12 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
     }
 
     inner class CustomClusterManager(val context: Context, val googleMap: GoogleMap): ClusterManager<Cluster>(context, googleMap){
-        override fun onCameraIdle() {
-            //맵뷰 중앙을 현재 위도 경도로 지정
-            selectedPlaceLatLng = googleMap.cameraPosition.target
-
-            super.onCameraIdle()
-        }
+//        override fun onCameraIdle() {
+//            //맵뷰 중앙을 현재 위도 경도로 지정
+//            selectedPlaceLatLng = googleMap.cameraPosition.target
+//
+//            super.onCameraIdle()
+//        }
 
 
     }

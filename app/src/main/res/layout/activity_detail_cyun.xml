@@ -12,6 +12,7 @@
         android:id="@+id/tvLocation"
         android:layout_width="208dp"
         android:layout_height="30dp"
+        android:layout_marginTop="16dp"
         android:text="파리"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -19,12 +20,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvLocationTitle"
-        app:layout_constraintTop_toTopOf="@+id/edtLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLocationTitle" />
 
     <TextView
         android:id="@+id/tvCost"
-        android:layout_width="208dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:text="50000"
         android:textSize="20sp"
@@ -32,89 +34,8 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/edtLocation"
-        android:layout_width="208dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:background="@null"
-        android:ems="10"
-        android:inputType="textNoSuggestions|textVisiblePassword"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tvLocationTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocationTitle" />
-
-    <EditText
-        android:id="@+id/edtCost"
-        android:layout_width="208dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="24dp"
-        android:background="@null"
-        android:ems="10"
-        android:inputType="textNoSuggestions|textVisiblePassword"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivCorrect"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:onClick="onClick"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/tvLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
-        app:layout_constraintStart_toEndOf="@+id/tvLocation"
-        app:layout_constraintTop_toTopOf="@+id/tvLocation"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/correct" />
-
-    <ImageView
-        android:id="@+id/ivCorrect2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:onClick="onClick"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/tvCost"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCost"
-        app:layout_constraintTop_toTopOf="@+id/tvCost"
-        app:srcCompat="@drawable/correct" />
-
-    <ImageView
-        android:id="@+id/ivCheck"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:onClick="onClick"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/tvLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
-        app:layout_constraintStart_toEndOf="@+id/edtLocation"
-        app:layout_constraintTop_toTopOf="@+id/tvLocation"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/check" />
-
-    <ImageView
-        android:id="@+id/ivCheck2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:onClick="onClick"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCost"
-        app:layout_constraintTop_toTopOf="@+id/tvCost"
-        app:srcCompat="@drawable/check" />
+        app:layout_constraintStart_toStartOf="@+id/tvDurationTitle2" />
 
 
     <TextView

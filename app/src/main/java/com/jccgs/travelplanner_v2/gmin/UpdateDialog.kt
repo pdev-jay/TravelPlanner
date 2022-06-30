@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import com.jccgs.travelplanner_v2.databinding.UpdateDialogGminBinding
 import com.jccgs.travelplanner_v2.jkim.Expenses
+import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DateDialog
 
@@ -29,7 +30,7 @@ class UpdateDialog(val context: Context){
 
         binding.edtUdDateMin.setOnClickListener {
             val expensesDialog = DateDialog(context)
-            expensesDialog.showExpensesDialog(DailyPlanActivity_SJeong.startDate, DailyPlanActivity_SJeong.endDate)
+            expensesDialog.showExpensesDialog(CalendarActivity_SJeong.startDate!!, CalendarActivity_SJeong.endDate!!)
             expensesDialog.setonDialogClickListener(object: DateDialog.OnDialogClickListener{
                 override fun onDialogClicked(date: String) {
                     binding.edtUdDateMin.setText(date)
@@ -42,7 +43,6 @@ class UpdateDialog(val context: Context){
             data.content = binding.edtUdContentMin.text.toString()
             data.cost = binding.edtUdPayMin.text.toString().toInt()
             data.date = binding.edtUdDateMin.text.toString()
-//            val itemViewData = Expenses(date = edtUdDate, cost = edtUdPay, content = edtUdContent)
             (context as ExpensesActivity).updateItemViewDataList(position, data)
             (context as ExpensesActivity).getSum()
 

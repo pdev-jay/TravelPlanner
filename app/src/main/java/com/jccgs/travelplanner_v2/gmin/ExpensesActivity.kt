@@ -9,10 +9,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
+import com.jccgs.travelplanner_v2.jkim.CheckList
 import com.jccgs.travelplanner_v2.jkim.Expenses
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
 
 class ExpensesActivity : AppCompatActivity() {
@@ -44,14 +47,29 @@ class ExpensesActivity : AppCompatActivity() {
         binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.parseColor("#C3B8D9"))
         binding.buttomBtnLayout.btnPlan.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnCheckList.setBackgroundColor(Color.WHITE)
+
         binding.buttomBtnLayout.btnPlan.setOnClickListener {
+            startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
             finish()
-            // startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
         }
 
         binding.buttomBtnLayout.btnCheckList.setOnClickListener {
             startActivity(Intent(this, ChecklistActivity_CKim::class.java))
+            finish()
         }
+    }
+
+    override fun onStart() {
+        FirebaseController.PLAN_REF.document(CalendarActivity_SJeong.documentId.toString()).collection("Expenses").get()
+            .addOnSuccessListener { snapshot ->
+                itemViewDataList.clear()
+                for (i in snapshot){
+                    itemViewDataList.add(i.toObject<Expenses>())
+                }
+                customAdapter.notifyDataSetChanged()
+            }
+
+        super.onStart()
     }
 
     fun getSum(){
@@ -72,7 +90,7 @@ class ExpensesActivity : AppCompatActivity() {
         }
         FirebaseController
             .PLAN_REF
-            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .document(CalendarActivity_SJeong.documentId.toString())
             .collection("Expenses")
             .add(itemViewData)
             .addOnSuccessListener { docRef ->
@@ -88,7 +106,7 @@ class ExpensesActivity : AppCompatActivity() {
     fun updateItemViewDataList(position: Int, itemViewData: Expenses){
         FirebaseController
             .PLAN_REF
-            .document(DailyPlanActivity_SJeong.documentId.toString())
+            .document(CalendarActivity_SJeong.documentId.toString())
             .collection("Expenses")
             .document(itemViewData.id.toString())
             .set(itemViewData)
@@ -109,7 +127,7 @@ class ExpensesActivity : AppCompatActivity() {
                     DialogInterface.BUTTON_POSITIVE -> {
                         FirebaseController
                             .PLAN_REF
-                            .document(DailyPlanActivity_SJeong.documentId.toString())
+                            .document(CalendarActivity_SJeong.documentId.toString())
                             .collection("Expenses")
                             .document(itemViewData.id.toString())
                             .delete()
