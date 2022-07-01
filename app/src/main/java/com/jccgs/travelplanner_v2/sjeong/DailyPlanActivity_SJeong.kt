@@ -36,6 +36,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.maps.android.clustering.ClusterManager
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
+import com.jccgs.travelplanner_v2.cyun.DetailActivity_CYun
 import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
@@ -220,17 +221,23 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     override fun onBackPressed() {
-        AlertDialog.Builder(this).apply {
-            setTitle("알림")
-            setIcon(R.drawable.ic_baseline_info_24)
-            setMessage("""메인 화면으로 돌아가시겠습니까?
-                 |*현재 저장된 정보가 삭제됩니다.""".trimMargin())
-            setPositiveButton("확인") { _, _ ->
-                deleteCurrentPlan()
+        if (!DetailActivity_CYun.editMode) {
+            AlertDialog.Builder(this).apply {
+                setTitle("알림")
+                setIcon(R.drawable.ic_baseline_info_24)
+                setMessage(
+                    """메인 화면으로 돌아가시겠습니까?
+                 |*현재 저장된 정보가 삭제됩니다.""".trimMargin()
+                )
+                setPositiveButton("확인") { _, _ ->
+                    deleteCurrentPlan()
+                }
+                setNegativeButton("취소", null)
+                show()
             }
-            setNegativeButton("취소", null)
-            show()
+            return
         }
+        super.onBackPressed()
     }
 
     fun deleteCurrentPlan(){

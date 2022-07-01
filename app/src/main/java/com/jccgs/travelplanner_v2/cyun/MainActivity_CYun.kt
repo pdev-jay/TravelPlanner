@@ -74,6 +74,7 @@ class MainActivity_CYun : AppCompatActivity() {
 
     override fun onStart() {
         MapController.clearMapInfo()
+        plans.clear()
         getPlans()
         customAdapter.notifyDataSetChanged()
         super.onStart()

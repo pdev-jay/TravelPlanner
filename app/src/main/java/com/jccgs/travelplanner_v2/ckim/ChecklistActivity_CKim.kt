@@ -37,6 +37,7 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChecklistCkimBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
 
         checklistDataList = mutableListOf<CheckList>()
 
@@ -62,10 +63,13 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         binding.buttomBtnLayout.btnPlan.setOnClickListener {
             startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
             finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         binding.buttomBtnLayout.btnExpenses.setOnClickListener {
             startActivity(Intent(this, ExpensesActivity::class.java))
+            finish()
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
     }

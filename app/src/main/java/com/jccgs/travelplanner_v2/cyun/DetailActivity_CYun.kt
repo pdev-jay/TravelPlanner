@@ -30,6 +30,10 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*
 
 class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
+    companion object{
+        var editMode = false
+    }
+
     lateinit var binding: ActivityDetailCyunBinding
     lateinit var customAdapter: DetailAdapter_CYun
 
@@ -51,6 +55,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailCyunBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        editMode = false
 
         sheetBehavior = BottomSheetBehavior.from<ConstraintLayout>(binding.bottomSheetDetail.root)
 //        CalendarActivity_SJeong.startDate = Calendar.getInstance().set(year, month, date)
@@ -69,17 +74,13 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         sheetBehavior.isDraggable = false
         sheetBehavior.peekHeight = 0
         sheetBehavior.isHideable = true
-        bottomSheetBinding.ivArrowDown.setOnClickListener {
+        bottomSheetBinding.btnDismissMap.setOnClickListener {
             sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         if (intent.hasExtra("selectedPlan")){
             selectedPlan = intent.getSerializableExtra("selectedPlan") as Plan
         }
-
-        getDailyPlan(selectedPlan.id.toString())
-        getExpenses(selectedPlan.id.toString())
-        getCheckList(selectedPlan.id.toString())
 
         binding.tvLocation.text = selectedPlan.mainPlace
         binding.tvDurationTitle.text = "${selectedPlan.period.first()} ~ ${selectedPlan.period.last()}"
@@ -90,7 +91,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         customAdapter = DetailAdapter_CYun(this, dailyPlans)
         binding.recyclerViewDetail.adapter = customAdapter
 
-        binding.tvShowMap.setOnClickListener {
+        binding.btnShowMap.setOnClickListener {
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
@@ -113,13 +114,21 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        binding.tvEditDetail.setOnClickListener {
-//            val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
-//
-//            startActivity(intent)
+        binding.btnEditDetail.setOnClickListener {
+            editMode = true
             prepareToEdit()
         }
+    }
 
+    override fun onStart() {
+        dailyPlans.clear()
+        expensesList.clear()
+        checkList.clear()
+        getDailyPlan(selectedPlan.id.toString())
+        getExpenses(selectedPlan.id.toString())
+        getCheckList(selectedPlan.id.toString())
+
+        super.onStart()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -205,14 +214,12 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     fun deletePlan(){
         selectedPlan.id?.let { FirebaseController.PLAN_REF.document(it).delete().addOnSuccessListener {
             val intent = Intent(this, MainActivity_CYun::class.java)
+            startActivity(intent)
             finish()
         }}
     }
 
     fun calDate(index: Int): Calendar{
-//        val year = selectedPlan.period[index].substring(0 until 4).toInt()
-//        val month = selectedPlan.period[index].substring(5 until 7).toInt()
-//        val date = selectedPlan.period[index].substring(8 until 10).toInt()
         val date = selectedPlan.period[index].split("-")
         val planStartDate = Calendar.getInstance()
         planStartDate.set(date[0].toInt(), date[1].toInt(), date[2].toInt())
