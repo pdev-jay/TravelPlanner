@@ -30,10 +30,10 @@
         app:layout_constraintEnd_toStartOf="@+id/ivModify"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toTopOf="@+id/checkBox">
-
-        <requestFocus />
-
+        app:layout_constraintTop_toTopOf="@+id/checkBox"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false">
 
     </EditText>
 

@@ -65,6 +65,9 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             return@setOnClickListener
         }
 
+        //다른 액티비티로 이동했다가 돌아왔을 때 기존 항목에게 생기는 밑줄 제거
+        binding.edtInput.background = null
+
         return viewHolder
 
     }//end of onCreateViewHolder
