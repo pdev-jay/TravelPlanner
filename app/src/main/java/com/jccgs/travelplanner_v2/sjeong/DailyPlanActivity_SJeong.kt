@@ -36,6 +36,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.maps.android.clustering.ClusterManager
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
+import com.jccgs.travelplanner_v2.cyun.DetailActivity_CYun
 import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
@@ -100,7 +101,61 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         binding.recyclerView.adapter = placeAdapter
 
         // 검색
-        search()
+//        search()
+
+        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
+        autocompleteFragment.apply {
+            setCountry(MapController.selectedPlaceShortName)
+            setActivityMode(AutocompleteActivityMode.FULLSCREEN)
+            setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
+            setOnPlaceSelectedListener(object : PlaceSelectionListener {
+                override fun onPlaceSelected(place: Place) {
+//                    val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
+//
+//                    val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
+//                    val countryName = specificPlace[0].countryName
+//
+//                    Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
+                    CoroutineScope(Dispatchers.Main).launch {
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
+                        mapController.addMark(listOf(place.latLng))
+                    }
+
+                    MapController.selectedPlaceLatLng = place.latLng
+                    MapController.selectedPlaceName = place.name
+                    MapController.selectedPlaceAddress = place.address
+                }
+
+                override fun onError(status: Status) {
+                    Log.i("log", "An error occurred: $status")
+                }
+            })
+        }
+//        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
+//        autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
+//        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
+//        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+//            override fun onPlaceSelected(place: Place) {
+//                val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
+//
+//                val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
+//                val countryName = specificPlace[0].countryName
+//
+//                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
+//                    mapController.addMark(listOf(place.latLng))
+//                }
+//
+//                MapController.selectedPlaceLatLng = place.latLng
+//                MapController.selectedPlaceName = place.name
+//                MapController.selectedPlaceAddress = place.address
+//            }
+//
+//            override fun onError(status: Status) {
+//                Log.i("log", "An error occurred: $status")
+//            }
+//        })
 
         // 날짜 탭으로 화면 전환
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
@@ -136,10 +191,12 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnCheckList.setOnClickListener {
             startActivity(Intent(this, ChecklistActivity_CKim::class.java))
+            finish()
         }
 
         binding.buttomBtnLayout.btnExpenses.setOnClickListener {
             startActivity(Intent(this, ExpensesActivity::class.java))
+            finish()
         }
 
     }
@@ -185,54 +242,59 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     // 검색
-    fun search() {
-        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
+//    fun search() {
+//        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
 //        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
-        autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
-
-                val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
-                val countryName = specificPlace[0].countryName
-
-                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-                CoroutineScope(Dispatchers.Main).launch {
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
-                    mapController.addMark(listOf(place.latLng))
-                }
-
-                MapController.selectedPlaceLatLng = place.latLng
-                MapController.selectedPlaceName = place.name
-                MapController.selectedPlaceAddress = place.address
-            }
-
-            override fun onError(status: Status) {
-                Log.i("log", "An error occurred: $status")
-            }
-        })
-    }
+//        autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
+//        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
+//        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+//            override fun onPlaceSelected(place: Place) {
+//                val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
+//
+//                val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
+//                val countryName = specificPlace[0].countryName
+//
+//                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
+//                CoroutineScope(Dispatchers.Main).launch {
+//                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
+//                    mapController.addMark(listOf(place.latLng))
+//                }
+//
+//                MapController.selectedPlaceLatLng = place.latLng
+//                MapController.selectedPlaceName = place.name
+//                MapController.selectedPlaceAddress = place.address
+//            }
+//
+//            override fun onError(status: Status) {
+//                Log.i("log", "An error occurred: $status")
+//            }
+//        })
+//    }
 
     fun addPlace(newDailyPlan: DailyPlan) {
-//        val newDailyPlan = DailyPlan(null, selectDay, MapController.selectedPlaceName!!, MapController.selectedPlaceAddress!!, MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
         dailyPlan.add(newDailyPlan)
         selectDayPlan.add(newDailyPlan)
         placeAdapter.notifyDataSetChanged()
     }
 
     override fun onBackPressed() {
-        AlertDialog.Builder(this).apply {
-            setTitle("알림")
-            setIcon(R.drawable.ic_baseline_info_24)
-            setMessage("""메인 화면으로 돌아가시겠습니까?
-                 |*현재 저장된 정보가 삭제됩니다.""".trimMargin())
-            setPositiveButton("확인") { _, _ ->
-                deleteCurrentPlan()
+        if (!DetailActivity_CYun.editMode) {
+            AlertDialog.Builder(this).apply {
+                setTitle("알림")
+                setIcon(R.drawable.ic_baseline_info_24)
+                setMessage(
+                    """메인 화면으로 돌아가시겠습니까?
+                 |*현재 저장된 정보가 삭제됩니다.""".trimMargin()
+                )
+                setPositiveButton("확인") { _, _ ->
+                    deleteCurrentPlan()
+                }
+                setNegativeButton("취소", null)
+                show()
             }
-            setNegativeButton("취소", null)
-            show()
+            return
         }
+        super.onBackPressed()
     }
 
     fun deleteCurrentPlan(){

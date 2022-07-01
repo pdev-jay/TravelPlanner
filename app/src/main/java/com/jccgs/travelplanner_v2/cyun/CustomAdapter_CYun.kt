@@ -29,7 +29,7 @@ class CustomAdapter_CYun(val plans: MutableList<Plan>) : RecyclerView.Adapter<Cu
     override fun onBindViewHolder(holder: CustomAdapter_CYun.CustomViewHolder, position: Int) {
         val binding = (holder as CustomAdapter_CYun.CustomViewHolder).binding
         binding.ivTravel.setImageResource(R.drawable.airplane_ticket_24)
-        binding.tvTravel.text = plans[position].mainPlace
+        binding.tvTravel.text = "${plans[position].country} ${plans[position].city}"
         binding.tvPeriod.text = "${plans[position].period.first()} ~ ${plans[position].period.last()}"
 
         binding.root.setOnClickListener {

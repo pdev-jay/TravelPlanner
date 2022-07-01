@@ -5,15 +5,17 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.transition.Slide
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.transition.Fade
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
-import com.jccgs.travelplanner_v2.jkim.CheckList
 import com.jccgs.travelplanner_v2.jkim.Expenses
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
@@ -52,13 +54,16 @@ class ExpensesActivity : AppCompatActivity() {
         binding.buttomBtnLayout.btnPlan.setOnClickListener {
             startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
             finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         binding.buttomBtnLayout.btnCheckList.setOnClickListener {
             startActivity(Intent(this, ChecklistActivity_CKim::class.java))
             finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
     }
+
 
     override fun onStart() {
         FirebaseController.PLAN_REF
@@ -77,6 +82,7 @@ class ExpensesActivity : AppCompatActivity() {
 
         super.onStart()
     }
+
 
     fun getSum(){
         var sum = 0
