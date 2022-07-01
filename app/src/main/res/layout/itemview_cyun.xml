@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -22,9 +23,11 @@
         android:id="@+id/tvTravel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:text="여행지"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvPeriod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toEndOf="@+id/ivTravel"
         app:layout_constraintTop_toTopOf="@+id/ivTravel" />
 
@@ -32,11 +35,10 @@
         android:id="@+id/tvPeriod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
         android:text="기간 (20**-**-**)"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/ivTravel"
+        app:layout_constraintBottom_toBottomOf="@+id/ivTravel"
+        app:layout_constraintStart_toStartOf="@+id/tvTravel"
         app:layout_constraintTop_toBottomOf="@+id/tvTravel" />
 
 
