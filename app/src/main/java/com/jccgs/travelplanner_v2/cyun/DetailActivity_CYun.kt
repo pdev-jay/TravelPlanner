@@ -82,7 +82,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
             selectedPlan = intent.getSerializableExtra("selectedPlan") as Plan
         }
 
-        binding.tvLocation.text = selectedPlan.mainPlace
+        binding.tvLocation.text = selectedPlan.country
         binding.tvDurationTitle.text = "${selectedPlan.period.first()} ~ ${selectedPlan.period.last()}"
 
 
@@ -227,13 +227,12 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun setPlaceInfo(){
-        val countryAndCity = selectedPlan.mainPlace.split(",")
-
-        MapController.selectedPlaceCountryName = countryAndCity[0]
-        MapController.selectedPlaceCity = countryAndCity[1].trim()
+        MapController.selectedPlaceCountryName = selectedPlan.country
+        MapController.selectedPlaceCity = selectedPlan.city
         MapController.selectedPlaceLatLng = LatLng(dailyPlans.first().placeLat, dailyPlans.first().placeLng)
         MapController.selectedPlaceName = dailyPlans.first().placeName
         MapController.selectedPlaceAddress = dailyPlans.first().placeAddress
+        MapController.selectedPlaceShortName = selectedPlan.countryCode
     }
 
     fun prepareToEdit(){
@@ -243,7 +242,9 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         CalendarActivity_SJeong.endDate = endDate
         CalendarActivity_SJeong.documentId = selectedPlan.id
         CalendarActivity_SJeong.stringDayList = selectedPlan.period
-        setPlaceInfo()
+        if (dailyPlans.isNotEmpty()) {
+            setPlaceInfo()
+        }
 
         val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
         startActivity(intent)

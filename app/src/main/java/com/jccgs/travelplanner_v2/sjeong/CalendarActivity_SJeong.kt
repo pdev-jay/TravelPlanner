@@ -120,7 +120,7 @@ class CalendarActivity_SJeong : AppCompatActivity() {
             term = dayList.size
         }
 
-        val newPlan = Plan(null, "${MapController.selectedPlaceCountryName}, ${MapController.selectedPlaceCity}", stringDayList, mutableListOf(AuthController.currentUser?.id.toString()))
+        val newPlan = Plan(null, MapController.selectedPlaceCountryName.toString(), MapController.selectedPlaceCity.toString(), MapController.selectedPlaceShortName.toString(), stringDayList, mutableListOf(AuthController.currentUser?.id.toString()))
         FirebaseController.PLAN_REF.add(newPlan).addOnSuccessListener { docRef ->
             documentId = docRef.id
             FirebaseController.PLAN_REF.document(docRef.id).update("id", docRef.id)

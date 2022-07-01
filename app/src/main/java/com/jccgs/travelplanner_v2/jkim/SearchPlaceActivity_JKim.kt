@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.text.LocaleDisplayNames
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -24,17 +25,20 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.maps.android.ktx.awaitMap
 import com.jccgs.travelplanner_v2.R
+import com.jccgs.travelplanner_v2.cyun.DetailActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivitySearchPlaceJkimBinding
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     val binding by lazy { ActivitySearchPlaceJkimBinding.inflate(layoutInflater) }
@@ -52,43 +56,73 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        Log.d("Log_debug", "onCreate")
+        DetailActivity_CYun.editMode = false
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // 검색
-        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+        val autocompleteFragment =
+            supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
         autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
+        autocompleteFragment.setPlaceFields(
+            listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.ADDRESS
+            )
+        )
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
-
-                val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
-                val countryName = specificPlace[0].countryName
-                val cityName = specificPlace[0].adminArea
-
-                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
+//                val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
+//
+////                val specificPlace =
+//                    geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
+//                val countryName = specificPlace[0].countryName
+//                val cityName = specificPlace[0].adminArea
+//
+//                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
                 CoroutineScope(Dispatchers.Main).launch {
 //                    mapController.moveCamera(place.latLng)
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
                     mapController.addMark(listOf(place.latLng))
                 }
                 searchFlag = true
+
+                autocompleteFragment.setText("")
+
                 MapController.selectedPlaceLatLng = place.latLng
                 MapController.selectedPlaceName = place.name
-                MapController.selectedPlaceCountryName = countryName
-                MapController.selectedPlaceCity = cityName
+//                MapController.selectedPlaceCountryName = countryName
+//                MapController.selectedPlaceCity = cityName
                 MapController.selectedPlaceAddress = place.address
+                val addressComponents = place.addressComponents.asList()
 
-//                val addressComponents = place.addressComponents.asList()
-//                MapController.selectedPlaceShortName = addressComponents.run {
-//                    this.filter {
-//                        it.types[0].equals("country")
-//                    }
-//                }.run {
-//                    this[0].shortName
-//                }
+                MapController.selectedPlaceShortName = addressComponents.run {
+                    this.filter {
+                        it.types[0].equals("country")
+                    }
+                }.run {
+                    this[0].shortName
+                }
+
+                val locale = Locale("", MapController.selectedPlaceShortName)
+
+                MapController.selectedPlaceCountryName = locale.displayCountry
+
+                MapController.selectedPlaceCity = addressComponents.run {
+                    this.filter {
+                        it.types[0].equals("administrative_area_level_1")
+                    }
+                }.run {
+                        this[0].name
+                }
+
+
+//                administrative_area_level_1
+
+                Log.d("Log_debug", "locale : ${locale.displayName}")
             }
 
             override fun onError(status: Status) {
@@ -106,10 +140,15 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.tvNextSearch.setOnClickListener {
-            if (!searchFlag && currentLocation != null){
+            if (!searchFlag && currentLocation != null) {
                 val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
-                val specificPlace = geocoder.getFromLocation(currentLocation!!.latitude, currentLocation!!.longitude, 1)
-                MapController.selectedPlaceLatLng = LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
+                val specificPlace = geocoder.getFromLocation(
+                    currentLocation!!.latitude,
+                    currentLocation!!.longitude,
+                    1
+                )
+                MapController.selectedPlaceLatLng =
+                    LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
                 MapController.selectedPlaceName = specificPlace.first().featureName
                 MapController.selectedPlaceCountryName = specificPlace.first().countryName
                 MapController.selectedPlaceCity = specificPlace.first().adminArea

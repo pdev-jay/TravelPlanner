@@ -8,7 +8,10 @@ data class User(var id: String? = null,
 
 
 data class Plan(val id: String? = null,
-                val mainPlace: String = "",
+//                val mainPlace: String = "",
+                val country: String = "",
+                val city: String = "",
+                val countryCode: String = "",
                 val period: MutableList<String> = mutableListOf(),
                 val users: MutableList<String> = mutableListOf()): Serializable
 
