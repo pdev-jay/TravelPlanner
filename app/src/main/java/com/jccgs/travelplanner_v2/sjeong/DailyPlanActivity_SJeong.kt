@@ -78,6 +78,8 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         // 여행 지역을 선택하지 않았을 경우
         if(MapController.selectedPlaceCountryName.isNullOrEmpty()) {
             binding.tvMainPlace.text = "여행 지역"
+        }else if(MapController.selectedPlaceCity.isNullOrEmpty()) {
+            binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName}"
         }else {
             binding.tvMainPlace.text = """${MapController.selectedPlaceCountryName}
                 |${MapController.selectedPlaceCity}
