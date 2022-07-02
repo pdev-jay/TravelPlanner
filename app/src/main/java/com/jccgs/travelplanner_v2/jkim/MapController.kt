@@ -14,6 +14,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import com.jccgs.travelplanner_v2.BuildConfig
+import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,8 +58,8 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
 
     init {
 
-        Places.initialize(context, BuildConfig.MAPS_API_KEY)
-        placesClient = Places.createClient(context)
+//        Places.initialize(context, BuildConfig.MAPS_API_KEY)
+        placesClient = Places.createClient(MainActivity_CYun.applicationContextFromMain)
         bound = LatLngBounds.builder()
         clusterManager = CustomClusterManager(context!!, googleMap)
 

@@ -88,7 +88,7 @@ object FirebaseController {
         USER_REF.whereEqualTo("userEmail", userEmail).get()
             .addOnSuccessListener { snapshot ->
                 if (!snapshot.isEmpty){
-                    exist = true
+                   exist = true
                 }
             }
 
