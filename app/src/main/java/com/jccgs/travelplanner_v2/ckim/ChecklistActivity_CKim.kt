@@ -37,7 +37,6 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChecklistCkimBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
 
         checklistDataList = mutableListOf<CheckList>()
 
@@ -124,20 +123,6 @@ class ChecklistActivity_CKim : AppCompatActivity() {
         }
     }
 
-    //키보드 올리기
-    fun showKeyboard(){
-        val imm: InputMethodManager? = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-        binding.btnFAB.isEnabled = true
-    }
-
-    //키보드 내리기
-    fun hideKeyboard(){
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-        binding.btnFAB.isEnabled = true
-    }
-
     fun addCheckListToDB(checkList: CheckList, position: Int){
         FirebaseController
             .PLAN_REF
@@ -164,4 +149,20 @@ class ChecklistActivity_CKim : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
     }
+
+
+    //키보드 올리기
+    fun showKeyboard(){
+        val imm: InputMethodManager? = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        binding.btnFAB.isEnabled = true
+    }
+
+    //키보드 내리기
+    fun hideKeyboard(){
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        binding.btnFAB.isEnabled = true
+    }
+
 }

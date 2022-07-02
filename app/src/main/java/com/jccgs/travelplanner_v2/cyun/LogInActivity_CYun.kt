@@ -93,7 +93,6 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
-
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         AuthController.auth?.signInWithCredential(credential)
@@ -101,16 +100,6 @@ class LogInActivity_CYun : AppCompatActivity() {
                 AuthController.currentUser = User(result.user?.uid, result.user?.email, result.user?.displayName)
                 addUser()
             }
-//            ?.addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    // Sign in success, update UI with the signed-in user's information
-//                    AuthController.currentUser = User(AuthController.auth.currentUser?.uid, AuthController.auth.currentUser?.email, AuthController.auth.currentUser?.displayName)
-//                    FirebaseController.addUser()
-//                    fetchUser()
-//                } else {
-//                    // If sign in fails, display a message to the user.
-//                }
-//            }
     }
 
     fun signInWithEmail(userEmail: String, userPassword: String) {

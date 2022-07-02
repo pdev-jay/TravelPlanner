@@ -94,8 +94,6 @@ class ExpensesActivity : AppCompatActivity() {
         binding.tvTotalPayMin.text = sum.toString()
     }
 
-
-
     fun addItemViewDataList(itemViewData: Expenses) {
         if (itemViewDataList.isNotEmpty()){
             itemViewData.order = itemViewDataList.last().order + 1

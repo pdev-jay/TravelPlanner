@@ -42,14 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="메인 타이틀"
+            android:text="Travel Planner"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
+            android:fontFamily="@font/pacifico_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
 
         <ImageButton
             android:id="@+id/btnAdd1"
@@ -157,65 +157,6 @@
             app:layout_constraintTop_toBottomOf="@+id/btnAdd1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- 네비게이션 메뉴 화면-->
-
-    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--        android:id="@+id/navigationView"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_gravity="start"-->
-    <!--        android:background="@color/white"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="vertical">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/ivAirplane"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            android:layout_gravity="center"-->
-    <!--            app:layout_constraintBottom_toTopOf="@+id/btn1"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent"-->
-    <!--            app:srcCompat="@drawable/airplane_ticket_24" />-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/btn1"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="20dp"-->
-    <!--            android:text="One fragment "-->
-    <!--            app:backgroundTint="@color/black"-->
-    <!--            app:layout_constraintEnd_toEndOf="@+id/ivAirplane"-->
-    <!--            app:layout_constraintStart_toStartOf="@+id/ivAirplane"-->
-    <!--            app:layout_constraintTop_toBottomOf="@+id/ivAirplane" />-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/btn2"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="20dp"-->
-    <!--            android:text="Two fragment "-->
-    <!--            app:backgroundTint="@color/black"-->
-    <!--            app:layout_constraintEnd_toEndOf="@+id/btn1"-->
-    <!--            app:layout_constraintStart_toStartOf="@+id/btn1"-->
-    <!--            app:layout_constraintTop_toBottomOf="@+id/btn1" />-->
-
-    <!--        <Button-->
-    <!--            android:id="@+id/btnLogOut"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginBottom="150dp"-->
-    <!--            android:text="로그아웃 "-->
-    <!--            android:textColor="@color/black"-->
-    <!--            android:textStyle="bold"-->
-    <!--            app:backgroundTint="#E14D4D"-->
-    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--            app:layout_constraintEnd_toEndOf="@+id/btn2"-->
-    <!--            app:layout_constraintHorizontal_bias="0.484"-->
-    <!--            app:layout_constraintStart_toStartOf="@+id/btn2" />-->
-    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="300dp"

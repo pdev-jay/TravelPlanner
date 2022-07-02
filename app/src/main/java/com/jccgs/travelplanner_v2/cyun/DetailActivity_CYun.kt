@@ -15,11 +15,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import com.google.maps.android.clustering.view.ClusterRenderer
+import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.google.maps.android.ktx.awaitMap
+import com.google.maps.android.ktx.awaitMapLoad
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityDetailCyunBinding
 import com.jccgs.travelplanner_v2.databinding.BottomSheetMapBinding
@@ -44,6 +47,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     val bottomSheetBinding: BottomSheetMapBinding by lazy {
         binding.bottomSheetDetail
     }
+
     private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     lateinit var selectedPlan: Plan
@@ -55,28 +59,13 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailCyunBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         editMode = false
 
         sheetBehavior = BottomSheetBehavior.from<ConstraintLayout>(binding.bottomSheetDetail.root)
-//        CalendarActivity_SJeong.startDate = Calendar.getInstance().set(year, month, date)
-
-        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-        })
-
         sheetBehavior.isDraggable = false
         sheetBehavior.peekHeight = 0
         sheetBehavior.isHideable = true
-        bottomSheetBinding.btnDismissMap.setOnClickListener {
-            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
 
         if (intent.hasExtra("selectedPlan")){
             selectedPlan = intent.getSerializableExtra("selectedPlan") as Plan
@@ -86,20 +75,22 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         binding.tvDurationTitle.text = "${selectedPlan.period.first()} ~ ${selectedPlan.period.last()}"
 
 
-
         binding.recyclerViewDetail.layoutManager = LinearLayoutManager(this)
         customAdapter = DetailAdapter_CYun(this, dailyPlans)
         binding.recyclerViewDetail.adapter = customAdapter
 
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map_bottom) as SupportMapFragment
+        mapFragment.getMapAsync(this@DetailActivity_CYun)
+
+        bottomSheetBinding.btnDismissMap.setOnClickListener {
+            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
         binding.btnShowMap.setOnClickListener {
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-//        lifecycle.coroutineScope.launchWhenCreated {
-            val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map_bottom) as SupportMapFragment
-            mapFragment.getMapAsync(this@DetailActivity_CYun)
-//        }
 
         binding.btnDeleteDetail.setOnClickListener{
             AlertDialog.Builder(this).apply {
@@ -132,13 +123,23 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("Log_debug", "onMapReady")
 
         this.googleMap = googleMap
         mapController = MapController(this, this.googleMap)
 
         this.googleMap.setOnCameraIdleListener(mapController.clusterManager)
         this.googleMap.setOnMarkerClickListener(mapController.clusterManager)
+
+        mapController.clusterManager.renderer = object:
+            DefaultClusterRenderer<MapController.Cluster>(this, googleMap, mapController.clusterManager) {
+            override fun onBeforeClusterItemRendered(
+                item: MapController.Cluster,
+                markerOptions: MarkerOptions
+            ) {
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                super.onBeforeClusterItemRendered(item, markerOptions)
+            }
+        }
     }
 
 
@@ -227,9 +228,6 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun setPlaceInfo(){
-//        MapController.selectedPlaceCountryName = selectedPlan.country
-//        MapController.selectedPlaceCity = selectedPlan.city
-//        MapController.selectedPlaceShortName = selectedPlan.countryCode
         MapController.selectedPlaceLatLng = LatLng(dailyPlans.first().placeLat, dailyPlans.first().placeLng)
         MapController.selectedPlaceName = dailyPlans.first().placeName
         MapController.selectedPlaceAddress = dailyPlans.first().placeAddress

@@ -3,6 +3,7 @@ package com.jccgs.travelplanner_v2.jkim
 import android.content.Context
 import android.location.Geocoder
 import android.util.Log
+import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
@@ -11,16 +12,22 @@ import com.google.android.libraries.places.api.model.PhotoMetadata
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.clustering.view.ClusterRenderer
+import com.google.maps.android.clustering.view.DefaultClusterRenderer
+import com.google.maps.android.ktx.model.markerOptions
 import com.jccgs.travelplanner_v2.BuildConfig
+import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.log
 
-class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.OnMapClickListener,
+class MapController(val context: Context?, val googleMap: GoogleMap,
+): GoogleMap.OnMapClickListener,
     GoogleMap.OnPoiClickListener {
 
     private val WORLD = 1F
@@ -57,12 +64,10 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
     private var placesClient: PlacesClient
 
     init {
-
-//        Places.initialize(context, BuildConfig.MAPS_API_KEY)
-        placesClient = Places.createClient(MainActivity_CYun.applicationContextFromMain)
+        placesClient = Places.createClient(context)
         bound = LatLngBounds.builder()
         clusterManager = CustomClusterManager(context!!, googleMap)
-
+        googleMap.setOnMarkerClickListener(clusterManager.markerManager)
     }
 
 
@@ -79,18 +84,16 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
     override fun onPoiClick(poi: PointOfInterest) {
         val placeFields = listOf<Place.Field>(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.newInstance(poi.placeId, placeFields)
-            placesClient.fetchPlace(request).addOnSuccessListener {
-                Log.d(TAG, "${it}")
-                googleMap.clear()
+        placesClient.fetchPlace(request).addOnSuccessListener {
+            Log.d(TAG, "${it}")
+            googleMap.clear()
 
-                selectedPlaceName = it.place.name
-                selectedPlaceAddress = it.place.address
-                selectedPlaceLatLng = it.place.latLng
-                CoroutineScope(Dispatchers.Main).launch{
-                    addMark(listOf(it.place.latLng))
-                    moveCamera(it.place.latLng)
-                }
-            }
+            selectedPlaceName = it.place.name
+            selectedPlaceAddress = it.place.address
+            selectedPlaceLatLng = it.place.latLng
+            addMark(listOf(it.place.latLng))
+            moveCamera(it.place.latLng)
+        }
 
     }
 
@@ -98,29 +101,23 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
-
     fun addMark(locations: List<LatLng>){
-
         clusterManager.clearItems()
 
         for (i in locations) {
             val latLng = LatLng(i.latitude, i.longitude)
-
-            val geocoder = Geocoder(context)
-            val place = geocoder.getFromLocation(i.latitude, i.longitude, 1)
-
-
             val clusterItem = Cluster(latLng.latitude, latLng.longitude, "$selectedPlaceName", "$selectedPlaceAddress")
             clusterManager.addItem(clusterItem)
             bound.include(latLng)
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(i, STREET))
         }
         Log.d(TAG, "addMark called")
         clusterManager.cluster()
     }
 
     fun addDailyPlanMarkers(dailyPlans: MutableList<DailyPlan>){
+        googleMap.clear()
         clusterManager.clearItems()
-
         for (i in dailyPlans){
             val latLng = LatLng(i.placeLat, i.placeLng)
 
@@ -131,6 +128,21 @@ class MapController(val context: Context?, val googleMap: GoogleMap): GoogleMap.
         }
         clusterManager.cluster()
     }
+
+    val renderer = object :DefaultClusterRenderer<Cluster>(context, googleMap, clusterManager){
+
+        override fun onBeforeClusterItemRendered(item: Cluster, markerOptions: MarkerOptions) {
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            super.onBeforeClusterItemRendered(item, markerOptions)
+        }
+
+        override fun onClusterItemRendered(clusterItem: Cluster, marker: Marker) {
+            marker.showInfoWindow()
+            super.onClusterItemRendered(clusterItem, marker)
+        }
+    }
+
+
 
     //주변 검색시 인접한 마커 병합 및 개수 표시를 위한 Cluster
 

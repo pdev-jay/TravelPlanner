@@ -30,6 +30,4 @@ class DetailAdapter_CYun(val context: Context, val dailyPlans: MutableList<Daily
     }
 
     inner class ViewHolder(val binding: DetailItemViewBinding): RecyclerView.ViewHolder(binding.root)
-
-
 }

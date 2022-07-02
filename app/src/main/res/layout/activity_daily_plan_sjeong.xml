@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@+id/dayTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMainPlace" />
+        app:layout_constraintTop_toBottomOf="@id/tvMainPlace" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/dayTab"
@@ -39,7 +39,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map"
         app:tabGravity="center"
-        app:tabMode="scrollable" />
+        app:tabMode="scrollable"
+        tools:layout_editor_absoluteY="316dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -54,7 +55,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddDailyPlan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,6 +68,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_fragment" />
+
+        <ImageButton
+            android:id="@+id/btnAddDailyPlan"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/shape_add_dailyplan_button"
+            app:layout_constraintBottom_toBottomOf="@+id/search_fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/search_fragment"
+            app:layout_constraintTop_toTopOf="@+id/search_fragment"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -86,20 +102,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/btnDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="완료"
-        android:backgroundTint="?android:attr/colorBackground"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/map"
+    <ImageButton
+        android:id="@+id/btnDoneDailyPlan"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toEndOf="@+id/tvMainPlace"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tvMainPlace"
+        app:srcCompat="@drawable/icon_done" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
