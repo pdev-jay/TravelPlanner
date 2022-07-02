@@ -39,8 +39,8 @@ class LogInActivity_CYun : AppCompatActivity() {
     }
 
     override fun onStart() {
-        if (AuthController.auth.currentUser != null){
-            fetchUser()
+        if (AuthController.auth.currentUser != null && AuthController.auth.currentUser!!.isEmailVerified){
+            addUser()
         }
         super.onStart()
     }
@@ -52,7 +52,6 @@ class LogInActivity_CYun : AppCompatActivity() {
             R.id.tvSignUp ->{
                 val intent = Intent(this, SignUpActivity_CYun::class.java)
                 startActivity(intent)
-
             }
 
             R.id.btnLogin ->{
@@ -115,30 +114,34 @@ class LogInActivity_CYun : AppCompatActivity() {
     }
 
     fun signInWithEmail(userEmail: String, userPassword: String) {
+        if (userEmail.isNullOrBlank() || userPassword.isNullOrBlank()){
+            Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
         AuthController.auth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener { task ->
-            if (AuthController.auth.currentUser?.isEmailVerified == true){
-                if (task.isSuccessful){
+            if (task.isSuccessful){
                     Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    fetchUser()
-                } else {
-                    Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "이메일 인증을 진행해주세요.", Toast.LENGTH_SHORT).show()
+                    addUser()
+            }else {
+                Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     fun fetchUser(){
-        FirebaseController.USER_REF.whereEqualTo("id", AuthController.auth.currentUser?.uid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful){
-                AuthController.currentUser = task.result.toObjects<User>().first()
-                Log.d("Log_debug", "${AuthController.currentUser?.displayName}")
-                val intent = Intent(this@LogInActivity_CYun, MainActivity_CYun::class.java)
-                startActivity(intent)
-                finish()
-            }
-
+        if (AuthController.auth.currentUser?.isEmailVerified == true) {
+            FirebaseController.USER_REF.whereEqualTo("id", AuthController.auth.currentUser?.uid)
+                .get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        AuthController.currentUser = task.result.toObjects<User>().first()
+                        Log.d("Log_debug", "${AuthController.currentUser?.displayName}")
+                        val intent = Intent(this@LogInActivity_CYun, MainActivity_CYun::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+        } else {
+            Toast.makeText(this, "이메일 인증을 진행해 주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -150,7 +153,6 @@ class LogInActivity_CYun : AppCompatActivity() {
                     fetchUser()
                 }
             } else if (!result.isEmpty){
-
                 fetchUser()
             }
         }

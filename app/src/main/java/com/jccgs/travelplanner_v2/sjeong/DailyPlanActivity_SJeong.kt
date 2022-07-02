@@ -89,11 +89,11 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         selectDay = stringDayList.first()
 
         // 지도
-        lifecycle.coroutineScope.launchWhenCreated {
+//        lifecycle.coroutineScope.launchWhenCreated {
             val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-            googleMap = mapFragment.awaitMap()
+//            googleMap = mapFragment.awaitMap()
             mapFragment.getMapAsync(this@DailyPlanActivity_SJeong)
-        }
+//        }
 
         // 처음 화면 - day1
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -116,10 +116,10 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 //                    val countryName = specificPlace[0].countryName
 //
 //                    Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-                    CoroutineScope(Dispatchers.Main).launch {
+//                    CoroutineScope(Dispatchers.Main).launch {
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
                         mapController.addMark(listOf(place.latLng))
-                    }
+//                    }
 
                     MapController.selectedPlaceLatLng = place.latLng
                     MapController.selectedPlaceName = place.name
@@ -306,16 +306,16 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
     }
 
     // 구글 맵
-    override fun onMapReady(p0: GoogleMap) {
+    override fun onMapReady(googleMap: GoogleMap) {
         mapController = MapController(this, googleMap)
+        this.googleMap = googleMap
+        this.googleMap.setOnCameraIdleListener(mapController.clusterManager)
+        this.googleMap.setOnPoiClickListener(mapController)
+        this.googleMap.setOnMarkerClickListener(mapController.clusterManager)
 
-        googleMap.setOnCameraIdleListener(mapController.clusterManager)
-        googleMap.setOnPoiClickListener(mapController)
-        googleMap.setOnMarkerClickListener(mapController.clusterManager)
-
-        CoroutineScope(Dispatchers.Main).launch {
+//        CoroutineScope(Dispatchers.Main).launch {
             MapController.selectedPlaceLatLng?.let { moveCamera(it) }
-        }
+//        }
 
         mapController.clusterManager.setOnClusterItemInfoWindowLongClickListener {
             //long click시 이벤트 발생

@@ -95,11 +95,11 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        lifecycle.coroutineScope.launchWhenCreated {
+//        lifecycle.coroutineScope.launchWhenCreated {
             val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map_bottom) as SupportMapFragment
             mapFragment.getMapAsync(this@DetailActivity_CYun)
-        }
+//        }
 
         binding.btnDeleteDetail.setOnClickListener{
             AlertDialog.Builder(this).apply {
@@ -222,17 +222,17 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     fun calDate(index: Int): Calendar{
         val date = selectedPlan.period[index].split("-")
         val planStartDate = Calendar.getInstance()
-        planStartDate.set(date[0].toInt(), date[1].toInt(), date[2].toInt())
+        planStartDate.set(date[0].toInt(), date[1].toInt() - 1, date[2].toInt())
         return planStartDate
     }
 
     fun setPlaceInfo(){
-        MapController.selectedPlaceCountryName = selectedPlan.country
-        MapController.selectedPlaceCity = selectedPlan.city
+//        MapController.selectedPlaceCountryName = selectedPlan.country
+//        MapController.selectedPlaceCity = selectedPlan.city
+//        MapController.selectedPlaceShortName = selectedPlan.countryCode
         MapController.selectedPlaceLatLng = LatLng(dailyPlans.first().placeLat, dailyPlans.first().placeLng)
         MapController.selectedPlaceName = dailyPlans.first().placeName
         MapController.selectedPlaceAddress = dailyPlans.first().placeAddress
-        MapController.selectedPlaceShortName = selectedPlan.countryCode
     }
 
     fun prepareToEdit(){
@@ -242,6 +242,11 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         CalendarActivity_SJeong.endDate = endDate
         CalendarActivity_SJeong.documentId = selectedPlan.id
         CalendarActivity_SJeong.stringDayList = selectedPlan.period
+
+        MapController.selectedPlaceCountryName = selectedPlan.country
+        MapController.selectedPlaceCity = selectedPlan.city
+        MapController.selectedPlaceShortName = selectedPlan.countryCode
+
         if (dailyPlans.isNotEmpty()) {
             setPlaceInfo()
         }
