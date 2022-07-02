@@ -21,10 +21,7 @@ class DailyPlanAdapter_SJeong(val dailyPlan: MutableList<DailyPlan>, val totalPl
         // 아이템 클릭 시 지도 카메라 이동
         viewHolder.itemView.setOnClickListener {
             val placeItem = dailyPlan[viewHolder.adapterPosition]
-            val lat = placeItem.placeLat
-            val lng = placeItem.placeLng
-            val latLng = LatLng(lat, lng)
-            (parent.context as DailyPlanActivity_SJeong).moveCamera(latLng)
+            (parent.context as DailyPlanActivity_SJeong).moveCamera(placeItem)
             Log.d("log", "클릭: ${placeItem.placeName}")
         }
 

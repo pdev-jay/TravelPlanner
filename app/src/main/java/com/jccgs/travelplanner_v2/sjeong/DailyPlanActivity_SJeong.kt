@@ -27,7 +27,10 @@ import java.text.SimpleDateFormat
 import androidx.lifecycle.coroutineScope
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
@@ -89,11 +92,8 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         selectDay = stringDayList.first()
 
         // 지도
-//        lifecycle.coroutineScope.launchWhenCreated {
-            val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-//            googleMap = mapFragment.awaitMap()
-            mapFragment.getMapAsync(this@DailyPlanActivity_SJeong)
-//        }
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this@DailyPlanActivity_SJeong)
 
         // 처음 화면 - day1
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -101,7 +101,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         binding.recyclerView.adapter = placeAdapter
 
         // 검색
-//        search()
 
         val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
         autocompleteFragment.apply {
@@ -110,20 +109,13 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
             setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
             setOnPlaceSelectedListener(object : PlaceSelectionListener {
                 override fun onPlaceSelected(place: Place) {
-//                    val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
-//
-//                    val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
-//                    val countryName = specificPlace[0].countryName
-//
-//                    Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-//                    CoroutineScope(Dispatchers.Main).launch {
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
-                        mapController.addMark(listOf(place.latLng))
-//                    }
 
                     MapController.selectedPlaceLatLng = place.latLng
                     MapController.selectedPlaceName = place.name
                     MapController.selectedPlaceAddress = place.address
+
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
+                    mapController.addMark(listOf(place.latLng))
                 }
 
                 override fun onError(status: Status) {
@@ -131,31 +123,6 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
                 }
             })
         }
-//        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
-//        autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
-//        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
-//        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-//            override fun onPlaceSelected(place: Place) {
-//                val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
-//
-//                val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
-//                val countryName = specificPlace[0].countryName
-//
-//                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
-//                    mapController.addMark(listOf(place.latLng))
-//                }
-//
-//                MapController.selectedPlaceLatLng = place.latLng
-//                MapController.selectedPlaceName = place.name
-//                MapController.selectedPlaceAddress = place.address
-//            }
-//
-//            override fun onError(status: Status) {
-//                Log.i("log", "An error occurred: $status")
-//            }
-//        })
 
         // 날짜 탭으로 화면 전환
         tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
@@ -179,7 +146,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         })
 
         // 완료
-        binding.btnDone.setOnClickListener {
+        binding.btnDoneDailyPlan.setOnClickListener {
             val intent = Intent(this, MainActivity_CYun::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
@@ -199,6 +166,9 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
             finish()
         }
 
+        binding.btnAddDailyPlan.setOnClickListener{
+            addDailyPlan()
+        }
     }
 
     override fun onStart() {
@@ -241,40 +211,33 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         selectDayPlan.addAll(dailyPlan.filter { it.date.equals(selectDay) })
     }
 
-    // 검색
-//    fun search() {
-//        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.search_fragment) as AutocompleteSupportFragment
-//        autocompleteFragment.setCountry(MapController.selectedPlaceShortName)
-//        autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
-//        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS, Place.Field.ADDRESS))
-//        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-//            override fun onPlaceSelected(place: Place) {
-//                val geocoder = Geocoder(this@DailyPlanActivity_SJeong)
-//
-//                val specificPlace = geocoder.getFromLocation(place.latLng.latitude, place.latLng.longitude, 1)
-//                val countryName = specificPlace[0].countryName
-//
-//                Log.i("log", "Place: ${place.name}, ${place.id}, ${place.latLng}, ${countryName}")
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
-//                    mapController.addMark(listOf(place.latLng))
-//                }
-//
-//                MapController.selectedPlaceLatLng = place.latLng
-//                MapController.selectedPlaceName = place.name
-//                MapController.selectedPlaceAddress = place.address
-//            }
-//
-//            override fun onError(status: Status) {
-//                Log.i("log", "An error occurred: $status")
-//            }
-//        })
-//    }
-
     fun addPlace(newDailyPlan: DailyPlan) {
         dailyPlan.add(newDailyPlan)
         selectDayPlan.add(newDailyPlan)
         placeAdapter.notifyDataSetChanged()
+    }
+
+    fun addDailyPlan(){
+        var newDailyPlan = DailyPlan(null, 0, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
+
+        if (!dailyPlan.isNullOrEmpty()){
+            newDailyPlan.order = dailyPlan.last().order + 1
+        }
+
+        documentId?.let { documentId ->
+            FirebaseController
+                .PLAN_REF
+                .document(documentId)
+                .collection("DailyPlan")
+                .add(newDailyPlan)
+                .addOnSuccessListener { docRef ->
+                    docRef.update("id", docRef.id)
+                        .addOnSuccessListener {
+                            newDailyPlan.id = docRef.id
+                            addPlace(newDailyPlan)
+                        }
+                }
+        }
     }
 
     override fun onBackPressed() {
@@ -313,39 +276,24 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         this.googleMap.setOnPoiClickListener(mapController)
         this.googleMap.setOnMarkerClickListener(mapController.clusterManager)
 
-//        CoroutineScope(Dispatchers.Main).launch {
-            MapController.selectedPlaceLatLng?.let { moveCamera(it) }
-//        }
-
-        mapController.clusterManager.setOnClusterItemInfoWindowLongClickListener {
-            //long click시 이벤트 발생
-            Log.d("Log_debug", "cluste info window long click")
-            var newDailyPlan = DailyPlan(null, 0, selectDay, MapController.selectedPlaceName.toString(), MapController.selectedPlaceAddress.toString(), MapController.selectedPlaceLatLng!!.latitude, MapController.selectedPlaceLatLng!!.longitude)
-            if (!dailyPlan.isNullOrEmpty()){
-                newDailyPlan.order = dailyPlan.last().order + 1
-            }
-            documentId?.let { documentId ->
-                FirebaseController
-                    .PLAN_REF
-                    .document(documentId)
-                    .collection("DailyPlan")
-                    .add(newDailyPlan)
-                    .addOnSuccessListener { docRef ->
-                        docRef.update("id", docRef.id)
-                            .addOnSuccessListener {
-                                newDailyPlan.id = docRef.id
-                                addPlace(newDailyPlan)
-                            }
-                    }
-            }
-            true
+        MapController.selectedPlaceLatLng?.let {
+            this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
+            val initialMarker = googleMap.addMarker(
+                MarkerOptions()
+                    .position(it)
+                    .title(MapController.selectedPlaceName)
+                    .snippet(MapController.selectedPlaceAddress)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+            ))
+            initialMarker?.showInfoWindow()
         }
 
+        mapController.clusterManager.renderer = mapController.renderer
     }
 
-    fun moveCamera(latLng: LatLng){
+    fun moveCamera(dailyPlan: DailyPlan){
+        val latLng = LatLng(dailyPlan.placeLat, dailyPlan.placeLng)
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-        mapController.addMark(listOf(latLng))
+        mapController.addDailyPlanMarkers(mutableListOf(dailyPlan))
     }
-
 }

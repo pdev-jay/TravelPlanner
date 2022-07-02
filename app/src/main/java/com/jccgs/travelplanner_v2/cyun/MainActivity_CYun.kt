@@ -50,10 +50,6 @@ import kotlinx.coroutines.launch
 
 class MainActivity_CYun : AppCompatActivity() {
 
-    companion object{
-        lateinit var applicationContextFromMain: Context
-    }
-
     lateinit var binding: ActivityMainCyunBinding
 
     lateinit var customAdapter: CustomAdapter_CYun
@@ -64,8 +60,6 @@ class MainActivity_CYun : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        applicationContextFromMain = applicationContext
-
 
         if (!Places.isInitialized()) {
             Places.initialize(this, BuildConfig.MAPS_API_KEY)
@@ -83,27 +77,12 @@ class MainActivity_CYun : AppCompatActivity() {
 
         val layoutManager = GridLayoutManager(this,1, GridLayoutManager.HORIZONTAL, false)
         binding.recyclerView.layoutManager = layoutManager
-
         customAdapter = CustomAdapter_CYun(plans)
-
         binding.recyclerView.adapter = customAdapter
 
-        binding.includeNavi.tvLogout.setOnClickListener {
-            signOut()
-        }
-
-        binding.includeNavi.ivPhoto.setOnClickListener {
-            val intent = Intent(this, InfoActivity_CKim::class.java)
-            startActivity(intent)
-        }
 
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
-        Log.d("Log_debug", "${AuthController.currentUser?.displayName}")
 
-
-        binding.includeNavi.ivClose.setOnClickListener {
-            binding.drawerLayout.closeDrawers()
-        }
 
         val dialog = AlertDialog.Builder(this).apply {
             setTitle("경고")
@@ -118,6 +97,20 @@ class MainActivity_CYun : AppCompatActivity() {
 
             setNegativeButton("취소", null)
         }
+
+        binding.includeNavi.tvLogout.setOnClickListener {
+            signOut()
+        }
+
+        binding.includeNavi.ivPhoto.setOnClickListener {
+            val intent = Intent(this, InfoActivity_CKim::class.java)
+            startActivity(intent)
+        }
+
+        binding.includeNavi.ivClose.setOnClickListener {
+            binding.drawerLayout.closeDrawers()
+        }
+
         binding.includeNavi.tvDeregister.setOnClickListener {
             dialog.show()
         }
@@ -150,8 +143,8 @@ class MainActivity_CYun : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (binding.drawerLayout.isOpen){
-            binding.drawerLayout.closeDrawers()
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)){
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
             return
         }
         super.onBackPressed()

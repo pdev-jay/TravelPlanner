@@ -45,7 +45,6 @@ class SignUpActivity_CYun : AppCompatActivity() {
         Firebase.auth.createUserWithEmailAndPassword(userEmail, userPassword)
             .addOnSuccessListener { result ->
                     AuthController.currentUser = User(AuthController.auth.currentUser?.uid, AuthController.auth.currentUser?.email, displayName)
-//                    FirebaseController.USER_REF.add(AuthController.currentUser!!)
                     FirebaseController.USER_REF.document(AuthController.currentUser!!.id.toString()).set(
                         AuthController.currentUser!!
                     ).addOnSuccessListener {

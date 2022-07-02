@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.text.LocaleDisplayNames
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -55,6 +56,13 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
     private var searchFlag = false
 
+    val geocoder by lazy {
+        Geocoder(this)
+    }
+
+    lateinit var specificPlace: MutableList<Address>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -62,13 +70,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         binding.btnNextSearch.isEnabled = false
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-//        if (intent.hasExtra("currentLocation")){
-//            val latLng = intent.getDoubleArrayExtra("currentLocation")
-//            currentLocation = LatLng(latLng?.get(0) ?: 0.0, latLng?.get(1) ?: 0.0)
-//            Log.d("Log_debug", "current location = ${currentLocation}")
-//        }
         // 검색
-
         val autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
         autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
@@ -84,10 +86,6 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
 
-//                CoroutineScope(Dispatchers.Main).launch {
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
-                    mapController.addMark(listOf(place.latLng))
-//                }
                 searchFlag = true
 
                 autocompleteFragment.setText("")
@@ -95,6 +93,8 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 MapController.selectedPlaceLatLng = place.latLng
                 MapController.selectedPlaceName = place.name
                 MapController.selectedPlaceAddress = place.address
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
+                mapController.addMark(listOf(place.latLng))
                 val addressComponents = place.addressComponents.asList()
 
                 MapController.selectedPlaceShortName = addressComponents.run {
@@ -114,7 +114,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                         it.types[0].equals("administrative_area_level_1")
                     }
                 }.run {
-                        this[0].name
+                    this[0].name
                 }
             }
 
@@ -124,22 +124,15 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         })
 
         // 지도
-
-//        lifecycle.coroutineScope.launchWhenCreated {
-            val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-//            googleMap = mapFragment.awaitMap()
-            mapFragment.getMapAsync(this@SearchPlaceActivity_JKim)
-//        }
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this@SearchPlaceActivity_JKim)
 
         binding.btnNextSearch.setOnClickListener {
             if (!searchFlag && currentLocation != null) {
-                val geocoder = Geocoder(this@SearchPlaceActivity_JKim)
-                val specificPlace = geocoder.getFromLocation(
-                    currentLocation!!.latitude,
-                    currentLocation!!.longitude,
-                    1
-                )
+                Log.d("Log_debug", "$currentLocation")
+                Log.d("Log_debug", "$specificPlace")
+                MapController.selectedPlaceShortName = specificPlace[0].countryCode
                 MapController.selectedPlaceLatLng =
                     LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
                 MapController.selectedPlaceName = specificPlace.first().featureName
@@ -148,9 +141,10 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 MapController.selectedPlaceAddress = specificPlace.first().getAddressLine(0)
             }
 
-            Log.d("Log_debug", "${MapController.selectedPlaceAddress}")
-            val intent = Intent(this, CalendarActivity_SJeong::class.java)
-            startActivity(intent)
+            if (!MapController.selectedPlaceShortName.isNullOrBlank()) {
+                val intent = Intent(this, CalendarActivity_SJeong::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -162,20 +156,12 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     //****************************이 밑으로 현재 위치 구하기 및 구글 맵 카메라 이동, 현재위치 권한 요청***********************//
     @SuppressLint("MissingPermission", "SetTextI18n")
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("Log_debug", "onMapReady")
-
-//        googleMap.isMyLocationEnabled = true
-//        googleMap.uiSettings.isMyLocationButtonEnabled = true
-//        googleMap.setOnMyLocationButtonClickListener {
-//            getLocation()
-//            true
-//        }
 
         mapController = MapController(this, googleMap)
         this.googleMap = googleMap
         this.googleMap.setOnCameraIdleListener(mapController.clusterManager)
-//        googleMap.setOnMarkerClickListener(mapController.clusterManager)
-//        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(currentLocation!!.latitude, currentLocation!!.longitude), 15f))
+//        this.googleMap.setOnPoiClickListener(mapController)
+        mapController.clusterManager.renderer = mapController.renderer
         getLocation()
     }
 
@@ -183,21 +169,20 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     private fun getLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-                Log.d("Log_debug", "isLocationEnabled")
-
                 mFusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, null).addOnCompleteListener { task ->
                     val location: Location? = task.result
-                    Log.d("Log_debug", "$location")
                     if (location != null) {
-//                        CoroutineScope(Dispatchers.Main).launch {
-//                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
-//                            currentLocation = location
-                            Log.d("Log_debug", "$location")
-//                        }
-                            binding.btnNextSearch.isEnabled = true
+                        currentLocation = location
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f))
+                        specificPlace = geocoder.getFromLocation(
+                            currentLocation!!.latitude,
+                            currentLocation!!.longitude,
+                            1
+                        )
+
+                        binding.btnNextSearch.isEnabled = true
                     } else {
-                        Log.d("Log_debug", "fail")
+                        Log.d("Log_debug", "failed to get current location")
                     }
                 }
             } else {

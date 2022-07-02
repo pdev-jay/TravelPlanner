@@ -127,11 +127,11 @@ class CalendarActivity_SJeong : AppCompatActivity() {
                 .addOnSuccessListener {
                     val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
                     // 날짜를 선택하지 않았을 경우
-                    intent.putExtra("documentId", documentId)
-                    intent.putExtra("dayList", dayList)
-                    intent.putExtra("startDate", startDate)
-                    intent.putExtra("endDate", endDate)
-                    intent.putExtra("term", term)
+//                    intent.putExtra("documentId", documentId)
+//                    intent.putExtra("dayList", dayList)
+//                    intent.putExtra("startDate", startDate)
+//                    intent.putExtra("endDate", endDate)
+//                    intent.putExtra("term", term)
                     startActivity(intent)
                 }
         }

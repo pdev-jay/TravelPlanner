@@ -8,7 +8,6 @@ data class User(var id: String? = null,
 
 
 data class Plan(val id: String? = null,
-//                val mainPlace: String = "",
                 val country: String = "",
                 val city: String = "",
                 val countryCode: String = "",
@@ -24,6 +23,7 @@ data class DailyPlan(
     val placeAddress: String = "",
     val placeLat: Double = 0.0,
     val placeLng: Double = 0.0)
+
 
 data class CheckList(
     var id: String? = null,
