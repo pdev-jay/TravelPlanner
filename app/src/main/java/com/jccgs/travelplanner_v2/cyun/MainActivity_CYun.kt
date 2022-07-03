@@ -1,62 +1,44 @@
 package com.jccgs.travelplanner_v2.cyun
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
-import android.text.InputType
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.marginLeft
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import com.jccgs.travelplanner_v2.BuildConfig
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.ckim.InfoActivity_CKim
 import com.jccgs.travelplanner_v2.databinding.ActivityMainCyunBinding
 import com.jccgs.travelplanner_v2.jkim.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.text.SimpleDateFormat
 
 class MainActivity_CYun : AppCompatActivity() {
 
     lateinit var binding: ActivityMainCyunBinding
 
-    lateinit var customAdapter: CustomAdapter_CYun
+    lateinit var ingRVAdapter: IngRVAdapter_CYun
+    lateinit var upcomingRVAdapter: UpcomingRVAdapter
+    lateinit var memoriesRVAdapter: MemoriesRVAdapter
 
     var googleSignInClient: GoogleSignInClient? = null
 
-    val plans: MutableList<Plan> = mutableListOf()
+    val allPlans: MutableList<Plan> = mutableListOf()
+    val ingPlans: MutableList<Plan> = mutableListOf()
+    val upcomingPlans: MutableList<Plan> = mutableListOf()
+    val pastPlans: MutableList<Plan> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +57,21 @@ class MainActivity_CYun : AppCompatActivity() {
         //메뉴 아이콘 지정
         supportActionBar?.setHomeAsUpIndicator(R.drawable.icon_menu)
 
-        val layoutManager = GridLayoutManager(this,1, GridLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.layoutManager = layoutManager
-        customAdapter = CustomAdapter_CYun(plans)
-        binding.recyclerView.adapter = customAdapter
+//        val layoutManager = GridLayoutManager(this,1, GridLayoutManager.HORIZONTAL, false)
+        val ingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val upcomingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val memoriesLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.ingRecyclerView.layoutManager = ingLayoutManager
+        ingRVAdapter = IngRVAdapter_CYun(ingPlans)
+        binding.ingRecyclerView.adapter = ingRVAdapter
+
+        binding.upcomingRecyclerView.layoutManager = upcomingLayoutManager
+        upcomingRVAdapter = UpcomingRVAdapter(upcomingPlans)
+        binding.upcomingRecyclerView.adapter = upcomingRVAdapter
+
+        binding.memoriesRecyclerView.layoutManager = memoriesLayoutManager
+        memoriesRVAdapter = MemoriesRVAdapter(pastPlans)
+        binding.memoriesRecyclerView.adapter = memoriesRVAdapter
 
 
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
@@ -119,12 +112,32 @@ class MainActivity_CYun : AppCompatActivity() {
 
     override fun onStart() {
         MapController.clearMapInfo()
-        plans.clear()
+        allPlans.clear()
         getPlans()
-        customAdapter.notifyDataSetChanged()
+
+        Log.d("Log_debug", "${ingPlans}")
+
         super.onStart()
     }
 
+    fun calPlans(){
+        val filterIng = allPlans.filter { it.period.contains(
+            SimpleDateFormat("yyyy-MM-dd").format(
+                CalendarDay.today().date)) }.sortedBy { it.period.first() }
+        ingPlans.clear()
+        ingPlans.addAll(filterIng)
+
+        val filterUpcoming = allPlans.filter { it.period.first() >  SimpleDateFormat("yyyy-MM-dd").format(
+            CalendarDay.today().date)}.sortedBy { it.period.first() }
+        upcomingPlans.clear()
+        upcomingPlans.addAll(filterUpcoming)
+
+        val filterPast = allPlans.filter { it.period.last() <  SimpleDateFormat("yyyy-MM-dd").format(
+            CalendarDay.today().date)}.sortedByDescending { it.period.last() }
+        pastPlans.clear()
+        pastPlans.addAll(filterPast)
+
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.nav_menu_ckim,menu)
@@ -154,7 +167,7 @@ class MainActivity_CYun : AppCompatActivity() {
         when(view.id){
 
             R.id.btnAdd1 ->{
-                val intent = Intent(this, SearchPlaceActivity_JKim::class.java)
+                val intent = Intent(this, PlanTitleActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -166,12 +179,15 @@ class MainActivity_CYun : AppCompatActivity() {
             .orderBy("period", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { documents ->
-                plans.clear()
+                allPlans.clear()
                 for (document in documents){
                     val newData = document.toObject<Plan>()
-                    plans.add(newData)
+                    allPlans.add(newData)
                 }
-                customAdapter.notifyDataSetChanged()
+                calPlans()
+                ingRVAdapter.notifyDataSetChanged()
+                upcomingRVAdapter.notifyDataSetChanged()
+                memoriesRVAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Log.d("Log_debug", "error in getPlans : $e")
@@ -201,24 +217,24 @@ class MainActivity_CYun : AppCompatActivity() {
 
     fun deregisterAccount(){
 
-            FirebaseController.USER_REF.document(AuthController.currentUser?.id.toString()).delete()
+        FirebaseController.USER_REF.document(AuthController.currentUser?.id.toString()).delete()
 
-            AuthController.auth.currentUser?.delete()?.addOnSuccessListener {
-                val gso =
-                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build()
-                googleSignInClient = GoogleSignIn.getClient(this@MainActivity_CYun, gso)
-                googleSignInClient?.signOut()
+        AuthController.auth.currentUser?.delete()?.addOnSuccessListener {
+            val gso =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+            googleSignInClient = GoogleSignIn.getClient(this@MainActivity_CYun, gso)
+            googleSignInClient?.signOut()
 
-                googleSignInClient = null
-                AuthController.currentUser = null
+            googleSignInClient = null
+            AuthController.currentUser = null
 
-                val intent = Intent(this@MainActivity_CYun, LogInActivity_CYun::class.java)
-                startActivity(intent)
-                finish()
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-            }
+            val intent = Intent(this@MainActivity_CYun, LogInActivity_CYun::class.java)
+            startActivity(intent)
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
     }
 }

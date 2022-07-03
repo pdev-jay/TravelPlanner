@@ -13,14 +13,13 @@
         android:id="@+id/ivTravel"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/airplane_ticket_24" />
 
     <TextView
-        android:id="@+id/tvTravel"
+        android:id="@+id/tvPlanTitleMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="여행지"
@@ -38,8 +37,8 @@
         android:text="기간 (20**-**-**)"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivTravel"
-        app:layout_constraintStart_toStartOf="@+id/tvTravel"
-        app:layout_constraintTop_toBottomOf="@+id/tvTravel" />
+        app:layout_constraintStart_toStartOf="@+id/tvPlanTitleMain"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlanTitleMain" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".jkim.PlanTitleActivity">
+
+    <TextView
+        android:id="@+id/tvPageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="여행을 시작해 볼까요 ?"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etPlanTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="여행의 이름을 지어주세요"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/btnSetTitle"
+        app:layout_constraintStart_toStartOf="@+id/friendsRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/friendsRecyclerView" />
+
+    <ImageButton
+        android:id="@+id/btnSetTitle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_add_dailyplan_button"
+        app:layout_constraintBottom_toBottomOf="@+id/etPlanTitle"
+        app:layout_constraintEnd_toEndOf="@+id/friendsRecyclerView"
+        app:layout_constraintStart_toEndOf="@+id/etPlanTitle"
+        app:layout_constraintTop_toTopOf="@+id/etPlanTitle"
+        app:srcCompat="@drawable/ic_baseline_check_24" />
+
+
+    <EditText
+        android:id="@+id/etInviteFriend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="함께하는 분의 이메일을 입력하세요"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toStartOf="@+id/btnInviteFriend"
+        app:layout_constraintStart_toStartOf="@id/etPlanTitle"
+        app:layout_constraintTop_toBottomOf="@+id/etPlanTitle" />
+
+    <ImageButton
+        android:id="@+id/btnInviteFriend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shape_add_dailyplan_button"
+        app:layout_constraintBottom_toBottomOf="@+id/etInviteFriend"
+        app:layout_constraintEnd_toEndOf="@+id/btnSetTitle"
+        app:layout_constraintStart_toEndOf="@+id/etInviteFriend"
+        app:layout_constraintTop_toTopOf="@+id/etInviteFriend"
+        app:srcCompat="@drawable/ic_baseline_search_24" />
+
+    <Button
+        android:id="@+id/btnNextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#00ff0000"
+        android:outlineProvider="none"
+        android:text="다음으로"
+        android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPageTitle"
+        app:srcCompat="@drawable/icon_start" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friendsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tvPlanTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tvPlanTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlanTitle" />
+
+    <TextView
+        android:id="@+id/tvPlanTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

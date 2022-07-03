@@ -2,21 +2,18 @@ package com.jccgs.travelplanner_v2.jkim
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.icu.text.LocaleDisplayNames
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.coroutineScope
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -26,21 +23,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.maps.android.ktx.awaitMap
-import com.jccgs.travelplanner_v2.BuildConfig
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.cyun.DetailActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivitySearchPlaceJkimBinding
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
@@ -62,6 +52,8 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var specificPlace: MutableList<Address>
 
+    lateinit var planTitle: String
+    var invitedUsers: ArrayList<User> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +61,13 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         DetailActivity_CYun.editMode = false
         binding.btnNextSearch.isEnabled = false
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        if (intent.hasExtra("planTitle")){
+            planTitle = intent.getStringExtra("planTitle") as String
+        }
+        if (intent.hasExtra("invitedUsers")){
+            invitedUsers = intent.getSerializableExtra("invitedUsers") as ArrayList<User>
+        }
 
         // 검색
         val autocompleteFragment =
@@ -143,6 +142,8 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
             if (!MapController.selectedPlaceShortName.isNullOrBlank()) {
                 val intent = Intent(this, CalendarActivity_SJeong::class.java)
+                intent.putExtra("invitedUsers", invitedUsers)
+                intent.putExtra("planTitle", planTitle)
                 startActivity(intent)
             }
         }
@@ -197,7 +198,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getSystemService(LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
         )

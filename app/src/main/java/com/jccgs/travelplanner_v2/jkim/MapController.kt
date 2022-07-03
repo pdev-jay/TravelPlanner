@@ -17,14 +17,6 @@ import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.ClusterRenderer
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import com.google.maps.android.ktx.model.markerOptions
-import com.jccgs.travelplanner_v2.BuildConfig
-import com.jccgs.travelplanner_v2.R
-import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class MapController(val context: Context?, val googleMap: GoogleMap,
 ): GoogleMap.OnMapClickListener,
