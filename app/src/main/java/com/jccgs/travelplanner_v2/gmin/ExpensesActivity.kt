@@ -15,6 +15,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
+import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivityExpensesBinding
 import com.jccgs.travelplanner_v2.jkim.Expenses
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
@@ -62,8 +63,13 @@ class ExpensesActivity : AppCompatActivity() {
             finish()
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
-    }
 
+        binding.btnDoneExpenses.setOnClickListener {
+            val intent = Intent(this, MainActivity_CYun::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+    }
 
     override fun onStart() {
         FirebaseController.PLAN_REF

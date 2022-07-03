@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner_v2">
         <activity
+            android:name=".jkim.PlanTitleActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".ckim.InfoActivity_CKim"
             android:exported="false" />
         <activity

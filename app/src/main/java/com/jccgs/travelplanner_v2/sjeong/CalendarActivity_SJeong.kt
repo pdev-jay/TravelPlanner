@@ -8,10 +8,7 @@ import android.text.style.StyleSpan
 import android.util.Log
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityCalendarBinding
-import com.jccgs.travelplanner_v2.jkim.AuthController
-import com.jccgs.travelplanner_v2.jkim.FirebaseController
-import com.jccgs.travelplanner_v2.jkim.MapController
-import com.jccgs.travelplanner_v2.jkim.Plan
+import com.jccgs.travelplanner_v2.jkim.*
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -32,6 +29,10 @@ class CalendarActivity_SJeong : AppCompatActivity() {
     var dayList: ArrayList<CalendarDay> = arrayListOf()
     var term = 0
 
+    lateinit var planTitle: String
+    var invitedUsers: ArrayList<User> = arrayListOf()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -41,8 +42,15 @@ class CalendarActivity_SJeong : AppCompatActivity() {
          stringDayList = mutableListOf()
          documentId = null
 
-        val calendarView = binding.calendarView
+        if (intent.hasExtra("planTitle")){
+            planTitle = intent.getStringExtra("planTitle") as String
+        }
+        if (intent.hasExtra("invitedUsers")){
+            invitedUsers = intent.getSerializableExtra("invitedUsers") as ArrayList<User>
+        }
 
+
+        val calendarView = binding.calendarView
 
         // 달력을 현재 날짜로 설정
         var calendar = Calendar.getInstance()
@@ -120,18 +128,18 @@ class CalendarActivity_SJeong : AppCompatActivity() {
             term = dayList.size
         }
 
-        val newPlan = Plan(null, MapController.selectedPlaceCountryName.toString(), MapController.selectedPlaceCity.toString(), MapController.selectedPlaceShortName.toString(), stringDayList, mutableListOf(AuthController.currentUser?.id.toString()))
+        val users = mutableListOf<String>(AuthController.currentUser?.id.toString())
+        if (!invitedUsers.isNullOrEmpty()){
+            for (user in invitedUsers){
+                users.add(user.id.toString())
+            }
+        }
+        val newPlan = Plan(null, planTitle, MapController.selectedPlaceCountryName.toString(), MapController.selectedPlaceCity.toString(), MapController.selectedPlaceShortName.toString(), stringDayList, users)
         FirebaseController.PLAN_REF.add(newPlan).addOnSuccessListener { docRef ->
             documentId = docRef.id
             FirebaseController.PLAN_REF.document(docRef.id).update("id", docRef.id)
                 .addOnSuccessListener {
                     val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
-                    // 날짜를 선택하지 않았을 경우
-//                    intent.putExtra("documentId", documentId)
-//                    intent.putExtra("dayList", dayList)
-//                    intent.putExtra("startDate", startDate)
-//                    intent.putExtra("endDate", endDate)
-//                    intent.putExtra("term", term)
                     startActivity(intent)
                 }
         }

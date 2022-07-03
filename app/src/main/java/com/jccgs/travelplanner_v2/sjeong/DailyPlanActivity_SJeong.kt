@@ -1,33 +1,20 @@
 package com.jccgs.travelplanner_v2.sjeong
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
-import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.Gravity
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.material.tabs.TabLayout
-import com.google.maps.android.ktx.awaitMap
-import com.jccgs.travelplanner_v2.R
-import com.jccgs.travelplanner_v2.jkim.DailyPlan
-import com.jccgs.travelplanner_v2.jkim.MapController
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import java.text.SimpleDateFormat
-import androidx.lifecycle.coroutineScope
-import com.google.android.gms.common.api.Status
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -35,21 +22,20 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import com.google.maps.android.clustering.ClusterManager
+import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.ckim.ChecklistActivity_CKim
 import com.jccgs.travelplanner_v2.cyun.DetailActivity_CYun
 import com.jccgs.travelplanner_v2.cyun.MainActivity_CYun
 import com.jccgs.travelplanner_v2.databinding.ActivityDailyPlanSjeongBinding
 import com.jccgs.travelplanner_v2.gmin.ExpensesActivity
+import com.jccgs.travelplanner_v2.jkim.DailyPlan
 import com.jccgs.travelplanner_v2.jkim.FirebaseController
+import com.jccgs.travelplanner_v2.jkim.MapController
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong.Companion.documentId
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong.Companion.stringDayList
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
 
 class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
 

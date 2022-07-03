@@ -25,23 +25,10 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <ImageView
-            android:id="@+id/ivbackground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:srcCompat="@drawable/main_background" />
-
         <TextView
             android:id="@+id/tvMainTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="Travel Planner"
             android:textColor="@color/white"
             android:textSize="30sp"
@@ -55,9 +42,7 @@
             android:id="@+id/btnAdd1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
             android:adjustViewBounds="false"
             android:backgroundTint="#34039BE5"
             android:onClick="onClick"
@@ -73,19 +58,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="잊은 물건은 없으신가요 ?"
             android:textColor="#E6FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+            app:layout_constraintBottom_toTopOf="@id/horizontalScrollView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivbackground" />
+            app:layout_constraintTop_toBottomOf="@+id/memoriesRecyclerView" />
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:maxHeight="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +87,8 @@
                 <ImageView
                     android:id="@+id/ivPill"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
@@ -110,51 +98,112 @@
                 <ImageView
                     android:id="@+id/ivSamgakdae"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
+
                     android:clipToOutline="true"
                     android:elevation="10dp"
-
                     app:srcCompat="@drawable/samgakdae" />
 
                 <ImageView
                     android:id="@+id/ivGodaegi"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
+
                     android:clipToOutline="true"
                     android:elevation="10dp"
-
                     app:srcCompat="@drawable/godaegi" />
 
                 <ImageView
                     android:id="@+id/ivMask"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:adjustViewBounds="true"
                     android:background="@drawable/shape_reminder_cyun"
                     android:clipToOutline="true"
                     android:elevation="10dp"
-
                     app:srcCompat="@drawable/mask" />
             </LinearLayout>
         </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivbackground"
+            android:id="@+id/ingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUpcoming"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvIng" />
+
+        <TextView
+            android:id="@+id/tvIng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Ing"
+            android:textColor="#B3FFFFFF"
+            android:textSize="20sp"
+            android:fontFamily="@font/pacifico_regular"
+
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAdd1" />
+
+        <TextView
+            android:id="@+id/tvUpcoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Upcoming"
+            android:textColor="#B3FFFFFF"
+            android:textSize="20sp"
+            android:fontFamily="@font/pacifico_regular"
+            app:layout_constraintStart_toStartOf="@+id/tvIng"
+            app:layout_constraintTop_toBottomOf="@+id/ingRecyclerView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/upcomingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvHistory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvUpcoming" />
+
+        <TextView
+            android:id="@+id/tvHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Memories"
+            android:textColor="#B3FFFFFF"
+            android:textSize="20sp"
+            android:fontFamily="@font/pacifico_regular"
+            app:layout_constraintStart_toStartOf="@+id/tvUpcoming"
+            app:layout_constraintTop_toBottomOf="@+id/upcomingRecyclerView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/memoriesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvAdvertise"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHistory"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

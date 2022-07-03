@@ -4,10 +4,11 @@ import java.io.Serializable
 
 data class User(var id: String? = null,
                 val userEmail: String? = "",
-                val displayName: String? = "")
+                val displayName: String? = ""): Serializable
 
 
 data class Plan(val id: String? = null,
+                val title: String? = "",
                 val country: String = "",
                 val city: String = "",
                 val countryCode: String = "",
