@@ -34,12 +34,13 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        invitedUserDialog = AlertDialog.Builder(this)
 
+        invitedUserDialog = AlertDialog.Builder(this)
 
         binding.etPlanTitle.setOnEditorActionListener(this)
         binding.etInviteFriend.setOnEditorActionListener(this)
-        binding.btnSetTitle.background.setTint(Color.GRAY)
+        binding.btnNextTitle.isEnabled = false
+
 
         binding.btnNextTitle.setOnClickListener {
             val intent = Intent(this, SearchPlaceActivity_JKim::class.java)
@@ -57,7 +58,7 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
 
         binding.btnSetTitle.setOnClickListener {
             if (binding.etPlanTitle.text.toString().isNullOrBlank()){
-                Toast.makeText(this, "여행의 이름을 지어주세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "여행의 이름을 정해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             planTitle = binding.etPlanTitle.text.toString()
@@ -95,14 +96,6 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
 
     override fun onEditorAction(view: TextView?, action: Int, keyEvent: KeyEvent?): Boolean {
         return when (view?.id) {
-            R.id.etPlanTitle -> {
-                if (action == EditorInfo.IME_ACTION_DONE){
-                    planTitle = binding.etPlanTitle.text.toString()
-                    Log.d("Log_debug", "${planTitle}")
-
-                }
-                true
-            }
 
             R.id.etInviteFriend -> {
                 if (action == EditorInfo.IME_ACTION_DONE){
@@ -121,10 +114,20 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
     }
 
     fun searchUser(userEmail: String){
+        if (userEmail == AuthController.currentUser?.userEmail){
+            binding.etInviteFriend.text.clear()
+            return
+        }
+
         FirebaseController.USER_REF.whereEqualTo("userEmail", userEmail).get()
             .addOnSuccessListener { snapshot ->
+                Log.d("Log_debug", "snapshot : ${snapshot.isEmpty}")
                 if (!snapshot.isEmpty){
                     searchedUser = snapshot.first().toObject<User>()
+                } else {
+                    Toast.makeText(this, "검색하신 이메일이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    binding.etInviteFriend.text.clear()
+                    return@addOnSuccessListener
                 }
                 if (invitedUsers.contains(searchedUser)){
                     AlertDialog.Builder(this).apply {
@@ -144,9 +147,10 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
                     }
                     invitedUserDialog.show()
                 }
+                binding.etInviteFriend.text.clear()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "검색한 이메일이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "검색에 실패하였습니다.", Toast.LENGTH_SHORT).show()
             }
     }
 

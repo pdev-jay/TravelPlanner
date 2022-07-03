@@ -2,10 +2,7 @@ package com.jccgs.travelplanner_v2.cyun
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,21 +11,21 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import com.google.maps.android.clustering.view.ClusterRenderer
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import com.google.maps.android.ktx.awaitMap
-import com.google.maps.android.ktx.awaitMapLoad
 import com.jccgs.travelplanner_v2.R
 import com.jccgs.travelplanner_v2.databinding.ActivityDetailCyunBinding
 import com.jccgs.travelplanner_v2.databinding.BottomSheetMapBinding
 import com.jccgs.travelplanner_v2.jkim.*
 import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import com.jccgs.travelplanner_v2.sjeong.DailyPlanActivity_SJeong
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.util.*
 
 class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
@@ -41,7 +38,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var mapController: MapController
     lateinit var googleMap: GoogleMap
-
+    lateinit var registration: ListenerRegistration
 
     val bottomSheetBinding: BottomSheetMapBinding by lazy {
         binding.bottomSheetDetail
@@ -53,6 +50,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
     var dailyPlans: MutableList<DailyPlan> = mutableListOf()
     var expensesList: MutableList<Expenses> = mutableListOf()
     var checkList: MutableList<CheckList> = mutableListOf()
+    var invitedUsers: MutableList<User> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +70,8 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
 
         binding.tvLocation.text = selectedPlan.country
         binding.tvDurationTitle.text = "${selectedPlan.period.first()} ~ ${selectedPlan.period.last()}"
-
+        binding.tvPlanTitleDetail.text = selectedPlan.title
+        binding.tvWithCount.text = "${selectedPlan.users.size} 명"
 
         binding.recyclerViewDetail.layoutManager = LinearLayoutManager(this)
         customAdapter = DetailAdapter_CYun(this, dailyPlans)
@@ -108,6 +107,10 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
             editMode = true
             prepareToEdit()
         }
+
+        binding.btnEditInvitedUsers.setOnClickListener {
+            getInvitedPeople()
+        }
     }
 
     override fun onStart() {
@@ -117,9 +120,16 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         getDailyPlan(selectedPlan.id.toString())
         getExpenses(selectedPlan.id.toString())
         getCheckList(selectedPlan.id.toString())
+//        getInvitedPeople()
 
         super.onStart()
     }
+
+//    override fun onDestroy() {
+//        registration.remove()
+//        Log.d("Log_debug", "snapshot listener removed")
+//        super.onDestroy()
+//    }
 
     override fun onMapReady(googleMap: GoogleMap) {
 
@@ -210,6 +220,51 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
                 Log.d("Log_debug", "dailyPlan = failed : $it")
             }
     }
+
+    fun getInvitedPeople(){
+        invitedUsers.clear()
+        FirebaseController.USER_REF.whereIn("id", selectedPlan.users).get().addOnSuccessListener { snapshot ->
+            if (snapshot != null && !snapshot.isEmpty){
+                for (i in snapshot){
+                    val newData = i.toObject<User>()
+                    invitedUsers.add(newData)
+                }
+                Log.d("Log_debug", "getInvitedPeople : $invitedUsers")
+                val dialog = EditUsersDialog(selectedPlan.id!!, invitedUsers)
+                dialog.show(supportFragmentManager, "editUsers")
+            }
+        }
+    }
+
+
+
+//        registration = FirebaseController.USER_REF.whereIn("id", selectedPlan.users).addSnapshotListener { snapshot, e ->
+//            if (e != null){
+//                Log.d("Log_debug", "$e")
+//                return@addSnapshotListener
+//            }
+//            if (snapshot != null) {
+//                for (change in snapshot.documentChanges){
+//                    when(change.type){
+//                        DocumentChange.Type.ADDED -> {
+//                            val userId = change.document["id"].toString()
+//                            invitedUsers.add(userId)
+//                            Log.d("Log_debug", "ADDED called")
+//                        }
+//                        DocumentChange.Type.REMOVED -> {
+//                            val userId = change.document["id"].toString()
+//                            Log.d("Log_debug", "REMOVED called")
+//
+//                            invitedUsers.remove(userId)
+//                        }
+//                    }
+//                    binding.tvWithCount.text = "${invitedUsers.size} 명"
+//                }
+//            }
+//
+//
+//        }
+//    }
 
     fun deletePlan(){
         selectedPlan.id?.let { FirebaseController.PLAN_REF.document(it).delete().addOnSuccessListener {
