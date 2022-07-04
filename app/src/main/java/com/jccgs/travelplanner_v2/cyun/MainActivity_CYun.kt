@@ -43,6 +43,7 @@ class MainActivity_CYun : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Places를 사용하기 위해 초기화
         if (!Places.isInitialized()) {
             Places.initialize(this, BuildConfig.MAPS_API_KEY)
         }
@@ -57,10 +58,12 @@ class MainActivity_CYun : AppCompatActivity() {
         //메뉴 아이콘 지정
         supportActionBar?.setHomeAsUpIndicator(R.drawable.icon_menu)
 
-//        val layoutManager = GridLayoutManager(this,1, GridLayoutManager.HORIZONTAL, false)
+
+        //RecyclerView(Ing, Upcoming, Memories)
         val ingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val upcomingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val memoriesLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
         binding.ingRecyclerView.layoutManager = ingLayoutManager
         ingRVAdapter = IngRVAdapter_CYun(ingPlans)
         binding.ingRecyclerView.adapter = ingRVAdapter
@@ -76,7 +79,7 @@ class MainActivity_CYun : AppCompatActivity() {
 
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
 
-
+        //회원 탈퇴 AlertDialog
         val dialog = AlertDialog.Builder(this).apply {
             setTitle("경고")
             setIcon(R.drawable.ic_baseline_info_24)
@@ -115,14 +118,12 @@ class MainActivity_CYun : AppCompatActivity() {
         allPlans.clear()
         getPlans()
 
-        Log.d("Log_debug", "${ingPlans}")
-
         super.onStart()
     }
 
+    //모든 Plan에서 현재 진행중인 Plan, 예정중인 Plan, 지나간 Plan 나누어 각각 다른 mutableList에 저장
     fun calPlans(){
-        val filterIng = allPlans.filter { it.period.contains(
-            SimpleDateFormat("yyyy-MM-dd").format(
+        val filterIng = allPlans.filter { it.period.contains(SimpleDateFormat("yyyy-MM-dd").format(
                 CalendarDay.today().date)) }.sortedBy { it.period.first() }
         ingPlans.clear()
         ingPlans.addAll(filterIng)
@@ -138,6 +139,7 @@ class MainActivity_CYun : AppCompatActivity() {
         pastPlans.addAll(filterPast)
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.nav_menu_ckim,menu)
@@ -156,6 +158,7 @@ class MainActivity_CYun : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        //네비게이션 뷰가 열려있을 때 Back Button을 누르면 네비게이션 뷰 닫힘
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)){
             binding.drawerLayout.closeDrawer(GravityCompat.END)
             return
@@ -173,6 +176,7 @@ class MainActivity_CYun : AppCompatActivity() {
         }
     }
 
+    //전체 Plan을 Firestore에서 가져옴
     fun getPlans(){
         FirebaseController.PLAN_REF.
         whereArrayContains("users", AuthController.currentUser?.id.toString())
@@ -184,6 +188,7 @@ class MainActivity_CYun : AppCompatActivity() {
                     val newData = document.toObject<Plan>()
                     allPlans.add(newData)
                 }
+                //전체 Plan를 Ing, Upcoming, Memories로 나눠서 저장
                 calPlans()
                 ingRVAdapter.notifyDataSetChanged()
                 upcomingRVAdapter.notifyDataSetChanged()
@@ -203,8 +208,10 @@ class MainActivity_CYun : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        //Firebase Auth에서 로그아웃
         AuthController.auth.signOut()
 
+        //Google에서 로그아웃
         googleSignInClient?.signOut()
         googleSignInClient = null
         AuthController.currentUser = null
@@ -216,10 +223,12 @@ class MainActivity_CYun : AppCompatActivity() {
     }
 
     fun deregisterAccount(){
-
+        //Firestore에 저장된 User 정보 삭제
         FirebaseController.USER_REF.document(AuthController.currentUser?.id.toString()).delete()
 
+        //Firebase Auth에서 유저 삭제
         AuthController.auth.currentUser?.delete()?.addOnSuccessListener {
+            //구글 로그아웃
             val gso =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))

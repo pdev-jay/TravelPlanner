@@ -32,6 +32,8 @@ class EditUsersDialog(val documentId: String, val invitedUsers: MutableList<User
     ): View? {
         binding = BottomSheetDialogBinding.inflate(inflater, container, false)
         invitedUserDialog = AlertDialog.Builder(requireContext())
+
+        //Tag like RecyclerView LayoutManager
         val layoutManager = FlexboxLayoutManager(requireContext())
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.CENTER
@@ -39,15 +41,18 @@ class EditUsersDialog(val documentId: String, val invitedUsers: MutableList<User
 
         adapter = EditUsersRVAdapter(requireContext(), invitedUsers)
         binding.invitedRecyclerView.adapter = adapter
+
         binding.btnInviteFriendEdit.setOnClickListener {
-searchUser(binding.etInviteFriendEdit.text.toString())
+            searchUser(binding.etInviteFriendEdit.text.toString())
         }
-        binding.etInviteFriendEdit
         return binding.root
     }
 
     override fun onDestroy() {
-        (requireContext() as DetailActivity_CYun).binding.tvWithCount.text = "${invitedUsers.size.toString()} 명"
+        //Dialog가 사라졌을 때 DetailActivity_CYun에 표시된 여행 인원 숫자 변경
+        (requireContext() as DetailActivity_CYun).binding.tvWithCount.text = "${invitedUsers.size} 명"
+
+        //변경된 여행 인원에 따라 현재 Plan의 users 필드 업데이트
         (requireContext() as DetailActivity_CYun).selectedPlan.users.clear()
         for (i in invitedUsers) {
             (requireContext() as DetailActivity_CYun).selectedPlan.users.add(i.id.toString())
@@ -61,6 +66,7 @@ searchUser(binding.etInviteFriendEdit.text.toString())
             return
         }
 
+        //입력한 userEmail과 같은 이메일을 갖는 유저의 정보 가져옴
         FirebaseController.USER_REF.whereEqualTo("userEmail", userEmail).get()
             .addOnSuccessListener { snapshot ->
                 Log.d("Log_debug", "snapshot : ${snapshot.isEmpty}")
@@ -71,6 +77,8 @@ searchUser(binding.etInviteFriendEdit.text.toString())
                     binding.etInviteFriendEdit.text.clear()
                     return@addOnSuccessListener
                 }
+
+                //검색한 유저가 이미 초대되어있을 때
                 if (invitedUsers.contains(searchedUser)){
                     AlertDialog.Builder(requireContext()).apply {
                         setTitle("알림")
@@ -79,12 +87,12 @@ searchUser(binding.etInviteFriendEdit.text.toString())
                         show()
                     }
                 } else {
+                    //검색한 유저가 초대되어있지 않을 때
                     invitedUserDialog.apply {
                         setTitle("알림")
                         setMessage("${searchedUser?.displayName}님을 여행에 초대하시겠습니까 ?")
                         setPositiveButton("확인") { _, _ ->
                             searchedUser?.let { it -> invitedUsers.add(it) }
-
                             inviteUser()
                         }
                         setNegativeButton("취소", null)
@@ -98,13 +106,13 @@ searchUser(binding.etInviteFriendEdit.text.toString())
             }
     }
 
+    //변경된 invitedUsers의 id들을 현재 Plan의 users 필드에 적용
     fun inviteUser(){
-        Log.d("Log_debug", "invitedUsers size = ${invitedUsers.size}")
         val newUsers = mutableListOf<String>()
         for (user in invitedUsers){
             user.id?.let { newUsers.add(it) }
         }
-        Log.d("Log_debug", "newUsers : ${newUsers}")
+
         FirebaseController.PLAN_REF.document(documentId).update("users", newUsers).addOnSuccessListener {
             adapter.notifyDataSetChanged()
         }

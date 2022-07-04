@@ -136,7 +136,7 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         // 완료
         binding.btnDoneDailyPlan.setOnClickListener {
             val intent = Intent(this, MainActivity_CYun::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
 
@@ -145,13 +145,11 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         binding.buttomBtnLayout.btnCheckList.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnExpenses.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnCheckList.setOnClickListener {
-            startActivity(Intent(this, ChecklistActivity_CKim::class.java))
-            finish()
+            startActivity(Intent(this, ChecklistActivity_CKim::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
         }
 
         binding.buttomBtnLayout.btnExpenses.setOnClickListener {
-            startActivity(Intent(this, ExpensesActivity::class.java))
-            finish()
+            startActivity(Intent(this, ExpensesActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
         }
 
         binding.btnAddDailyPlan.setOnClickListener{

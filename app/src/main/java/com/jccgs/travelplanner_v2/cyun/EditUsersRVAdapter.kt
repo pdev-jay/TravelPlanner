@@ -29,11 +29,11 @@ class EditUsersRVAdapter(val context: Context, val users: MutableList<User>): Re
                 AlertDialog.Builder(context).apply {
                     setTitle("알림")
                     setMessage("초대를 취소하시겠습니까?")
-                    setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
+                    setPositiveButton("확인") { _, _ ->
                         users.removeAt(position)
                         removeUserFromPlan()
                         notifyDataSetChanged()
-                    })
+                    }
                     setNegativeButton("취소", null)
                     show()
                 }
@@ -48,6 +48,7 @@ class EditUsersRVAdapter(val context: Context, val users: MutableList<User>): Re
 
     inner class ViewHolder(val binding: InvitedFriendItemViewBinding): RecyclerView.ViewHolder(binding.root)
 
+    //변경된(삭제) 여행 인원의 정보(userID)를 Plan의 users 필드에 적용
     fun removeUserFromPlan(){
         val userIds = mutableListOf<String>()
         for (i in users){
@@ -56,7 +57,6 @@ class EditUsersRVAdapter(val context: Context, val users: MutableList<User>): Re
         var documentId = (context as DetailActivity_CYun).selectedPlan.id
         if (documentId != null) {
             FirebaseController.PLAN_REF.document(documentId).update("users", userIds)
-
         }
     }
 }

@@ -129,6 +129,78 @@
                     android:clipToOutline="true"
                     android:elevation="10dp"
                     app:srcCompat="@drawable/mask" />
+
+                <ImageView
+                    android:id="@+id/ivBattery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/battery" />
+                <ImageView
+                    android:id="@+id/ivMoney"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/money" />
+                <ImageView
+                    android:id="@+id/ivPen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/pen" />
+                <ImageView
+                    android:id="@+id/ivRazor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/razor" />
+                <ImageView
+                    android:id="@+id/ivSunblock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/sunblock" />
+                <ImageView
+                    android:id="@+id/ivSunglasses"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/sunglasses" />
+                <ImageView
+                    android:id="@+id/ivUmbrella"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/shape_reminder_cyun"
+                    android:clipToOutline="true"
+                    android:elevation="10dp"
+                    app:srcCompat="@drawable/umbrella" />
+
             </LinearLayout>
         </HorizontalScrollView>
 

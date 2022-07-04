@@ -21,14 +21,15 @@ class InvitedFriendsRVAdapter(val context: Context, val invitedFriendList: Array
     override fun onBindViewHolder(holder: InvitedFriendsRVAdapter.ViewHolder, position: Int) {
         holder.binding.tvFriendDisplayName.text = invitedFriendList[position].displayName.toString()
 
+        //longClick시 선택된 유저를 여행 인원에서 제외
         holder.itemView.setOnLongClickListener {
             AlertDialog.Builder(context).apply {
                 setTitle("알림")
                 setMessage("초대를 취소하시겠습니까?")
-                setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
+                setPositiveButton("확인") { _, _ ->
                     invitedFriendList.removeAt(position)
                     notifyDataSetChanged()
-                })
+                }
                 setNegativeButton("취소", null)
                 show()
             }
