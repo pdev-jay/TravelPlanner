@@ -52,18 +52,21 @@ class ExpensesActivity : AppCompatActivity() {
         binding.buttomBtnLayout.btnPlan.setBackgroundColor(Color.WHITE)
         binding.buttomBtnLayout.btnCheckList.setBackgroundColor(Color.WHITE)
 
+        //여행 일정 화면
         binding.buttomBtnLayout.btnPlan.setOnClickListener {
             startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
             finish()
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
+        //체크리스트 화면
         binding.buttomBtnLayout.btnCheckList.setOnClickListener {
             startActivity(Intent(this, ChecklistActivity_CKim::class.java))
             finish()
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
+        //여행 경비 화면
         binding.btnDoneExpenses.setOnClickListener {
             val intent = Intent(this, MainActivity_CYun::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -89,6 +92,7 @@ class ExpensesActivity : AppCompatActivity() {
         super.onStart()
     }
 
+    // 총 금액 계산 함수
     fun getSum(){
         var sum = 0
 
@@ -99,6 +103,7 @@ class ExpensesActivity : AppCompatActivity() {
         binding.tvTotalPayMin.text = sum.toString()
     }
 
+    //아이템뷰 추가 함수
     fun addItemViewDataList(itemViewData: Expenses) {
         if (itemViewDataList.isNotEmpty()){
             itemViewData.order = itemViewDataList.last().order + 1
@@ -115,9 +120,9 @@ class ExpensesActivity : AppCompatActivity() {
                 customAdapter.notifyDataSetChanged()
                 getSum()
             }
-        Toast.makeText(this, "금액 사용 기록이 추가 되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
+    //아이템뷰 수정 함수
     fun updateItemViewDataList(position: Int, itemViewData: Expenses){
         FirebaseController
             .PLAN_REF
@@ -132,6 +137,7 @@ class ExpensesActivity : AppCompatActivity() {
             }
     }
 
+    //아이템뷰 삭제 함수
     fun removeItemViewDataList(itemViewData: Expenses) {
         var dialog = Dialog(applicationContext)
 
@@ -149,10 +155,6 @@ class ExpensesActivity : AppCompatActivity() {
                             .addOnSuccessListener {
                                 itemViewDataList.remove(itemViewData)
                                 customAdapter.notifyDataSetChanged()
-                                Toast.makeText(applicationContext,
-                                    "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 getSum()
                             }
                     }
@@ -161,6 +163,7 @@ class ExpensesActivity : AppCompatActivity() {
             }
         }
 
+        //삭제 다이얼로그
         dialog = AlertDialog.Builder(this).run {
             setMessage("삭제하시겠습니까?")
             setNegativeButton("취소", eventHandler)
