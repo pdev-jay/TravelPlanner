@@ -140,7 +140,9 @@ class CalendarActivity_SJeong : AppCompatActivity() {
             FirebaseController.PLAN_REF.document(docRef.id).update("id", docRef.id)
                 .addOnSuccessListener {
                     val intent = Intent(this, DailyPlanActivity_SJeong::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
+                    finish()
                 }
         }
     }

@@ -54,23 +54,23 @@ class ExpensesActivity : AppCompatActivity() {
 
         //여행 일정 화면
         binding.buttomBtnLayout.btnPlan.setOnClickListener {
-            startActivity(Intent(this, DailyPlanActivity_SJeong::class.java))
+            startActivity(Intent(this, DailyPlanActivity_SJeong::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
             finish()
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         //체크리스트 화면
         binding.buttomBtnLayout.btnCheckList.setOnClickListener {
-            startActivity(Intent(this, ChecklistActivity_CKim::class.java))
-            finish()
+            startActivity(Intent(this, ChecklistActivity_CKim::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         //여행 경비 화면
         binding.btnDoneExpenses.setOnClickListener {
             val intent = Intent(this, MainActivity_CYun::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+            finish()
         }
     }
 

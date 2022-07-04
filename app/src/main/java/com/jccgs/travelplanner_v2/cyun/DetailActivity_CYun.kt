@@ -267,7 +267,7 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
 
     //Plan의 날짜 정보와 지역 정보를 현재 Plan으로 설정
     fun prepareToEdit(){
-        va정 startDate = calDate(0)
+        var startDate = calDate(0)
         val endDate = calDate(selectedPlan.period.size - 1)
         CalendarActivity_SJeong.startDate = startDate
         CalendarActivity_SJeong.endDate = endDate
