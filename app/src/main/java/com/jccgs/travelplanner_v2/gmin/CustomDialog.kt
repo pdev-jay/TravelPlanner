@@ -27,6 +27,7 @@ class CustomDialog(val context: Context){
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
+        //날짜칸을 클릭하면 DateDialog가 나온다
         binding.edtDateMin.setOnClickListener {
             val expensesDialog = DateDialog(context)
             expensesDialog.showExpensesDialog(CalendarActivity_SJeong.startDate!!, CalendarActivity_SJeong.endDate!!)
@@ -43,9 +44,11 @@ class CustomDialog(val context: Context){
             val edtDate = binding.edtDateMin.text.toString()
             var pay = binding.edtPayMin.text.toString()
 
+            //금액이나 내역을 입력하지않고 완료를 눌렀을때 경고 메세지를 출력한다.
             if(edtContent.isNullOrEmpty() || pay.isNullOrEmpty()) {
                 Toast.makeText(context, "입력하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
             }else {
+                //모든 정보를 입력하고 완료버튼을 눌렀을땐 값이 입력되고 창이 종료된다.
                 val edtPay = pay.toInt()
                 val ABitemViewData = Expenses(date = edtDate, content = edtContent, cost = edtPay)
                 (context as ExpensesActivity).addItemViewDataList(ABitemViewData)
