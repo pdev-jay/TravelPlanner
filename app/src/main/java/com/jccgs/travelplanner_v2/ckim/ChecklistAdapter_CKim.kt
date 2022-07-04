@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Paint
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -65,7 +66,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             return@setOnClickListener
         }
 
-        //다른 액티비티로 이동했다가 돌아왔을 때 기존 항목에게 생기는 밑줄 제거
+        //다른 액티비티로 이동했다가 돌아왔을 때 기존 항목(edittext)의 속성이 활성화되어 생기는 밑줄 제거
         binding.edtInput.background = null
 
         return viewHolder
@@ -86,15 +87,12 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             binding.edtInput.isFocusableInTouchMode = true
             binding.edtInput.isFocusable = true
             binding.edtInput.isClickable = true
+
             //edittext 입력시 밑줄 생성
             binding.edtInput.setBackgroundResource(R.drawable.underline_ckim)
-
-        }else if(binding.edtInput.text.toString() != ""){
-            //플로팅버튼 활성화
-            mainActivity.binding.btnFAB.isEnabled = true
         }
 
-        //자동 포커스
+        //포커스 주기
         binding.edtInput.requestFocus()
 
         //체크박스 클릭 이벤트
@@ -102,7 +100,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             updateIsChecked(position, isChecked)
         }
 
-        //삭제대상항목에 체크박스가 체크되있거나 취소선이 그어져 있으면 모두 해제함
+        //체크박스 체크 여부/취소선 여부 화면에 출력
         if (checklistDatalist[position].isChecked){
             binding.checkBox.isChecked = true
             binding.edtInput.paintFlags = binding.edtInput.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -111,7 +109,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
 
-        //edittext 입력 후 키보드의 완료버튼을 눌렀을 때 발생하는 이벤트
+        //키보드의 완료버튼을 눌렀을 때 발생하는 이벤트
         binding.edtInput.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onEditorAction(p0: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
@@ -131,10 +129,10 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
                             updateContent(position)
                         } else {
                             val order = checklistDatalist.last().order
-                            val data =
-                                CheckList(order = order, content = binding.edtInput.text.toString())
+                            val data = CheckList(order = order, content = binding.edtInput.text.toString())
                             mainActivity.addCheckListToDB(data, position)
                         }
+
                         binding.edtInput.setText(binding.edtInput.text.toString())
 
                         //edittext 속성 비활성화
@@ -158,8 +156,11 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
         //수정
         binding.ivModify.setOnClickListener {
             isEditing = true
+
             //키보드 올리기
             mainActivity.showKeyboard()
+
+            //포커스 주기
             binding.edtInput.requestFocus()
 
             //edittext에 밑줄 생성
@@ -170,6 +171,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
             binding.edtInput.isFocusable = true
             binding.edtInput.isClickable = true
 
+            //취소선 제거
             binding.edtInput.paintFlags = binding.edtInput.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
 
             //커서를 글자의 맨 끝으로
@@ -177,6 +179,7 @@ class ChecklistAdapter_CKim(val checklistDatalist: MutableList<CheckList>): Recy
         }
     }
 
+    //각각의 뷰들이 고유의 뷰타입을 갖게되어 스크롤시 뷰가 꼬이는 현상을 방지해줌
     override fun getItemViewType(position: Int): Int {
         return position
     }
