@@ -120,7 +120,6 @@ class ExpensesActivity : AppCompatActivity() {
                 customAdapter.notifyDataSetChanged()
                 getSum()
             }
-        Toast.makeText(this, "금액 사용 기록이 추가 되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     //아이템뷰 수정 함수
@@ -156,10 +155,6 @@ class ExpensesActivity : AppCompatActivity() {
                             .addOnSuccessListener {
                                 itemViewDataList.remove(itemViewData)
                                 customAdapter.notifyDataSetChanged()
-                                Toast.makeText(applicationContext,
-                                    "${itemViewData.date}에 ${itemViewData.content} 기록이 삭제 되었습니다",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 getSum()
                             }
                     }
