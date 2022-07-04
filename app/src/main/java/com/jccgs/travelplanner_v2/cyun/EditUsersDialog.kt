@@ -32,6 +32,8 @@ class EditUsersDialog(val documentId: String, val invitedUsers: MutableList<User
     ): View? {
         binding = BottomSheetDialogBinding.inflate(inflater, container, false)
         invitedUserDialog = AlertDialog.Builder(requireContext())
+
+        //Tag like RecyclerView LayoutManager
         val layoutManager = FlexboxLayoutManager(requireContext())
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.CENTER
@@ -40,7 +42,7 @@ class EditUsersDialog(val documentId: String, val invitedUsers: MutableList<User
         adapter = EditUsersRVAdapter(requireContext(), invitedUsers)
         binding.invitedRecyclerView.adapter = adapter
         binding.btnInviteFriendEdit.setOnClickListener {
-searchUser(binding.etInviteFriendEdit.text.toString())
+            searchUser(binding.etInviteFriendEdit.text.toString())
         }
         binding.etInviteFriendEdit
         return binding.root

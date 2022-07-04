@@ -34,6 +34,7 @@ import com.jccgs.travelplanner_v2.sjeong.CalendarActivity_SJeong
 import java.util.*
 
 class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
+
     val binding by lazy { ActivitySearchPlaceJkimBinding.inflate(layoutInflater) }
 
     lateinit var mapController: MapController
@@ -58,8 +59,10 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         DetailActivity_CYun.editMode = false
         binding.btnNextSearch.isEnabled = false
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (intent.hasExtra("planTitle")){
@@ -69,10 +72,12 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
             invitedUsers = intent.getSerializableExtra("invitedUsers") as ArrayList<User>
         }
 
-        // 검색
+        // 장소 검색을 위한 autoCompleteFragment
         val autocompleteFragment =
             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
         autocompleteFragment.setActivityMode(AutocompleteActivityMode.FULLSCREEN)
+
+        //검색을 통해 받아올 정보
         autocompleteFragment.setPlaceFields(
             listOf(
                 Place.Field.ID,
@@ -82,6 +87,8 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 Place.Field.ADDRESS
             )
         )
+
+        //검색 결과를 선택했을 때
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
 
@@ -92,10 +99,13 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 MapController.selectedPlaceLatLng = place.latLng
                 MapController.selectedPlaceName = place.name
                 MapController.selectedPlaceAddress = place.address
+
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 15f))
                 mapController.addMark(listOf(place.latLng))
-                val addressComponents = place.addressComponents.asList()
 
+
+                //국가 코드 얻기
+                val addressComponents = place.addressComponents.asList()
                 MapController.selectedPlaceShortName = addressComponents.run {
                     this.filter {
                         it.types[0].equals("country")
@@ -104,10 +114,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                     this[0].shortName
                 }
 
-                val locale = Locale("", MapController.selectedPlaceShortName)
-
-                MapController.selectedPlaceCountryName = locale.displayCountry
-
+                //도시 이름 얻기
                 MapController.selectedPlaceCity = addressComponents.run {
                     this.filter {
                         it.types[0].equals("administrative_area_level_1").or(it.types[0].equals("country"))
@@ -115,6 +122,10 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 }.run {
                     this[0].name
                 }
+
+                //국가코드에서 국가명 얻기
+                val locale = Locale("", MapController.selectedPlaceShortName)
+                MapController.selectedPlaceCountryName = locale.displayCountry
             }
 
             override fun onError(status: Status) {
@@ -128,9 +139,8 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this@SearchPlaceActivity_JKim)
 
         binding.btnNextSearch.setOnClickListener {
+            //검색을 하지 않고 다음 버튼을 눌렀을 때(현재 위치는 얻은 상황)
             if (!searchFlag && currentLocation != null) {
-                Log.d("Log_debug", "$currentLocation")
-                Log.d("Log_debug", "$specificPlace")
                 MapController.selectedPlaceShortName = specificPlace[0].countryCode
                 MapController.selectedPlaceLatLng =
                     LatLng(currentLocation!!.latitude, currentLocation!!.longitude)
@@ -140,6 +150,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                 MapController.selectedPlaceAddress = specificPlace.first().getAddressLine(0)
             }
 
+            //국가코드를 얻었을 경우에만 다음 페이지로 이동 가능
             if (!MapController.selectedPlaceShortName.isNullOrBlank()) {
                 val intent = Intent(this, CalendarActivity_SJeong::class.java)
                 intent.putExtra("invitedUsers", invitedUsers)
@@ -156,12 +167,11 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
     //****************************이 밑으로 현재 위치 구하기 및 구글 맵 카메라 이동, 현재위치 권한 요청***********************//
     @SuppressLint("MissingPermission", "SetTextI18n")
-    override fun onMapReady(googleMap: GoogleMap) {
 
+    override fun onMapReady(googleMap: GoogleMap) {
         mapController = MapController(this, googleMap)
         this.googleMap = googleMap
         this.googleMap.setOnCameraIdleListener(mapController.clusterManager)
-//        this.googleMap.setOnPoiClickListener(mapController)
         mapController.clusterManager.renderer = mapController.renderer
         getLocation()
     }
@@ -181,6 +191,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
                             1
                         )
 
+                        //현재 위치를 얻었을 때 다음 버튼이 활성화
                         binding.btnNextSearch.isEnabled = true
                     } else {
                         Log.d("Log_debug", "failed to get current location")

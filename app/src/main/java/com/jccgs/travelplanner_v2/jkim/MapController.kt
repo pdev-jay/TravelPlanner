@@ -22,16 +22,11 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
 ): GoogleMap.OnMapClickListener,
     GoogleMap.OnPoiClickListener {
 
-    private val WORLD = 1F
-    private val CONTINENT = 5F
-    private val CITY = 10F
     private val STREET = 15F
-    private val BUILDING = 20F
-
 
     val TAG = "Log_debug"
 
-    //다른 액티비티에서 장소 정보에 접근하기 위한 compnion object
+    //다른 액티비티에서 장소 정보에 접근하기 위한 companion object
     companion object {
         var selectedPlaceCountryName: String? = ""
         var selectedPlaceName: String? = ""
@@ -74,15 +69,17 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
 
     //장소 마커 클릭 시 이벤트
     override fun onPoiClick(poi: PointOfInterest) {
+        //선택된 장소(Poi)의 LatLng, Name, Address 구함
         val placeFields = listOf<Place.Field>(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.newInstance(poi.placeId, placeFields)
         placesClient.fetchPlace(request).addOnSuccessListener {
-            Log.d(TAG, "${it}")
+            //다른 마커들 지움
             googleMap.clear()
 
             selectedPlaceName = it.place.name
             selectedPlaceAddress = it.place.address
             selectedPlaceLatLng = it.place.latLng
+
             addMark(listOf(it.place.latLng))
             moveCamera(it.place.latLng)
         }
@@ -93,7 +90,9 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
     }
 
+    //단일 마커를 위한 함수
     fun addMark(locations: List<LatLng>){
+        //이 전에 추가된 마커들 삭제
         clusterManager.clearItems()
 
         for (i in locations) {
@@ -103,12 +102,14 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
             bound.include(latLng)
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(i, STREET))
         }
-        Log.d(TAG, "addMark called")
+
+        //추가된 마커들을 지도에 표시
         clusterManager.cluster()
     }
 
+    //일정에 저장된 모든 장소에 마커를 추가하기 위한 함수
     fun addDailyPlanMarkers(dailyPlans: MutableList<DailyPlan>){
-        googleMap.clear()
+//        googleMap.clear()
         clusterManager.clearItems()
         for (i in dailyPlans){
             val latLng = LatLng(i.placeLat, i.placeLng)
@@ -121,6 +122,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
         clusterManager.cluster()
     }
 
+    //마커의 색, 마커가 표시될 때 infoWindow를 자동으로 띄우기 위한 Renderer 클래스
     val renderer = object :DefaultClusterRenderer<Cluster>(context, googleMap, clusterManager){
 
         override fun onBeforeClusterItemRendered(item: Cluster, markerOptions: MarkerOptions) {
@@ -134,7 +136,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
         }
     }
 
-    //주변 검색시 인접한 마커 병합 및 개수 표시를 위한 Cluster
+    //주변 검색시 인접한 마커 병합 및 개수 표시를 위한 ClusterItem과 ClusterManager
     inner class Cluster (lat: Double,
                          lng: Double,
                          title: String,

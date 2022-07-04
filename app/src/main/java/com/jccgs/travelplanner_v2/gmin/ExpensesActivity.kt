@@ -83,12 +83,11 @@ class ExpensesActivity : AppCompatActivity() {
                 for (i in snapshot){
                     itemViewDataList.add(i.toObject<Expenses>())
                 }
+                getSum()
                 customAdapter.notifyDataSetChanged()
             }
-
         super.onStart()
     }
-
 
     fun getSum(){
         var sum = 0
