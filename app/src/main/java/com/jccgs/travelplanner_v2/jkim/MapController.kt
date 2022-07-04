@@ -134,10 +134,7 @@ class MapController(val context: Context?, val googleMap: GoogleMap,
         }
     }
 
-
-
     //주변 검색시 인접한 마커 병합 및 개수 표시를 위한 Cluster
-
     inner class Cluster (lat: Double,
                          lng: Double,
                          title: String,

@@ -224,8 +224,8 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <include android:id="@+id/bottom_sheet_detail"
-    layout="@layout/bottom_sheet_map"/>
+    <include android:id="@+id/bottom_sheet_detail"
+        layout="@layout/bottom_sheet_map"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

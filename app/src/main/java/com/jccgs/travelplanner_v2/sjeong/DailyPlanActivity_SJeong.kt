@@ -155,7 +155,9 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
         }
 
         binding.btnAddDailyPlan.setOnClickListener{
-            addDailyPlan()
+            if (!MapController.selectedPlaceName.isNullOrBlank()) {
+                addDailyPlan()
+            }
         }
     }
 
