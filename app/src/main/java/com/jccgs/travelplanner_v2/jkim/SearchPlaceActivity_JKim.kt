@@ -110,7 +110,7 @@ class SearchPlaceActivity_JKim : AppCompatActivity(), OnMapReadyCallback {
 
                 MapController.selectedPlaceCity = addressComponents.run {
                     this.filter {
-                        it.types[0].equals("administrative_area_level_1")
+                        it.types[0].equals("administrative_area_level_1").or(it.types[0].equals("country"))
                     }
                 }.run {
                     this[0].name

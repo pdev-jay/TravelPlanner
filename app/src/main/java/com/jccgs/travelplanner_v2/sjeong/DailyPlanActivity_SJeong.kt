@@ -65,10 +65,12 @@ class DailyPlanActivity_SJeong : AppCompatActivity(), OnMapReadyCallback{
             createTab(num, stringDayList[num-1])
         }
 
+        Log.d("log", "국가: ${MapController.selectedPlaceCountryName}, 도시: ${MapController.selectedPlaceCity}")
+
         // 여행 지역을 선택하지 않았을 경우
         if(MapController.selectedPlaceCountryName.isNullOrEmpty()) {
             binding.tvMainPlace.text = "여행 지역"
-        }else if(MapController.selectedPlaceCity.isNullOrEmpty()) {
+        }else if(MapController.selectedPlaceCity.isNullOrEmpty() || MapController.selectedPlaceCountryName == MapController.selectedPlaceCity) {
             binding.tvMainPlace.text = "${MapController.selectedPlaceCountryName}"
         }else {
             binding.tvMainPlace.text = """${MapController.selectedPlaceCountryName}
