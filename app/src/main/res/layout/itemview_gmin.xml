@@ -11,29 +11,30 @@
         android:id="@+id/tvDate_Min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
         android:text="2022.06.17"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivEdit_Min"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvContent_Min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
         android:text="호텔 체크인 비용"
+        android:textSize="18sp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/tvDate_Min"
-        app:layout_constraintEnd_toStartOf="@+id/ivEdit_Min"
-        app:layout_constraintTop_toTopOf="@+id/tvDate_Min"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvPay_Min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="2dp"
         android:text="174000"
         android:textColor="@color/black"
@@ -44,12 +45,11 @@
         android:id="@+id/tvWon_Min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="원"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/tvPay_Min"
-        app:layout_constraintEnd_toEndOf="@+id/tvContent_Min"
-        app:layout_constraintTop_toBottomOf="@+id/tvContent_Min" />
+        app:layout_constraintEnd_toEndOf="@+id/tvDate_Min"
+        app:layout_constraintTop_toTopOf="@+id/tvPay_Min" />
 
     <ImageView
         android:id="@+id/ivDelete_Min"
