@@ -120,16 +120,9 @@ class DetailActivity_CYun : AppCompatActivity(), OnMapReadyCallback {
         getDailyPlan(selectedPlan.id.toString())
         getExpenses(selectedPlan.id.toString())
         getCheckList(selectedPlan.id.toString())
-//        getInvitedPeople()
 
         super.onStart()
     }
-
-//    override fun onDestroy() {
-//        registration.remove()
-//        Log.d("Log_debug", "snapshot listener removed")
-//        super.onDestroy()
-//    }
 
     override fun onMapReady(googleMap: GoogleMap) {
 
