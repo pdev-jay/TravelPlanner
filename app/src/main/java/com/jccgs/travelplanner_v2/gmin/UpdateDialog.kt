@@ -25,10 +25,13 @@ class UpdateDialog(val context: Context){
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
         this.data = data
+
+        //다이얼로그가 나올때 아이템뷰에 입력돼있던 데이터가 미리 입력 돼있도록 한다.
         binding.edtUdDateMin.setText(data.date)
         binding.edtUdContentMin.setText(data.content)
         binding.edtUdPayMin.setText(data.cost.toString())
 
+        //날짜칸을 클릭하면 DateDialog가 나온다
         binding.edtUdDateMin.setOnClickListener {
             val expensesDialog = DateDialog(context)
             expensesDialog.showExpensesDialog(CalendarActivity_SJeong.startDate!!, CalendarActivity_SJeong.endDate!!)
@@ -45,9 +48,11 @@ class UpdateDialog(val context: Context){
             var pay = binding.edtUdPayMin.text.toString()
             data.date = binding.edtUdDateMin.text.toString()
 
+            //금액이나 내역을 입력하지않고 완료를 눌렀을때 경고 메세지를 출력한다.
             if(data.content.isNullOrEmpty() || pay.isNullOrEmpty()){
                 Toast.makeText(context,"입력하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show()
             }else{
+                //모든 정보를 입력하고 완료버튼을 눌렀을땐 값이 입력되고 창이 종료된다.
                 data.cost = pay.toInt()
                 (context as ExpensesActivity).updateItemViewDataList(position, data)
                 (context as ExpensesActivity).getSum()

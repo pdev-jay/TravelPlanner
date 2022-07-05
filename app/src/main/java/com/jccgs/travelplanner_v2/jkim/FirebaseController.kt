@@ -4,8 +4,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 object FirebaseController {
-    private val db = Firebase.firestore
-
-    val USER_REF = db.collection("User")
-    val PLAN_REF = db.collection("Plan")
+    //User 와 Plan Collection 접근
+    val USER_REF = Firebase.firestore.collection("User")
+    val PLAN_REF = Firebase.firestore.collection("Plan")
 }

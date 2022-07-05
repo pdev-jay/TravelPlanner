@@ -10,9 +10,8 @@ import com.jccgs.travelplanner_v2.databinding.ItemviewCyunBinding
 import com.jccgs.travelplanner_v2.jkim.Plan
 import java.util.*
 
-class UpcomingRVAdapter(val plans: MutableList<Plan>) : RecyclerView.Adapter<UpcomingRVAdapter.CustomViewHolder>(), ItemTouchHelperCallback.OnItemMoveListener {
+class UpcomingRVAdapter(val plans: MutableList<Plan>) : RecyclerView.Adapter<UpcomingRVAdapter.CustomViewHolder>(){
 
-    private lateinit var dragListener: OnStartDragListener
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingRVAdapter.CustomViewHolder {
@@ -43,26 +42,6 @@ class UpcomingRVAdapter(val plans: MutableList<Plan>) : RecyclerView.Adapter<Upc
     override fun getItemCount(): Int {
         return plans.size
     }
-
-    interface OnStartDragListener {
-        fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
-    }
-
-    fun startDrag(listener: OnStartDragListener) {
-        this.dragListener = listener
-    }
-
-    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-        Collections.swap(plans, fromPosition, toPosition)
-        notifyItemMoved(fromPosition, toPosition)
-    }
-
-    override fun onItemSwiped(position: Int) {
-        plans.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-
 
     //뷰 홀더 정의
     class CustomViewHolder(val binding: ItemviewCyunBinding): RecyclerView.ViewHolder(binding.root)

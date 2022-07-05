@@ -23,6 +23,7 @@ import com.jccgs.travelplanner_v2.databinding.ActivityPlanTitleBinding
 
 class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
     val binding by lazy { ActivityPlanTitleBinding.inflate(layoutInflater) }
+
     lateinit var adapter: InvitedFriendsRVAdapter
 
     lateinit var planTitle: String
@@ -30,16 +31,18 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
     var searchedUser: User? = null
 
     lateinit var invitedUserDialog: AlertDialog.Builder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
 
         invitedUserDialog = AlertDialog.Builder(this)
 
         binding.etPlanTitle.setOnEditorActionListener(this)
         binding.etInviteFriend.setOnEditorActionListener(this)
         binding.btnNextTitle.isEnabled = false
+        adapter = InvitedFriendsRVAdapter(this, invitedUsers)
+        binding.friendsRecyclerView.adapter = adapter
 
 
         binding.btnNextTitle.setOnClickListener {
@@ -50,9 +53,10 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
         }
 
         binding.btnInviteFriend.setOnClickListener{
+            //검색창에 입력된 값이 있을 때만 검색 진행
             if (!binding.etInviteFriend.text.toString().isNullOrBlank()) {
                 searchUser(binding.etInviteFriend.text.toString())
-                Log.d("Log_debug", "${binding.etInviteFriend.text.toString()}")
+                Log.d("Log_debug", "${binding.etInviteFriend.text}")
             }
         }
 
@@ -64,12 +68,13 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
             planTitle = binding.etPlanTitle.text.toString()
         }
 
-
+        //태그와 비슷하게 layout의 너비가 충분하지 않을 때 span count를 자동으로 조절해주는 3rd party library
         val layoutManager = FlexboxLayoutManager(this)
         layoutManager.flexDirection = FlexDirection.ROW
         layoutManager.justifyContent = JustifyContent.CENTER
         binding.friendsRecyclerView.layoutManager = layoutManager
 
+        //editText에 입력값 변화가 있을 때의 동작
         binding.etPlanTitle.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -94,6 +99,7 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
 
     }
 
+    //editText가 focus 된 상태에서 엔터를 눌렀을 때
     override fun onEditorAction(view: TextView?, action: Int, keyEvent: KeyEvent?): Boolean {
         return when (view?.id) {
 
@@ -101,7 +107,6 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
                 if (action == EditorInfo.IME_ACTION_DONE){
                     if (!binding.etInviteFriend.text.toString().isNullOrBlank()) {
                         searchUser(binding.etInviteFriend.text.toString())
-                        Log.d("Log_debug", "${binding.etInviteFriend.text.toString()}")
                     }
                 }
                 true
@@ -114,6 +119,7 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
     }
 
     fun searchUser(userEmail: String){
+        //자기 자신을 검색했을 때 함수 종료
         if (userEmail == AuthController.currentUser?.userEmail){
             binding.etInviteFriend.text.clear()
             return
@@ -140,9 +146,9 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
                     invitedUserDialog.apply {
                         setTitle("알림")
                         setMessage("${searchedUser?.displayName}님을 여행에 초대하시겠습니까 ?")
-                        setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
+                        setPositiveButton("확인") { _, _ ->
                             inviteUser()
-                        })
+                        }
                         setNegativeButton("취소", null)
                     }
                     invitedUserDialog.show()
@@ -156,9 +162,6 @@ class PlanTitleActivity : AppCompatActivity(), TextView.OnEditorActionListener{
 
     fun inviteUser(){
         searchedUser?.let { invitedUsers.add(it) }
-        adapter = InvitedFriendsRVAdapter(this, invitedUsers)
-
-        binding.friendsRecyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
 
     }
