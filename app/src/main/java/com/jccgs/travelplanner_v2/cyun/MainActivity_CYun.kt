@@ -43,7 +43,7 @@ class MainActivity_CYun : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Places를 사용하기 위해 초기화
+        //Places(구글맵)를 사용하기 위해 초기화
         if (!Places.isInitialized()) {
             Places.initialize(this, BuildConfig.MAPS_API_KEY)
         }
@@ -77,6 +77,7 @@ class MainActivity_CYun : AppCompatActivity() {
         binding.memoriesRecyclerView.adapter = memoriesRVAdapter
 
 
+        //네비게이션 뷰 유저의 닉네임 출력
         binding.includeNavi.tvUserDisplayName.text = "${AuthController.currentUser?.displayName} 님"
 
         //회원 탈퇴 AlertDialog
@@ -94,6 +95,7 @@ class MainActivity_CYun : AppCompatActivity() {
             setNegativeButton("취소", null)
         }
 
+        //네비게이션 뷰 로그아웃
         binding.includeNavi.tvLogout.setOnClickListener {
             signOut()
         }
@@ -103,16 +105,19 @@ class MainActivity_CYun : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //네비게이션 뷰 끄기
         binding.includeNavi.ivClose.setOnClickListener {
             binding.drawerLayout.closeDrawers()
         }
 
+        //탈퇴 시 확인 다이얼로그
         binding.includeNavi.tvDeregister.setOnClickListener {
             dialog.show()
         }
 
     }
 
+    //비활성 상태에서 활성 상태가 되면 여행 정보를 다시 받아옴
     override fun onStart() {
         MapController.clearMapInfo()
         allPlans.clear()
@@ -140,6 +145,7 @@ class MainActivity_CYun : AppCompatActivity() {
 
     }
 
+    //네비게이션 뷰를 위한 툴바 생성
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.nav_menu_ckim,menu)
@@ -148,6 +154,7 @@ class MainActivity_CYun : AppCompatActivity() {
 
     }
 
+    //메뉴 선택 시 네비게이션 뷰 열림
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.btnMenu -> {
@@ -166,6 +173,7 @@ class MainActivity_CYun : AppCompatActivity() {
         super.onBackPressed()
     }
 
+    //일정 추가 버튼 클릭
     fun onClick(view: View){
         when(view.id){
 
@@ -212,6 +220,7 @@ class MainActivity_CYun : AppCompatActivity() {
         AuthController.auth.signOut()
 
         //Google에서 로그아웃
+        //googleSignInClient?.signOut() 해야지 다른 구글 계정 선택 가능
         googleSignInClient?.signOut()
         googleSignInClient = null
         AuthController.currentUser = null
@@ -222,21 +231,22 @@ class MainActivity_CYun : AppCompatActivity() {
 
     }
 
+    //탈퇴 시 유저 정보 삭제
     fun deregisterAccount(){
         //Firestore에 저장된 User 정보 삭제
         FirebaseController.USER_REF.document(AuthController.currentUser?.id.toString()).delete()
 
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        googleSignInClient = GoogleSignIn.getClient(this@MainActivity_CYun, gso)
+        googleSignInClient?.signOut()
+
         //Firebase Auth에서 유저 삭제
         AuthController.auth.currentUser?.delete()?.addOnSuccessListener {
             //구글 로그아웃
-            val gso =
-                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build()
-            googleSignInClient = GoogleSignIn.getClient(this@MainActivity_CYun, gso)
-            googleSignInClient?.signOut()
-
             googleSignInClient = null
             AuthController.currentUser = null
 

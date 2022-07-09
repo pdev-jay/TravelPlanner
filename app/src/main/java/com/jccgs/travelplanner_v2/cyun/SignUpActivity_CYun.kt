@@ -21,7 +21,7 @@ class SignUpActivity_CYun : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-
+//회원가입 창에서 정보 입력 받기
     fun onClick(view: View) {
         when (view?.id) {
             //파이어베이스 이메일과 패스워드 인증을 위한 회원가입,  로그인, 로그아웃
@@ -35,6 +35,9 @@ class SignUpActivity_CYun : AppCompatActivity() {
             }
         }
     }
+
+    //입력받은 정보 firebase에 회원가입
+    //인증메일 보내기
 
     fun signUp(userEmail: String, userPassword: String, displayName: String) {
         if (userEmail.isNullOrBlank() || userPassword.isNullOrBlank() || displayName.isNullOrBlank()) {
