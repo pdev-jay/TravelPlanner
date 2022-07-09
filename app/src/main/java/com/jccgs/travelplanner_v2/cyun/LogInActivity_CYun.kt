@@ -67,6 +67,7 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
+    //구글 계정 선택 화면
     fun googleSignIn(){
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -81,6 +82,7 @@ class LogInActivity_CYun : AppCompatActivity() {
         requestLaucher.launch(signInIntent)
     }
 
+    //계정 로그인 성공 여부
     fun googleSignInSuccess(data: Intent?){
 
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -93,6 +95,7 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
+    //인증 받은 구글 아이디 firebase로 로그인
     fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         AuthController.auth?.signInWithCredential(credential)
@@ -102,6 +105,7 @@ class LogInActivity_CYun : AppCompatActivity() {
             }
     }
 
+    //회원가입한 이메일로 로그인
     fun signInWithEmail(userEmail: String, userPassword: String) {
         if (userEmail.isNullOrBlank() || userPassword.isNullOrBlank()){
             Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -117,6 +121,7 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
+    //로그인 성공 시 다음 화면으로 넘어감
     fun fetchUser(){
         if (AuthController.auth.currentUser?.isEmailVerified == true) {
             FirebaseController.USER_REF.whereEqualTo("id", AuthController.auth.currentUser?.uid)
@@ -134,6 +139,7 @@ class LogInActivity_CYun : AppCompatActivity() {
         }
     }
 
+    //처음 접속 시 유저의 정보 firestore에 정보 저장 , 저장되는 정보 : 유저 아이디, 유저 이메일, 유저 닉네임
     fun addUser(){
         FirebaseController.USER_REF.whereEqualTo("id", AuthController.currentUser?.id).get().addOnSuccessListener { result ->
             if (result.isEmpty){
