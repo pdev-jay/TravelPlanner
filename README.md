@@ -54,7 +54,7 @@ Google places
 
 - 여행 일정의 기간에 따라 분류
 
-<p align="center"><img src="https://user-images.githubusercontent.com/100817581/178110290-3981923a-1995-44e9-8009-d3be4a0628a9.png" width="30%"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/100817581/178110290-3981923a-1995-44e9-8009-d3be4a0628a9.png" width="40%"></p>
 
 
 - 상세 일정 페이지에서 방문할 장소 확인
